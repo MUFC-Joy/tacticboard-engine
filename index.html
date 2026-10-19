@@ -1,0 +1,2103 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0c1015">
+<title>对位引擎 v4.2</title>
+<style>
+:root{--bg:#0c1015;--card:#151a21;--card2:#1b222c;--line:#2a323d;--txt:#e8eef5;--mut:#93a0af;
+--red:#e2383f;--green:#23c55e;--amber:#f0b429;--blue:#4ea1ff;--pitchA:#0e4f2f;--pitchB:#0b3f25}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--txt);font:14px/1.5 -apple-system,BlinkMacSystemFont,"PingFang SC",Roboto,"Microsoft YaHei",sans-serif}
+header{position:sticky;top:0;z-index:50;background:rgba(12,16,21,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:10px 14px 8px}
+h1{margin:0;font-size:16px;font-weight:800}h1 b{color:var(--red)}
+.sub{font-size:11px;color:var(--mut);margin-top:2px}
+main{max-width:760px;margin:0 auto;padding:10px 12px 130px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:10px}
+.row{display:flex;align-items:center;gap:8px;margin:4px 0}
+.mut{color:var(--mut);font-size:12px}
+.fml{font-size:13px;font-weight:600}
+details{margin:4px 0;border:1px solid var(--line);border-radius:10px;background:var(--card2)}
+summary{padding:9px 12px;font-size:13px;cursor:pointer;color:var(--mut)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:0 8px 8px}
+.tb{background:var(--card);border:1px solid var(--line);color:var(--txt);border-radius:8px;padding:9px 6px;font-size:13px;font-family:inherit}
+.tb.on{border-color:var(--red);background:rgba(226,56,63,.14);font-weight:700}
+.pitchwrap{margin-bottom:10px}
+.phead{display:flex;align-items:center;gap:6px;font-size:13px;margin:2px 0 6px}
+.phead .dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.frow{display:flex;gap:5px;overflow-x:auto;padding:2px 0 6px;max-width:420px;margin:0 auto;scrollbar-width:none}
+.fchip{flex:0 0 auto;background:var(--card2);border:1px solid var(--line);color:var(--mut);border-radius:99px;padding:5px 9px;font-size:11px;font-family:inherit}
+.fchip.on{border-color:var(--red);color:#fff;background:rgba(226,56,63,.16);font-weight:700}
+.frow.tax{justify-content:center;gap:4px;flex-wrap:wrap}
+.fchip.desperate{border-color:rgba(226,56,63,.45);color:#ffb4b7}
+.fchip.desperate.on{background:rgba(226,56,63,.28);border-color:var(--red);color:#fff}
+.sep2{width:1px;height:14px;background:var(--line);margin:0 2px}
+.cf{display:inline-block;font-size:10px;border:1px solid;border-radius:99px;padding:0 7px;margin-left:6px;vertical-align:1px}
+.legend .at{font-size:12.5px}
+.tchips{display:flex;flex-wrap:wrap;gap:6px;margin:2px 0}
+.tchip{background:rgba(78,161,255,.14);border:1px solid rgba(78,161,255,.45);color:#a8d2ff;
+border-radius:99px;padding:6px 12px;font-size:13px;font-family:inherit}
+.tchip:active{transform:scale(.95)}
+.pl{margin-top:6px;font-size:13px;color:#bfe3c9;background:rgba(35,197,94,.08);
+border-left:2px solid rgba(35,197,94,.5);padding:6px 9px;border-radius:0 6px 6px 0;line-height:1.55}
+.pl b{color:#8ef0b3}
+.hbtn{background:rgba(78,161,255,.14);border:1px solid rgba(78,161,255,.4);color:#a8d2ff;
+border-radius:99px;padding:3px 10px;font-size:11px;font-family:inherit;margin-left:6px}
+.mini:active,.tb:active,.fchip:active,.pr:active{transform:scale(.93)}
+.mn.pop,.sc.pop{animation:pop .38s ease-out}
+@keyframes pop{0%{color:#fff;transform:scale(1.35)}60%{color:var(--amber);transform:scale(1.08)}100%{transform:scale(1)}}
+.tk{transition:transform .12s}
+.tk:active{transform:translate(-50%,-50%) scale(.9)}
+.pitch{position:relative;width:100%;max-width:420px;aspect-ratio:.86;margin:0 auto;background:linear-gradient(180deg,var(--pitchA),var(--pitchB));border:1px solid #1d5c3a;border-radius:10px;overflow:hidden}
+.pitch:before{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:rgba(255,255,255,.22)}
+.tk{position:absolute;transform:translate(-50%,-50%);background:#c9202b;border:1.5px solid #fff3;border-radius:50%;width:54px;height:54px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:9px;line-height:1.1;text-align:center;box-shadow:0 2px 6px #0006}
+.tk b{font-size:10px;font-weight:700;max-width:52px;overflow:hidden;white-space:nowrap}
+.tk i{font-style:normal;opacity:.65;font-size:8px}
+.tk em{position:absolute;top:-7px;right:-5px;font-style:normal;font-size:13px}
+.tk .sbm{position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);font-style:normal;
+font-size:9px;background:#111a22;border:1px solid rgba(35,197,94,.6);color:#8ef0b3;
+border-radius:99px;padding:1px 5px;white-space:nowrap}
+.tk.empty{background:#ffffff10;border:1px dashed #ffffff45;color:#ffffff90}
+.tk[data-w=a]{background:#1f6feb}
+.hint{font-size:10.5px;color:#6b7887;text-align:center;margin-top:4px}
+.sec{font-size:11px;letter-spacing:1.6px;color:var(--mut);margin:14px 0 6px;font-weight:700}
+.ac{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--mut);border-radius:10px;padding:10px 11px;margin-bottom:8px}
+.ac.l1{border-left-color:var(--amber)}
+.ac.l2{border-left-color:var(--red);background:linear-gradient(180deg,rgba(226,56,63,.07),var(--card) 60%)}
+.ah{display:flex;justify-content:space-between;font-size:11px;color:var(--mut);margin-bottom:4px}
+.at{font-size:13.5px;line-height:1.6}
+.ae{font-size:11px;color:#7d8a99;margin-top:6px;padding-top:6px;border-top:1px dashed #ffffff14;line-height:1.5}
+.tlc{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 11px}
+.tl{font-size:12px;color:var(--txt);padding:3px 0;border-bottom:1px dashed #ffffff10}
+.tl:last-child{border-bottom:0}
+.tl b{color:var(--amber);margin-right:6px}
+#tabs{position:sticky;top:0;z-index:45;display:flex;gap:6px;padding:8px 12px;
+background:rgba(12,16,21,.96);border-bottom:1px solid var(--line);max-width:760px;margin:0 auto}
+#tabs button{flex:1;background:var(--card2);border:1px solid var(--line);color:var(--mut);
+border-radius:9px;padding:8px 4px;font-size:13px;font-family:inherit}
+#tabs button.on{background:rgba(226,56,63,.16);border-color:var(--red);color:#fff;font-weight:700}
+.pane{display:none}
+.pane.on{display:block}
+html.embed header{display:none}
+html.embed main{padding-top:6px}
+.lesson{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+.lesson h3{margin:0 0 8px;font-size:15px}
+.lesson p{font-size:13.5px;line-height:1.7;margin:7px 0;color:#d3dce6}
+.lesson p b{color:#fff}
+.lesson .egline{margin:5px 0;font-size:12.5px;line-height:1.6}
+.eg{background:rgba(78,161,255,.08);border-left:2px solid rgba(78,161,255,.5);
+padding:8px 10px;border-radius:0 8px 8px 0;font-size:12.5px;color:#bcd8ff;margin:8px 0}
+.qz{margin-top:10px;border-top:1px dashed #ffffff14;padding-top:10px}
+.qz .qq{font-size:13px;margin-bottom:6px}
+.qz .opt{display:block;width:100%;text-align:left;background:var(--card2);border:1px solid var(--line);
+color:var(--txt);border-radius:8px;padding:8px 10px;font-size:12.5px;font-family:inherit;margin:5px 0}
+.qz .opt.ok{border-color:var(--green);background:rgba(35,197,94,.12)}
+.qz .opt.no{border-color:var(--red);background:rgba(226,56,63,.12)}
+.qz .why{font-size:12px;color:var(--mut);margin-top:6px;line-height:1.6}
+.lg{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px;margin-bottom:8px}
+.lg .m{font-size:11px;color:var(--mut);margin-bottom:4px}
+.lg .c{font-size:13.5px;line-height:1.6}
+.lg .x{float:right;background:none;border:0;color:#6b7887;font-size:14px}
+textarea{width:100%;min-height:74px;background:var(--card2);border:1px solid var(--line);
+border-radius:10px;color:var(--txt);padding:10px;font-size:13.5px;font-family:inherit;resize:vertical}
+.hbtn2{background:linear-gradient(180deg,#e2383f,#a32228);border:0;color:#fff;border-radius:10px;
+padding:10px 14px;font-size:13.5px;font-family:inherit;width:100%;margin-top:8px}
+#hud{position:fixed;bottom:0;left:0;right:0;z-index:60;background:rgba(16,20,26,.97);border-top:1px solid var(--line);padding:4px 8px calc(5px + env(safe-area-inset-bottom))}
+.hRow{display:flex;align-items:center;gap:5px;justify-content:center;margin:1px 0}
+.hTeam{font-size:12px;color:var(--mut);max-width:22vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sc{font-size:17px;min-width:18px;text-align:center;cursor:pointer}
+.goal{font-size:14px;padding:5px 9px;border-color:#3a4552}
+.mn{font-size:13px;min-width:34px;text-align:center;color:var(--amber)}
+.mini{background:var(--card2);border:1px solid var(--line);color:var(--txt);border-radius:6px;padding:4px 7px;font-size:11.5px;font-family:inherit;line-height:1}
+.warnb{border-color:rgba(226,56,63,.5);color:#ffb4b7}
+.sep{width:1px;height:16px;background:var(--line);margin:0 3px}
+#sheet{position:fixed;inset:0;z-index:100;background:#0009;display:none;align-items:flex-end}
+#sheet.on{display:flex}
+.sheetIn{background:var(--card);width:100%;max-height:78vh;overflow:auto;border-radius:16px 16px 0 0;padding:12px 12px calc(12px + env(safe-area-inset-bottom))}
+.sh{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.sh .x{background:none;border:0;color:var(--mut);font-size:18px}
+.strow{display:flex;align-items:center;gap:6px;margin:6px 0 10px;flex-wrap:wrap}
+.st{background:var(--card2);border:1px solid var(--line);border-radius:8px;font-size:16px;width:42px;height:36px}
+.st.on{border-color:var(--red);background:rgba(226,56,63,.15)}
+.lov{font-size:11px;color:var(--mut);margin:8px 0 4px}
+.plist{display:flex;flex-direction:column;gap:5px}
+.pr{display:flex;justify-content:space-between;align-items:center;gap:8px;background:var(--card2);border:1px solid var(--line);border-radius:9px;padding:9px 11px;color:var(--txt);font-family:inherit;text-align:left;font-size:13px}
+.pr.on{border-color:var(--green)}
+.pr.used{opacity:.55}
+.pr em{font-style:normal;font-size:11px;color:var(--green);white-space:nowrap}
+</style></head>
+<body>
+<script>
+if(location.search.indexOf('embed=1')>=0){document.documentElement.className='embed';}
+</script>
+<header>
+  <h1>对位引擎 <b>v4.2</b>
+    <button class="hbtn" onclick="openTermsAll()">术语表</button>
+    <span class="mut" style="font-weight:400;font-size:11px">19 队对位 · 换人诊断</span></h1>
+  <div class="sub">L1 球员本体 · L2 教练体系（换帅只改这层）· L3 比赛态（比分/时间/状态/换人）</div>
+</header>
+<nav id="tabs">
+  <button data-tab="lineup" class="on">排阵</button>
+  <button data-tab="analysis">分析</button>
+  <button data-tab="learn">学习</button>
+  <button data-tab="log">复盘</button>
+</nav>
+<main>
+  <section id="pane-lineup" class="pane on">
+    <section id="setup" class="card"></section>
+    <section id="pitches"></section>
+    <section id="substrip"></section>
+  </section>
+  <section id="pane-analysis" class="pane">
+    <section id="analysis"></section>
+  </section>
+  <section id="pane-learn" class="pane">
+    <section id="learn"></section>
+  </section>
+  <section id="pane-log" class="pane">
+    <section id="log"></section>
+  </section>
+</main>
+<div id="hud"></div>
+<div id="sheet"></div>
+<script>
+/* 球员数据库 v3 · 约210人 · 俱乐部归属截至 2026.10（转会窗后喊我更新）
+   pos: GK CB LB RB LWB RWB DM CM AM LW RW ST · foot: 左/右/双/null(不确定)
+   曼联球员带 num(号码) / age / season(上季数据) / a(属性示意值, 0-100, 引擎用) / status(伤病)
+   en[] 里混入了中文别名，搜索时一起匹配 */
+"use strict";
+const PLAYERS = [
+/* ==================== 曼联一线队（2026-27 官方名单框架） ==================== */
+{n:"拉门斯", en:["Lammens"], pos:["GK"], foot:"右", club:"曼联", nat:"比利时", num:1, age:24, season:"41场 / 100扑救 / 出击17-17", st:"出球型主力门将", tags:["清球型"], pair:["德利赫特：后场出球组合"], d:"2025夏窗加盟即坐稳主力：出球冷静、脚下敢做动作、单对单出击成功率极高（17次出击全部成功）。制空和指挥防线还在涨球，是卡里克控球体系的第一发起点。", a:{pace:48,pass:74,def:58,air:70,fin:12,sta:72}},
+{n:"达洛", en:["Dalu"], pos:["GK"], foot:null, club:"曼联", nat:"—", num:12, age:36, season:"1场", st:"二号门将", tags:["门线型"], pair:[], d:"36岁老将替补门将，杯赛轮换人选。"},
+{n:"希顿", en:["Heaton"], pos:["GK"], foot:"右", club:"曼联", nat:"英格兰", num:22, age:40, season:"1场", st:"三号门将兼教练席大脑", tags:["门线型"], pair:[], d:"40岁更衣室财富：训练里给拉门斯当陪练和导师。"},
+{n:"米", en:["Mi"], pos:["GK"], foot:null, club:"曼联", nat:"—", num:45, age:23, season:"0场", st:"青年梯队门将", tags:[], pair:[], d:"第四门将，梯队观察名单。"},
+{n:"达洛特", en:["Dalot"], pos:["RB","RWB","LB"], foot:"右", club:"曼联", nat:"葡萄牙", num:2, age:27, season:"99场4球8助", st:"攻击型边后卫/翼卫两栖，右路铁人", tags:["套边型","翼卫"], pair:["迪亚洛：右路互换","B费：右肋直塞接应"], d:"近两季出场99次的后防铁人：传中、内切、往返都在线。卡里克体系里是 build-up 3-2-5 中压上的右边后卫；三中卫体系里就是右翼卫。逆足踢左路可用但传中质量下降——模拟器试试就知道。", a:{pace:76,pass:74,def:72,air:60,fin:50,sta:84}},
+{n:"马兹拉维", en:["Mazraoui"], pos:["RB","RWB","CM"], foot:"右", club:"曼联", nat:"摩洛哥", num:3, age:28, season:"82场", st:"出球型边后卫，可内收中场", tags:["内收型","多面手"], pair:["B费：内收后中场联动"], d:"拜仁青训出品：压迫下出球冷静，右后卫/翼卫/中场三处轮换；速度和对抗中等，靠位置感吃饭。卡里克体系里内收当第二后腰的天然人选。", a:{pace:74,pass:78,def:72,air:58,fin:45,sta:82}},
+{n:"德利赫特", en:["de Ligt","德里赫特"], pos:["CB"], foot:"右", club:"曼联", nat:"荷兰", num:4, age:27, season:"59场3球", st:"对抗型上抢中卫", tags:["上抢型","对抗型"], pair:["L.马丁内斯：一抢一保组合","马奎尔:轮换搭档"], d:"贴身缠斗和正面拦截硬，争顶能力强；怕被速度型前锋拉进长距离回追，需要身边有快中卫兜底。右中卫/居中皆可，三中卫体系里当右中卫上抢。", a:{pace:62,pass:70,def:84,air:85,fin:30,sta:75}},
+{n:"L.马丁内斯", en:["Lisandro Martinez","利马","利桑德罗"], pos:["CB","LB"], foot:"左", club:"曼联", nat:"阿根廷", num:6, age:28, season:"57场3球2助", st:"左脚绞杀型中卫，防线情绪领袖", tags:["上抢型","左脚中卫"], pair:["德利赫特：他缠斗你补位","马奎尔:出球轮换"], d:"世界级缠斗+侵略性，左脚出球让左侧线路天然顺；身高在英超防空是短板。世界杯冠军中卫，更衣室的嗓门。", a:{pace:66,pass:76,def:82,air:62,fin:28,sta:76}},
+{n:"马奎尔", en:["Maguire"], pos:["CB"], foot:"右", club:"曼联", nat:"英格兰", num:5, age:33, season:"74场6球3助", st:"争顶怪+拖后保镖（右脚将）", tags:["拖后型","争顶型"], pair:["德利赫特：他上抢你兜底"], d:"33岁仍是英超顶级争顶点，定位球攻防双武器；转身速度是永恒软肋，低位块里价值最大。右脚将，右中卫/居中皆宜，客串左中卫时出球线路偏右。合同年，更衣室模范。", a:{pace:52,pass:68,def:80,air:90,fin:35,sta:70}},
+{n:"约罗", en:["Yoro"], pos:["CB"], foot:"右", club:"曼联", nat:"法国", num:15, age:20, season:"75场1球1助", st:"出球型年轻中卫，转身快", tags:["出球型"], pair:["海文：一右一左出球网"], d:"两季75场的出场量说明教练有多信他：预判和脚下在同龄人里顶级，敢从后场带球破压迫。右中卫首选。", a:{pace:74,pass:74,def:76,air:70,fin:25,sta:75}},
+{n:"卢克·肖", en:["Luke Shaw","肖"], pos:["LB","CB"], foot:"左", club:"曼联", nat:"英格兰", num:23, age:31, season:"58场1球2助", st:"左脚多面手：LB/CB双料", tags:["左脚中卫","套边型"], pair:["拉什福德：左路一内一外经典"], d:"顺足左后卫里传中质量顶级，客串左中卫出球舒服；31岁+伤病史=角色球员，定位球防线和更衣室价值仍在。", a:{pace:66,pass:74,def:74,air:65,fin:30,sta:66}},
+{n:"多古", en:["Dorgu"], pos:["LWB","LB","RW"], foot:"右", club:"曼联", nat:"丹麦", num:13, age:21, season:"57场5球7助", st:"右脚左翼卫：冲击型毛坯", tags:["翼卫","逆足"], pair:["迪亚洛：两翼互换"], d:"2025冬窗从莱切加盟：直线冲击+往返能力是天赋，57场5球7助产量不错。右脚踢左路让下底传中打折、内切护球顺脚；四后卫的边路防守站位还在学——模拟器把他放左后卫，看警告引擎怎么说。", a:{pace:87,pass:64,def:64,air:55,fin:55,sta:86}},
+{n:"海文", en:["Heaven"], pos:["CB","LB"], foot:"左", club:"曼联", nat:"英格兰", num:26, age:20, season:"31场", st:"左脚出球中卫，上抢+出球双能", tags:["左脚中卫","出球型"], pair:["约罗：一左一右"], d:"2025年1月从阿森纳挖来：左脚、敢上抢、出球冷静，两季31场的轮换量。左脚中卫稀缺属性+年龄=防线未来的重要拼图。", a:{pace:72,pass:72,def:72,air:66,fin:25,sta:74}},
+{n:"阿玛斯", en:["Amass"], pos:["LB","LWB"], foot:"左", club:"曼联", nat:"英格兰", num:41, age:19, season:"8场", st:"左脚青年左后卫", tags:["套边型"], pair:[], d:"青训左闸：传中和往返有模有样，防守对抗是下一课。", a:{pace:78,pass:66,def:62,air:52,fin:42,sta:74}},
+{n:"巴莱巴", en:["Baleba"], pos:["DM","CM"], foot:"右", club:"曼联", nat:"喀麦隆", num:20, age:22, season:"新援（2场）", st:"强力6/8：扫荡+带球推进双料", tags:["破坏型","B2B"], pair:["蒂勒曼斯：他扫荡你调度","B费回撤:他当保镖"], d:"2026夏窗标王级引援（6500万欧）：布莱顿出品的 physique 怪物——抢断范围大、带球破压迫是6号位稀缺技能、远射有货。单6位置的长期答案，也是全队由守转攻的第一台发动机。", a:{pace:76,pass:72,def:78,air:66,fin:58,sta:84}},
+{n:"A.桑托斯", en:["Andrey Santos"], pos:["DM","CM"], foot:"右", club:"曼联", nat:"巴西", num:17, age:22, season:"新援（6场）", st:"带球型后腰：从深位把球运出去", tags:["破坏型","B2B"], pair:["梅努：双年轻中场轮转"], d:"2026夏窗从切尔西系加盟：后场带球推进+肋部后插上射门是标识，巴西国奥核心。和巴莱巴构成未来十年的中场底盘竞争。", a:{pace:70,pass:74,def:76,air:62,fin:60,sta:80}},
+{n:"蒂勒曼斯", en:["Tielemans"], pos:["CM","DM","AM"], foot:"右", club:"曼联", nat:"比利时", num:18, age:29, season:"新援（9场2助）", st:"组织型8：调度+远射+定位球", tags:["组织8","节拍器"], pair:["巴莱巴：他扫荡你出球","B费:双组织点轮转"], d:"2026夏窗从维拉加盟：一脚对角转移和肋部直塞是欧洲顶级，远射和任意球都是武器；防守横移是相对短板——所以和巴莱巴是天作之合。", a:{pace:60,pass:86,def:62,air:62,fin:66,sta:76}},
+{n:"B费", en:["Bruno Fernandes","B.费"], pos:["AM","CM","RW"], foot:"右", club:"曼联", nat:"葡萄牙", num:8, age:32, season:"105场35球41助", st:"队长 · 现代10/回撤后腰 · 全队轴心", tags:["现代10","节拍器"], pair:["谢什科：身后球喂哺","巴莱巴:他保护你组织","姆贝乌莫:右肋连线"], d:"两季105场35球41助=负荷与产出的双重奇迹。卡里克手下回撤打双后腰之一：组织权重最大、球权第一发起人；32岁的跑动负荷是轮换课题。直塞+对角+远射三件套仍是英超顶配。", a:{pace:64,pass:88,def:58,air:60,fin:78,sta:84}},
+{n:"梅努", en:["Mainoo"], pos:["CM","DM"], foot:"右", club:"曼联", nat:"英格兰", num:37, age:21, season:"77场3球6助", st:"节奏型8：两闸之间的转身摆脱", tags:["组织8"], pair:["蒂勒曼斯：老带新","巴莱巴:攻守分工"], d:"压迫下转身是天赋级；77场的出场量说明他是常备轮换。防守强度和比赛管理还在涨——和巴莱巴/桑托斯的竞争是中场未来的主线剧情。", a:{pace:64,pass:78,def:70,air:56,fin:50,sta:76}},
+{n:"芒特", en:["Mount"], pos:["AM","CM"], foot:"右", club:"曼联", nat:"英格兰", num:7, age:27, season:"58场8球2助", st:"无球型10：压迫+后插上", tags:["伪10"], pair:["B费：双10轮转","库尼亚:肋部互换"], d:"不占球权、逼抢积极、肋部后插上是看家本领；58场8球是生涯健康季的产出。体系粘合剂。", a:{pace:68,pass:76,def:64,air:58,fin:64,sta:78}},
+{n:"乌加特", en:["Ugarte"], pos:["DM"], foot:"右", club:"曼联", nat:"乌拉圭", num:25, age:25, season:"72场2球6助", status:"重伤报销（赛季）", st:"纯破坏型绞杀者（伤停中）", tags:["破坏型"], pair:["巴莱巴：伤愈后轮换竞争"], d:"72场的中场铁驴：抢断凶狠、覆盖大，出球简单。重伤报销后他的位置由巴莱巴/桑托斯接棒——复出后面临最激烈的竞争。", a:{pace:66,pass:66,def:82,air:58,fin:40,sta:86}},
+{n:"弗莱彻", en:["Tyler Fletcher"], pos:["CM","DM"], foot:"右", club:"曼联", nat:"英格兰", num:39, age:19, season:"2场", st:"青年中场：教练之子", tags:[], pair:["J.弗莱彻：双胞胎"], d:"达伦·弗莱彻之子：传球选择成熟，青训杯赛常客。", a:{pace:66,pass:70,def:62,air:52,fin:48,sta:72}},
+{n:"J.弗莱彻", en:["Jack Fletcher"], pos:["CM","AM"], foot:"左", club:"曼联", nat:"英格兰", num:38, age:19, season:"4场", st:"青年中场：左脚组织手", tags:[], pair:["弗莱彻：双胞胎"], d:"左脚出球细腻，青年联赛的节拍器。", a:{pace:64,pass:72,def:58,air:50,fin:50,sta:70}},
+{n:"库尼亚", en:["Cunha"], pos:["AM","LW","ST"], foot:"右", club:"曼联", nat:"巴西", num:10, age:27, season:"46场12球4助", st:"自由人10：背身+盘带+远射", tags:["自由10","伪9"], pair:["谢什科：双前锋错位","B费:肋部二过一"], d:"10号位的主人：能背身做墙、能拉边爆点、能禁区外远射；46场12球在自由人角色里是优秀产出。前场创造力第一持球点。", a:{pace:78,pass:80,def:48,air:58,fin:76,sta:78}},
+{n:"姆贝乌莫", en:["Mbeumo","姆贝莫"], pos:["RW","AM","LW"], foot:"左", club:"曼联", nat:"喀麦隆", num:19, age:27, season:"44场15球4助", st:"左脚右路：内切爆射+定位球", tags:["逆足内切"], pair:["谢什科：他做墙你插上","B费:右肋连线"], d:"队史级身价引援的第一年就交出44场15球：内切爆射+定位球+满场跑动，右肋和萨卡同流派。全队出勤最稳的攻击手。", a:{pace:80,pass:74,def:48,air:52,fin:76,sta:76}},
+{n:"谢什科", en:["Sesko","塞斯科"], pos:["ST"], foot:"右", club:"曼联", nat:"斯洛文尼亚", num:30, age:23, season:"38场14球1助", st:"支点型9：背身做墙+争顶", tags:["支点","全能9潜力"], pair:["B费：身后球+做墙回做","姆贝乌莫:肋部二点"], d:"23岁的现代支点：给二线当墙、禁区内争顶、拉边接应都会，38场14球持续上涨。体系里他往哪顶，双10就往哪钻。", a:{pace:78,pass:66,def:42,air:76,fin:74,sta:74}},
+{n:"迪亚洛", en:["Amad Diallo","阿马德"], pos:["RW","RWB","LW"], foot:"左", club:"曼联", nat:"科特迪瓦", num:16, age:24, season:"80场14球11助", st:"左脚右路：小快灵+翼卫两栖", tags:["逆足内切","翼卫"], pair:["达洛特：右路互换","多古:两翼互换"], d:"全队出场最多（80场）的锋线：小空间变向+倒三角回做，阿莫林时代客串翼卫立过功；卡里克体系回归边锋位，14球11助是两季最佳产出。", a:{pace:80,pass:74,def:52,air:48,fin:66,sta:78}},
+{n:"拉什福德", en:["Rashford"], pos:["LW","ST"], foot:"右", club:"曼联", nat:"英格兰", num:9, age:28, season:"31场7球3助", st:"右脚左路：本土爆点回归", tags:["逆足内切"], pair:["B费：身后球老搭档","多古/肖:左路套边"], d:"2026年回归：直线速度打身后仍是英超顶级资产，31场7球是角色化后的产出。低位块比赛里他=唯一的「身后」威胁。", a:{pace:86,pass:70,def:40,air:60,fin:76,sta:72}},
+{n:"齐尔克泽", en:["Zirkzee"], pos:["ST","AM"], foot:"右", club:"曼联", nat:"荷兰", num:11, age:25, season:"81场9球3助", st:"伪9/二前锋：回撤做球流", tags:["伪9","支点"], pair:["库尼亚：双伪9轮转","迪亚洛:他回撤你插上"], d:"外租回归：81场的出场量说明教练爱用——回撤到中场当组织点再冲禁区，脚下细腻；纯禁区内抢点不是他的活。战术变体的关键棋子。", a:{pace:72,pass:78,def:40,air:72,fin:66,sta:72}},
+{n:"莱西", en:["Lacey"], pos:["RW","AM"], foot:null, club:"曼联", nat:"英格兰", num:31, age:19, season:"4场1球", st:"青训攻击手：肋部小空间", tags:[], pair:[], d:"青训左脚攻击手，杯赛轮换对象，一线队首球已到账。", a:{pace:82,pass:66,def:38,air:48,fin:58,sta:70}},
+
+/* ==================== 门将（其他球队） ==================== */
+{n:"库尔图瓦", en:["Courtois"], pos:["GK"], foot:"左", club:"皇马", nat:"比利时", st:"门线型天花板：扑救覆盖+长传发动", tags:["门线型"], pair:[], d:"身高臂展把近角和远角都锁死，长传精准可以直接找前锋发动转换。"},
+{n:"阿利松", en:["Alisson"], pos:["GK"], foot:"右", club:"利物浦", nat:"巴西", st:"出球+扑救双修的清球型", tags:["清球型"], pair:["范戴克：门将-清道夫轴"], d:"现代门将模板：脚敢出球、站位敢压上当清道夫，扑救关键时刻从不掉链。"},
+{n:"多纳鲁马", en:["Donnarumma"], pos:["GK"], foot:"右", club:"曼城", nat:"意大利", num:1, st:"扑救机器+大场面体质（副队长）", tags:["门线型"], pair:["格伊/迪亚斯：新防线核心组"], d:"2026夏窗从巴黎加盟曼城当一门+副队长：一对一扑救和反应顶级；出球相比埃德森保守——马雷斯卡的倒脚体系靠后卫线补。"},
+{n:"埃德森", en:["Ederson"], pos:["GK"], foot:"右", club:"已离开曼城（2026夏，去向以官宣为准）", nat:"巴西", st:"出球门将的教科书", tags:["清球型"], pair:[], d:"多纳鲁马到来后离开曼城：60米对角长传当手抛球用的时代记忆——瓜系后场倒脚的第一发起点。"},
+{n:"拉亚", en:["Raya"], pos:["GK"], foot:"右", club:"阿森纳", nat:"西班牙", st:"清球型，脚下参与build-up", tags:["清球型"], pair:["萨利巴：短传出球网"], d:"阿尔特塔体系的第11人传球点，敢在压迫下短传两翼。"},
+{n:"皮克福德", en:["Pickford"], pos:["GK"], foot:"右", club:"埃弗顿", nat:"英格兰", st:"长传发动+大赛型扑救", tags:["门线型"], pair:[], d:"英格兰一号，长传找身前是埃弗顿反击第一发起点。"},
+{n:"诺伊尔", en:["Neuer"], pos:["GK"], foot:"右", club:"拜仁", nat:"德国", st:"清道夫门将的开山鼻祖", tags:["清球型"], pair:[], d:"40岁仍在踢：站位极高、脚法顶级，定义了现代门将这个位置。"},
+{n:"泽默", en:["Sommer"], pos:["GK"], foot:"右", club:"国米", nat:"瑞士", st:"反应型门将：出击时机大师", tags:["门线型"], pair:[], d:"37岁仍是国米一门：预判和出击时机是艺术。"},
+{n:"维卡里奥", en:["Vicario"], pos:["GK"], foot:"右", club:"热刺", nat:"意大利", st:"清球型：敢用脚的门将", tags:["清球型"], pair:[], d:"德泽尔比体系需要门将当传球点——他正好是。"},
+
+/* ==================== 中卫 ==================== */
+{n:"范戴克", en:["van Dijk"], pos:["CB"], foot:"右", club:"利物浦", nat:"荷兰", st:"拖后清道夫的世界模板", tags:["拖后型","出球型"], pair:["阿利松：门将-清道夫轴","佳夫?不——科纳特已离队,搭档以现役为准"], d:"站位、指挥、长传、争顶全是顶级；他在的防线降一档难度。年龄后转身略慢，靠预判弥补。科纳特2026夏窗转投皇马后，他的新搭档是转会市场课题。"},
+{n:"萨利巴", en:["Saliba"], pos:["CB"], foot:"右", club:"阿森纳", nat:"法国", st:"出球型+回追型中卫", tags:["出球型"], pair:["加布里埃尔：一左一右出球网"], d:"带球推进破压迫是招牌，回追速度中卫里前几；阿森纳后场秩序的根基。"},
+{n:"加布里埃尔", en:["Gabriel Magalhaes"], pos:["CB"], foot:"左", club:"阿森纳", nat:"巴西", st:"左脚争顶+定位球杀手", tags:["左脚中卫","争顶型"], pair:["萨利巴：他上抢你补位"], d:"攻防两端定位球都是武器，左脚中卫让阿森纳左侧出球天然顺。"},
+{n:"廷贝尔", en:["Timber"], pos:["CB","RB","LB"], foot:"右", club:"阿森纳", nat:"荷兰", st:"全能防线多面手", tags:["多面手"], pair:[], d:"三处都能踢且都是顶级水准，阿森纳防线的万能胶。"},
+{n:"巴斯托尼", en:["Bastoni"], pos:["CB"], foot:"左", club:"国米", nat:"意大利", st:"左脚出球中卫的当代样板", tags:["左脚中卫","出球型"], pair:["阿切尔比：他扫荡你组织"], d:"左脚对角长传和肋部直塞是武器，国米三中卫体系的组织核心。"},
+{n:"帕乔", en:["Pacho"], pos:["CB"], foot:"左", club:"巴黎", nat:"厄瓜多尔", st:"左脚出球+回追型", tags:["左脚中卫","出球型"], pair:["马尔基尼奥斯：经验搭配"], d:"巴黎2025欧冠冠军主力，转身速度和出球冷静度都是顶级。"},
+{n:"阿切尔比", en:["Acerbi"], pos:["CB"], foot:"右", club:"国米", nat:"意大利", st:"老派清道夫：预判和指挥", tags:["拖后型"], pair:["巴斯托尼：他组织你兜底"], d:"大龄中卫教科书：不用快，站得住、看得准、喊得动。"},
+{n:"库巴西", en:["Cubarsi"], pos:["CB"], foot:"右", club:"巴萨", nat:"西班牙", st:"出球型少年老成", tags:["出球型"], pair:["阿劳霍：他上抢你出球"], d:"出球线路选择成熟，弗里克超高位线的清道夫。"},
+{n:"阿劳霍", en:["Araujo"], pos:["CB"], foot:"右", club:"巴萨", nat:"乌拉圭", st:"对抗型猛男中卫", tags:["上抢型"], pair:["库巴西：他出球你缠斗"], d:"正面对抗和回追都在线，乌拉圭血统的斗犬。"},
+{n:"孔德", en:["Kounde"], pos:["CB","RB"], foot:"右", club:"巴萨", nat:"法国", st:"多面手防线核心", tags:["多面手"], pair:[], d:"右后卫/中卫双料，出球稳，弗里克防线的右轴。"},
+{n:"乌帕梅卡诺", en:["Upamecano"], pos:["CB"], foot:"右", club:"拜仁", nat:"法国", st:"上抢型猛男：速度+对抗", tags:["上抢型"], pair:["塔霍：双塔站位"], d:"正面一对一天花板级，前顶扫荡凶；出球选择偶有惊悚瞬间——高风险高回报本体。"},
+{n:"塔霍", en:["J. Tah","塔"], pos:["CB"], foot:"右", club:"拜仁", nat:"德国", st:"争顶+出球双料", tags:["争顶型","出球型"], pair:["乌帕梅卡诺：一稳一抢"], d:"2025夏窗从勒沃库森加盟：制空和地面传球都稳，补上拜仁防空。"},
+{n:"吕迪格", en:["Rudiger"], pos:["CB"], foot:"右", club:"皇马", nat:"德国", st:"心理战型上抢中卫", tags:["上抢型"], pair:["科纳特：新老对抗组合"], d:"对抗凶狠+垃圾话大师，把前锋惹毛也是战术；穆里尼奥会喜欢这种。"},
+{n:"阿森西奥", en:["R. Asencio","阿森西奥"], pos:["CB"], foot:"右", club:"皇马", nat:"西班牙", num:2, st:"青训上抢型中卫", tags:["上抢型"], pair:["惠伊森：青年双塔轮换"], d:"卡斯蒂亚出品的皇马一线队常客：前顶凶狠+回追快，官方2号。"},
+{n:"卡雷拉斯", en:["A. Carreras","卡雷拉斯"], pos:["LB","LWB"], foot:"左", club:"皇马", nat:"西班牙", num:18, st:"攻击型左后卫：缠斗+套边", tags:["套边型"], pair:["库库雷利亚：左路轮换"], d:"从本菲卡加盟的西班牙左闸：左脚+对抗+往返，官方18号——穆里尼奥两翼拼图的最后一块。"},
+{n:"惠伊森", en:["Huijsen"], pos:["CB"], foot:"右", club:"皇马", nat:"西班牙", st:"出球型年轻中卫", tags:["出球型"], pair:[], d:"2025夏窗伯纳乌新援：19岁踢英超的水平，长传调度像中场。"},
+{n:"米利唐", en:["Militao"], pos:["CB"], foot:"右", club:"皇马", nat:"巴西", st:"速度型中卫", tags:["回追型"], pair:[], d:"中卫里少见的冲刺速度，专治速度型前锋；伤病史是变量。"},
+{n:"斯通斯", en:["Stones"], pos:["CB","DM"], foot:"右", club:"曼城", nat:"英格兰", st:"内收边后腰/中后场自由人的鼻祖", tags:["出球型","内收型"], pair:["罗德里：内收时中路双保险"], d:"从中卫内收进中场的玩法由他发扬光大：防线+中场随时切换人数。"},
+{n:"鲁本·迪亚斯", en:["R. Dias"], pos:["CB"], foot:"右", club:"曼城", nat:"葡萄牙", st:"队长 · 指挥型拖后中卫", tags:["拖后型"], pair:["格伊：他扫荡你指挥","格瓦迪奥尔:左出球右指挥"], d:"曼城队长：防线的嗓门和秩序，正面对抗稳；多纳鲁马+格伊到位后防线重建的定海针。"},
+{n:"格伊", en:["Guehi","格伊"], pos:["CB"], foot:"右", club:"曼城", nat:"英格兰", num:6, st:"缠斗型英格兰中卫", tags:["上抢型"], pair:["迪亚斯：一指挥一缠斗"], d:"2026夏窗压哨加盟：欧洲杯主力级缠斗+出球，水晶宫多年的防线核心终于去了豪门。"},
+{n:"格瓦迪奥尔", en:["Gvardiol"], pos:["CB","LB"], foot:"右", club:"曼城", nat:"克罗地亚", st:"右脚将踢左路的内收型代表", tags:["出球型","内收型"], pair:["多库：左路一内一外"], d:"从莱比锡到曼城：右脚将踢左中卫/左后卫的当代样板，带球突进像边锋，世界杯一战成名——右脚踢左路的出球劣势被他用带球推进弥补。"},
+{n:"阿坎吉", en:["Akanji"], pos:["CB","RB"], foot:"右", club:"曼城", nat:"瑞士", st:"多面手出球中卫", tags:["出球型"], pair:[], d:"能踢右中卫/右后卫/后腰的万能胶水，脚下在压迫下很冷静。"},
+{n:"福法纳", en:["Fofana"], pos:["CB"], foot:"右", club:"切尔西", nat:"法国", st:"速度型中卫（玻璃体质）", tags:["回追型"], pair:[], d:"健康时是英超最快的中卫之一；出勤率是唯一敌人。"},
+{n:"科尔威尔", en:["Colwill"], pos:["CB"], foot:"左", club:"切尔西", nat:"英格兰", st:"左脚出球型中卫", tags:["左脚中卫","出球型"], pair:[], d:"左脚将：向左出球线路天然顺，阿隆索体系里的推进点。"},
+{n:"罗梅罗", en:["C. Romero"], pos:["CB"], foot:"右", club:"热刺", nat:"阿根廷", st:"世界冠军斗犬中卫", tags:["上抢型"], pair:[], d:"缠斗+出球+垃圾话全都有，世界杯冠军主力；情绪是他的双刃剑。"},
+{n:"科纳特", en:["Konate"], pos:["CB"], foot:"右", club:"皇马", nat:"法国", st:"速度+对抗型中卫", tags:["上抢型"], pair:["吕迪格/惠伊森：皇马中卫轮转"], d:"2026夏窗从利物浦加盟伯纳乌：回追速度顶级；伤病史是变量。穆里尼奥的对抗拼图。"},
+{n:"保·托雷斯", en:["Pau Torres"], pos:["CB"], foot:"左", club:"维拉", nat:"西班牙", st:"左脚出球中卫", tags:["左脚中卫","出球型"], pair:[], d:"比利亚雷亚尔/维拉体系的出球轴，左脚长传调度。"},
+{n:"布兰斯维特", en:["Branthwaite"], pos:["CB"], foot:"左", club:"埃弗顿", nat:"英格兰", st:"左脚年轻中卫", tags:["左脚中卫"], pair:[], d:"埃弗顿防线的未来：左脚+速度+对抗，英格兰队考察对象。"},
+{n:"米伦科维奇", en:["Milenkovic"], pos:["CB"], foot:"右", club:"森林", nat:"塞尔维亚", st:"对抗型争顶中卫", tags:["争顶型"], pair:[], d:"森林低块体系的空霸。"},
+{n:"勒诺尔芒", en:["Lenormand"], pos:["CB"], foot:"右", club:"马竞", nat:"西班牙", st:"出球型中卫", tags:["出球型"], pair:[], d:"皇家社会青训：出球冷静，西蒙尼防线的现代化改造。"},
+
+/* ==================== 边后卫 / 翼卫 ==================== */
+{n:"阿什拉夫", en:["Hakimi"], pos:["RB","RWB","RW"], foot:"右", club:"巴黎", nat:"摩洛哥", st:"攻击型边后卫天花板：下底+内切双威胁", tags:["套边型","攻击型"], pair:["努诺·门德斯：一右一左双引擎（2025欧冠冠军结构）"], d:"世界最快边后卫之一：右路超车下底、内切射门两开花，反击时他就是第二个边锋。和努诺·门德斯一右一左，把巴黎宽度拉到极限——现代攻击型边后卫的双子星模板。"},
+{n:"努诺·门德斯", en:["Nuno Mendes"], pos:["LB","LWB","LW"], foot:"左", club:"巴黎", nat:"葡萄牙", st:"攻击型左后卫：速度+对抗+内切", tags:["套边型","攻击型"], pair:["阿什拉夫：一左一右双引擎"], d:"左路永动机：下底传中、肋部内切、一对一天花板级。2025欧冠冠军左路引擎。"},
+{n:"阿诺德", en:["Alexander-Arnold"], pos:["RB","DM"], foot:"右", club:"皇马", nat:"英格兰", st:"内收组织型：边后卫当四分卫", tags:["内收型","出球型"], pair:["楚阿梅尼：内收时中场搭档"], d:"对角长传和肋部直塞是历史级武器；防守一对一是相对短板，靠位置感和体系藏。2025自由转会皇马。"},
+{n:"弗林蓬", en:["Frimpong"], pos:["RWB","RB","RW"], foot:"右", club:"利物浦", nat:"荷兰", st:"翼卫永动机：超车下底", tags:["套边型","翼卫"], pair:["萨拉赫：右路双边锋错位跑动"], d:"直线冲刺+往返能力极端，勒沃库森三中卫右翼卫出身，2025夏窗加盟利物浦。"},
+{n:"罗伯逊", en:["Robertson"], pos:["LB","LWB"], foot:"左", club:"热刺", nat:"苏格兰", st:"传统套边左后卫：传中机器", tags:["套边型"], pair:["索兰克：传中找点"], d:"2026夏窗转投热刺：和萨拉赫的「内切+套边」是英超十年最佳边路组合之一；体能和传中稳定性是招牌——德泽尔比左路的即战力答案。"},
+{n:"托辛·阿达拉比奥尤", en:["Tosin Adarabioyo"], pos:["CB"], foot:"右", club:"热刺", nat:"英格兰", st:"出球型中卫", tags:["出球型"], pair:["罗梅罗：一稳一斗"], d:"2026夏窗从切尔西转投热刺：1米93出球中卫，德泽尔比后场倒脚体系的合格零件。"},
+{n:"塞内西", en:["Senesi"], pos:["CB"], foot:"左", club:"热刺", nat:"阿根廷", st:"左脚出球中卫", tags:["左脚中卫","出球型"], pair:[], d:"2026夏窗从伯恩茅斯加盟：左脚长传调度，热刺防线左出球答案。"},
+{n:"加拉格尔", en:["Gallagher"], pos:["CM","DM"], foot:"右", club:"热刺", nat:"英格兰", st:"跑不死B2B：逼抢强度担当", tags:["B2B"], pair:["麦迪逊：一抢一传"], d:"2026夏窗回归英超加盟热刺：全场冲刺的体能怪+逼抢第一线，德泽尔比控球体系里的搅局者。"},
+{n:"麦迪逊", en:["Maddison"], pos:["AM"], foot:"右", club:"热刺", nat:"英格兰", st:"肋部创造10：直塞+远射", tags:["现代10"], pair:["西蒙斯：双10轮转"], d:"热刺老核心：最后一传的想象力仍是顶级，伤愈后和西蒙斯组成双前腰。"},
+{n:"科尔克兹", en:["Kerkez"], pos:["LB","LWB"], foot:"左", club:"利物浦", nat:"匈牙利", st:"年轻攻击型左后卫", tags:["套边型"], pair:["罗伯逊离队后:左路主力"], d:"2025夏窗从伯恩茅斯加盟：对抗凶、上得去，罗伯逊走后他就是利物浦左路的主人。"},
+{n:"巴尔克拉", en:["Barcola"], pos:["LW","RW"], foot:"右", club:"利物浦", nat:"法国", st:"右脚左路：直线爆点+内切", tags:["逆足内切"], pair:["萨拉赫：右路轮换","加克波:左路互换"], d:"2026夏窗1亿镑级从巴黎加盟：启动冲刺+变向内切，巴黎两冠功臣。利物浦攻击群的法国拼图。"},
+{n:"波尔诺", en:["Porro"], pos:["RB","RWB"], foot:"右", club:"热刺", nat:"西班牙", st:"攻击型右后卫：肋部内切传中", tags:["攻击型"], pair:["库卢/西蒙斯：右肋二人转"], d:"传中脚法在中场级，德泽尔比体系里他一个人承包右路走廊。"},
+{n:"乌多吉", en:["Udogie"], pos:["LB","LWB"], foot:"右", club:"热刺", nat:"意大利", st:"逆足左翼卫：内收型冲击", tags:["内收型","翼卫"], pair:[], d:"右脚踢左路的内收流派：内切护球+肋部插上，防守靠身体。"},
+{n:"里斯·詹姆斯", en:["Reece James"], pos:["RB","RWB","DM"], foot:"右", club:"切尔西", nat:"英格兰", st:"传中天花板+可客串后腰", tags:["套边型","出球型"], pair:["帕尔默：右肋连线"], d:"右脚传中教科书；反复伤病史让他更多被当内收后腰用。"},
+{n:"库库雷利亚", en:["Cucurella"], pos:["LB","LWB"], foot:"左", club:"皇马", nat:"西班牙", st:"缠斗型攻击左后卫", tags:["攻击型"], pair:["邓弗里斯：银河战舰两翼"], d:"2026夏窗从切尔西加盟皇马：上抢凶、脚下稳，欧洲杯冠军主力；穆里尼奥的左路答案。"},
+{n:"古斯托", en:["Gusto"], pos:["RB","RWB"], foot:"右", club:"切尔西", nat:"法国", st:"年轻攻击型右后卫", tags:["套边型"], pair:["詹姆斯：轮换搭档"], d:"往返和传中选择都在涨，詹姆斯的健康保险。"},
+{n:"阿方索·戴维斯", en:["Alphonso Davies","戴维斯"], pos:["LB","LWB","LW"], foot:"左", club:"拜仁", nat:"加拿大", st:"速度型翼卫：百米冲刺踢法", tags:["套边型"], pair:["奥利塞：右路喂哺"], d:"世界最快足球运动员之一，反击时左路一条龙；孔帕尼体系左路爆点。"},
+{n:"莱默", en:["Laimer"], pos:["RB","DM","CM"], foot:"右", club:"拜仁", nat:"奥地利", st:"逼抢机器：哪儿缺人补哪儿", tags:["多面手"], pair:["基米希：中场轮换"], d:"跑动和压迫强度极端，右后卫/后腰/中场三处轮换的教练最爱。"},
+{n:"斯塔尼希奇", en:["Stanisic"], pos:["RB","LB"], foot:"右", club:"拜仁", nat:"克罗地亚", st:"两闸多面手", tags:["多面手"], pair:[], d:"左右都能踢的轮换工具人，出球稳。"},
+{n:"格里马尔多", en:["Grimaldo"], pos:["LB","LWB","DM"], foot:"左", club:"勒沃库森", nat:"西班牙", st:"进攻左闸：定位球+肋部直塞", tags:["攻击型"], pair:[], d:"从本菲卡到勒沃库森，左路进攻参与度像边锋，任意球直接得分。"},
+{n:"迪马尔科", en:["Dimarco"], pos:["LWB","LB"], foot:"左", club:"国米", nat:"意大利", st:"翼卫进攻核心：左脚传中+内切", tags:["攻击型","翼卫"], pair:["巴斯托尼：左路出球双左脚"], d:"国米3-5-2的左路大脑，传中和肋部斜塞都是助攻机器。"},
+{n:"埃斯图皮尼安", en:["Estupinan"], pos:["LWB","LB"], foot:"左", club:"米兰", nat:"厄瓜多尔", st:"攻击型左翼卫", tags:["翼卫","攻击型"], pair:["莱奥：左路提速双人组"], d:"布莱顿时期的进攻翼卫，2025夏窗加盟米兰——阿莫林三中卫体系的左翼卫答案。"},
+{n:"卡拉菲奥里", en:["Calafiori"], pos:["CB","LB"], foot:"左", club:"阿森纳", nat:"意大利", st:"带球推进的左脚多面手", tags:["左脚中卫","出球型"], pair:["萨利巴：推进分工"], d:"中卫出身敢带球突进前场，阿尔特塔把他当左路组织点用。"},
+{n:"刘易斯·斯凯利", en:["Lewis-Skelly"], pos:["LB","CM"], foot:"左", club:"阿森纳", nat:"英格兰", st:"中场改造的左后卫", tags:["攻击型"], pair:["马丁内利：左路内外互换"], d:"青年中场出身踢左后卫：内收肋部像中场，出球冷静。"},
+{n:"里科·刘易斯", en:["Rico Lewis"], pos:["RB","LB","DM"], foot:"右", club:"曼城", nat:"英格兰", st:"瓜系内收边后卫", tags:["内收型"], pair:["罗德里离队后:内收补中场人数"], d:"逆足也能踢的边后卫，无球时收进中场当第二个6，纯瓜系产品。"},
+{n:"艾特-努里", en:["Ait-Nouri"], pos:["LB","LWB"], foot:"右", club:"曼城", nat:"阿尔及利亚", num:21, st:"攻击型左后卫：带球突进", tags:["攻击型"], pair:["多库：左路一内一外"], d:"2025夏窗从狼队加盟：阿尔及利亚飞翼，带球突进+下底传中；曼城重建左路的主力。"},
+{n:"奥赖利", en:["O'Reilly"], pos:["LB","DM"], foot:"右", club:"曼城", nat:"英格兰", st:"中场改造的逆足左后卫", tags:["内收型"], pair:["艾特-努里：左路轮换"], d:"青训中场改造：右脚踢左路，内切后的出球角度反而更好。"},
+{n:"科瓦契奇", en:["Kovacic"], pos:["CM","DM"], foot:"右", club:"曼城", nat:"克罗地亚", num:8, st:"转身摆脱型中场", tags:["组织8"], pair:["恩佐：中场轮换"], d:"老将节拍器：压迫下转身是世界级，罗德里离队后中场轮转的保险。"},
+{n:"埃利奥特·安德森", en:["Elliot Anderson"], pos:["DM","CM"], foot:"右", club:"曼城", nat:"英格兰", st:"全能青年中场：破压迫推进", tags:["B2B","拖后组织"], pair:["恩佐：一抢一传"], d:"2026夏窗亿元级从森林加盟：带球破压迫+抢断时机+左右脚出球，英格兰新晋国脚——罗德里继任者工程的一部分。"},
+{n:"布拉德利", en:["Bradley"], pos:["RB","RWB"], foot:"右", club:"利物浦", nat:"北爱尔兰", st:"年轻套边右后卫", tags:["套边型"], pair:["弗林蓬：轮换搭档"], d:"对抗和往返不怵，向前果断。"},
+{n:"卡瓦哈尔", en:["Carvajal"], pos:["RB"], foot:"右", club:"皇马", nat:"西班牙", st:"老牌攻守均衡右后卫", tags:["套边型"], pair:[], d:"大满贯右后卫：血性+战术理解是穆氏皇马需要的 Leader。伤病史是变量。"},
+{n:"巴尔德", en:["Balde"], pos:["LB","LWB"], foot:"左", club:"巴萨", nat:"西班牙", st:"速度型攻击左后卫", tags:["套边型"], pair:["亚马尔：他内切我套边"], d:"直线速度打身后，亚马尔内切时他承包整条左边。"},
+{n:"施洛特贝克", en:["Schlotterbeck"], pos:["CB"], foot:"左", club:"多特蒙德", nat:"德国", st:"左脚出球+带球推进", tags:["左脚中卫","出球型"], pair:[], d:"敢从后场带球过中场的中卫，长传对角准。"},
+{n:"利夫拉门托", en:["Livramento"], pos:["RB","LB","RWB"], foot:"右", club:"纽卡斯尔", nat:"英格兰", st:"速度型两闸多面手", tags:["多面手"], pair:[], d:"一对一日天+回追速度，纽卡防线最现代化的零件。"},
+{n:"卡什", en:["Cash"], pos:["RB","RWB"], foot:"右", club:"维拉", nat:"波兰", st:"传统套边右后卫", tags:["套边型"], pair:[], d:"维拉老臣：传中稳定，攻守均衡。"},
+
+/* ==================== 后腰 6 ==================== */
+{n:"罗德里", en:["Rodri"], pos:["DM"], foot:"右", club:"巴萨", nat:"西班牙", st:"拖后组织核心的世界第一人（健康时）", tags:["拖后组织","节拍器"], pair:["佩德里：巴萨中场双核","德容:轮转搭档"], d:"2024金球奖：位置感、出球、远射、对抗全满贯。<b>2026夏窗7650万欧转投巴萨，被当作「新布斯克茨」打造</b>（合同至2030）——弗里克激进的高位体系缺的就是他这个位置的秩序。2024重伤时曼城的崩盘是他价值的最硬证据。"},
+{n:"苏比门迪", en:["Zubimendi","祖比门迪"], pos:["DM"], foot:"右", club:"阿森纳", nat:"西班牙", st:"拖后组织6号：罗德里同门", tags:["拖后组织"], pair:["赖斯：一组织一破坏双6"], d:"皇家社会青训：接球转身一气呵成，压迫下从不慌。2025夏窗加盟阿森纳当节拍器。"},
+{n:"赖斯", en:["Rice"], pos:["DM","CM"], foot:"右", club:"阿森纳", nat:"英格兰", st:"破坏型+推进双料6/8", tags:["破坏型","B2B"], pair:["苏比门迪：一保一攻"], d:"带球推进破压迫是隐藏技能，防守拦截覆盖面积大；角球进攻也是头牌。"},
+{n:"基米希", en:["Kimmich"], pos:["DM","RB"], foot:"右", club:"拜仁", nat:"德国", st:"节拍器：6号位组织核心", tags:["拖后组织","节拍器"], pair:["帕夫洛维奇：新老双6"], d:"拜仁大脑：短传调度+全场视野，右后卫/后腰双料。孔帕尼体系出球第一发起点。"},
+{n:"帕夫洛维奇", en:["Pavlovic"], pos:["DM"], foot:"右", club:"拜仁", nat:"德国", st:"年轻破坏型+出球6号", tags:["破坏型"], pair:["基米希：他扫荡你调度"], d:"身高对抗+左脚出球，德国中场未来核心之一。"},
+{n:"维蒂尼亚", en:["Vitinha"], pos:["DM","CM"], foot:"右", club:"巴黎", nat:"葡萄牙", st:"组织型6/8：巴黎中场大脑", tags:["组织8","节拍器"], pair:["法比安·鲁伊斯:肋部二点包抄","扎伊尔-埃梅里:轮换"], d:"巴黎2025欧冠冠军中场轴心：转身摆脱如穿花蝴蝶，节奏随他走。"},
+{n:"法比安·鲁伊斯", en:["F. Ruiz"], pos:["CM","DM"], foot:"右", club:"巴黎", nat:"西班牙", st:"肋部8号：后插上+远射", tags:["肋部8号"], pair:["维蒂尼亚：他持球你插上"], d:"左肋后插上和禁区外爆射是招牌，欧洲杯+欧冠双料冠军。"},
+{n:"扎伊尔-埃梅里", en:["Zaire-Emery"], pos:["CM","DM"], foot:"右", club:"巴黎", nat:"法国", st:"全能青年中场", tags:["B2B"], pair:[], d:"17岁踢欧冠的巴黎青训：跑动、逼抢、出球全都在线。"},
+{n:"楚阿梅尼", en:["Tchouameni"], pos:["DM","CB"], foot:"右", club:"皇马", nat:"法国", st:"破坏型6号/客串中卫", tags:["破坏型"], pair:["卡马文加:双6轮换"], d:"拦截覆盖面大，客串中卫也稳；皇马中场的保险丝。"},
+{n:"卡马文加", en:["Camavinga"], pos:["DM","CM"], foot:"右", club:"皇马", nat:"法国", st:"缠斗型多面手中场", tags:["破坏型"], pair:["楚阿梅尼：法国双闸"], d:"抢断时机和转身摆脱都顶级，哪儿缺补哪儿。"},
+{n:"凯塞多", en:["Caicedo"], pos:["DM"], foot:"右", club:"切尔西", nat:"厄瓜多尔", st:"破坏型6号天花板候选", tags:["破坏型"], pair:["恩佐离队后:他一个人的盾"], d:"英超抢断王级别的扫荡范围，转身出球也在涨。1.15亿身价正在兑现。"},
+{n:"卡塞米罗", en:["Casemiro"], pos:["DM"], foot:"右", club:"已离队曼联（2026夏，去向以官宣为准）", nat:"巴西", st:"老派破坏型6号：弧顶保护教科书", tags:["破坏型","争顶型"], pair:["在曼联的遗产：弧顶保护标准"], d:"五冠皇马遗产：位置感、争顶、弧顶扫荡都是历史级；2026夏窗离开曼联。作为「破坏型6号」的原型教材保留在此。"},
+{n:"帕利尼亚", en:["Palhinha"], pos:["DM"], foot:"右", club:"拜仁", nat:"葡萄牙", st:"纯破坏型：英超抢断王出身", tags:["破坏型"], pair:["基米希：他抢你传"], d:"铲抢范围堪称人形扫地机，出球简单直接——纯6号位保镖。"},
+{n:"惠顿", en:["Wharton"], pos:["DM"], foot:"右", club:"水晶宫", nat:"英格兰", st:"拖后组织新星：卡里克原型", tags:["拖后组织"], pair:[], d:"20岁出头就有一脚对角长传和压迫下转身，英格兰未来6号位答案候选。"},
+{n:"扎卡", en:["Xhaka"], pos:["DM","CM"], foot:"左", club:"桑德兰", nat:"瑞士", st:"组织型6：调度+领导力", tags:["拖后组织"], pair:[], d:"2025夏窗神奇转会：把桑德兰的中场秩序直接拉到英超水准。"},
+{n:"洛博特卡", en:["Lobotka"], pos:["DM"], foot:"右", club:"那不勒斯", nat:"斯洛伐克", st:"慢节奏大师：转身摆脱出球", tags:["拖后组织"], pair:["德布劳内：他调度你直塞"], d:"那不勒斯夺冠的隐形引擎：接球转身从不丢，节奏全队最稳。"},
+{n:"格拉文贝赫", en:["Gravenberch"], pos:["DM","CM"], foot:"右", club:"利物浦", nat:"荷兰", st:"转身摆脱型6号", tags:["拖后组织"], pair:["索博斯洛伊：他持球你插上"], d:"2024-25爆发：后腰位置上的带球推进+摆脱是英超独一档。"},
+{n:"托纳利", en:["Tonali"], pos:["DM","CM"], foot:"右", club:"纽卡斯尔", nat:"意大利", st:"B2B+破坏型双料", tags:["B2B","破坏型"], pair:["吉马良斯：中场双核"], d:"跑动覆盖+抢断时机顶级，禁赛复出后更成熟。"},
+{n:"卡马拉", en:["B. Kamara"], pos:["DM","CM"], foot:"左", club:"维拉", nat:"法国", st:"破坏型6号", tags:["破坏型"], pair:[], d:"维拉中场屏障：抢断+护球都稳。"},
+
+/* ==================== 中场 8 / 前腰 10 ==================== */
+{n:"佩德里", en:["Pedri"], pos:["CM","AM"], foot:"右", club:"巴萨", nat:"西班牙", st:"现代组织8的完美答案", tags:["组织8","节拍器"], pair:["亚马尔：右肋连线","德容:双核轮转"], d:"2026世界杯冠军中场核心：转身摆脱+一脚出球+肋部渗透全都会，防守也肯跑。巴萨和西班牙的节拍器。"},
+{n:"德容", en:["F. de Jong"], pos:["CM","DM"], foot:"右", club:"巴萨", nat:"荷兰", st:"带球推进型中场", tags:["组织8","B2B"], pair:["佩德里：双核"], d:"从后场带球碾过中场的推进是标识，攻防两端的节拍器。"},
+{n:"加维", en:["Gavi"], pos:["CM"], foot:"右", club:"巴萨", nat:"西班牙", st:"斗犬型B2B", tags:["B2B"], pair:[], d:"伤愈回归：逼抢强度和好胜心是全队标杆。"},
+{n:"巴尔韦德", en:["Valverde"], pos:["CM","RM"], foot:"右", club:"皇马", nat:"乌拉圭", st:"B2B天花板：全场冲刺的发动机", tags:["B2B"], pair:["楚阿梅尼：攻守分工"], d:"禁区到禁区全勤，远射重炮+回追速度双武器，皇马体能的代名词。"},
+{n:"贝林厄姆", en:["Bellingham"], pos:["AM","CM","ST"], foot:"右", club:"皇马", nat:"英格兰", st:"全能10/8：后插上冲击型", tags:["B2B","伪10"], pair:["姆巴佩：他吸引你插上"], d:"多特时期的后插上9号半打法封神；在皇马承担更多组织回撤，英格兰的进攻枢纽。"},
+{n:"马斯坦托诺", en:["Mastantuono"], pos:["AM","RW"], foot:"左", club:"佛罗伦萨（租借自皇马）", nat:"阿根廷", st:"阿根廷新星：左脚肋部创造者", tags:["自由10"], pair:[], d:"2025夏窗6300万欧从河床加盟皇马，2026夏窗租借佛罗伦萨练级：左脚直塞和盘带被拿来和梅西比——天赋是真的，先踢上比赛。"},
+{n:"巴雷拉", en:["Barella"], pos:["CM"], foot:"右", club:"国米", nat:"意大利", st:"肋部8号(mezzala)样板", tags:["肋部8号","B2B"], pair:["巴斯托尼：左路出球他插上"], d:"从中场肋部斜插禁区的教科书：跑位时机、缠斗、远射全都有。"},
+{n:"恰尔汗奥卢", en:["Calhanoglu"], pos:["DM","AM"], foot:"右", club:"国米", nat:"土耳其", st:"伪6号组织核心：任意球大师", tags:["拖后组织"], pair:["巴雷拉：他扫荡你调度"], d:"从前腰回撤成组织6号的成功改造：长传调度+世界级任意球。"},
+{n:"索博斯洛伊", en:["Szoboszlai"], pos:["AM","CM","RM"], foot:"右", club:"利物浦", nat:"匈牙利", st:"重炮手8/10：远射+任意球", tags:["B2B"], pair:["麦卡利斯特：双8轮转"], d:"禁区外爆射和定位球是武器，体能跑动覆盖两个禁区。"},
+{n:"麦卡利斯特", en:["Mac Allister"], pos:["CM","DM"], foot:"右", club:"利物浦", nat:"阿根廷", st:"智能型8/6：节奏和直塞", tags:["组织8"], pair:["恩佐(国家队):中场三人组"], d:"阿根廷世界杯中场三人组之一：出球选择聪明，防守时机好。"},
+{n:"赖因德斯", en:["Reijnders","莱因德斯"], pos:["CM","AM"], foot:"右", club:"已离开曼城（2026夏，去向以官宣为准）", nat:"荷兰", st:"肋部8号：后插上得分型", tags:["肋部8号"], pair:[], d:"2025夏窗从米兰加盟一季后离队：后插上进禁区+一脚出球，在意甲证明过自己是顶级8号。"},
+{n:"恩佐", en:["Enzo Fernandez"], pos:["CM","DM"], foot:"右", club:"曼城", nat:"阿根廷", st:"组织8/6：左脚对角线大师", tags:["组织8"], pair:["哈兰德：他直塞你终结","科瓦契奇/安德森:轮转"], d:"2026夏窗1.25亿镑破纪录转投曼城：世界杯冠军中场，长传转移和肋部直塞是武器。罗德里走后，他就是曼城的中场大脑。"},
+{n:"福登", en:["Foden"], pos:["AM","LW","RW"], foot:"右", club:"曼城", nat:"英格兰", st:"内收伪10：肋部小空间", tags:["伪10","自由10"], pair:["哈兰德：贴身做墙他插上"], d:"肋部一过一极强，无球时内收当第三个中场——纯瓜系自由人。"},
+{n:"谢尔基", en:["Cherki"], pos:["AM","RW"], foot:"左", club:"曼城", nat:"法国", st:"盘带魔术师：最后一传的想象力", tags:["自由10"], pair:[], d:"里昂青训出品的创造力怪物，2025夏窗加盟：人缝中的直塞肉眼可见。"},
+{n:"吉布斯-怀特", en:["Gibbs-White"], pos:["AM","CM"], foot:"右", club:"曼城", nat:"英格兰", st:"全能攻击中场", tags:["现代10"], pair:[], d:"2026夏窗从森林加盟：持球推进+直塞+逼抢全能。"},
+{n:"厄德高", en:["Odegaard"], pos:["AM","RW"], foot:"左", club:"阿森纳", nat:"挪威", st:"右肋组织核心：内切直塞", tags:["现代10"], pair:["萨卡：右路双左脚连线"], d:"右肋部持球吸引+斜塞身后，阿森纳进攻的发牌员；压迫逼抢也是队内标杆。"},
+{n:"埃泽", en:["Eze"], pos:["AM","LW"], foot:"右", club:"阿森纳", nat:"英格兰", st:"盘带型10：一对多破密集", tags:["自由10"], pair:["厄德高：双组织点轮转"], d:"2025夏窗加盟：人球结合晃开空间后直塞或远射，破密集防守的钥匙。"},
+{n:"哈弗茨", en:["Havertz"], pos:["ST","AM","CM"], foot:"左", club:"阿森纳", nat:"德国", st:"全能前场：9号/10号/8号都能踢", tags:["伪9","全能9"], pair:["约克雷斯：轮换/共存实验"], d:"1米93的脚下流：背身、回撤、后插上都会；伤病是变量。"},
+{n:"特罗萨德", en:["Trossard"], pos:["LW","ST","AM"], foot:"右", club:"阿森纳", nat:"比利时", st:"即插即用型攻击手", tags:["伪9"], pair:[], d:"左肋任何位置都能踢：效率型轮换，大心脏。"},
+{n:"梅里诺", en:["Merino"], pos:["CM","ST"], foot:"右", club:"阿森纳", nat:"西班牙", st:"B2B兼职9号", tags:["B2B"], pair:[], d:"世界杯冠军中场：头球和后插上让他客串中锋都高产。"},
+{n:"帕尔默", en:["Palmer"], pos:["AM","RW"], foot:null, club:"切尔西", nat:"英格兰", st:"冷血大场面10：点球+肋部直塞", tags:["现代10"], pair:["内托:右肋互换","若昂·佩德罗:双伪9轮转"], d:"大心脏：关键战进球+助攻双开，收着踢时像节拍器，放开踢时像终结者。"},
+{n:"穆西亚拉", en:["Musiala"], pos:["AM","LW","CM"], foot:"右", club:"拜仁", nat:"德国", st:"盘带幽灵：肋部小空间之王", tags:["自由10","肋部8号"], pair:["凯恩：他回撤你钻肋"], d:"两个人都贴不住的变向+重心戏法，肋部一接球就是危险事件。"},
+{n:"维尔茨", en:["Wirtz"], pos:["AM","CM"], foot:"右", club:"利物浦", nat:"德国", st:"现代10/8 hybrid：肋部创造力", tags:["自由10","组织8"], pair:["萨拉赫：右肋双核","伊萨克:身后球"], d:"勒沃库森双冠王核心：最后一传的想象力+反抢意愿，2025夏窗天价加盟利物浦。"},
+{n:"奥尔莫", en:["Olmo"], pos:["AM","CM","LW"], foot:"右", club:"巴萨", nat:"西班牙", st:"肋部自由人：无球插上型10", tags:["自由10"], pair:["佩德里：双核轮转"], d:"欧洲杯冠军：不占球权、后插上时机世界级，小空间摆脱极强。"},
+{n:"布拉欣·迪亚斯", en:["Brahim Diaz"], pos:["AM","RW"], foot:"左", club:"米兰", nat:"西班牙", st:"小快灵肋部攻击手", tags:["自由10"], pair:["莱奥：右路喂哺"], d:"皇马出品的肋部小精灵：盘带+直塞，米兰进攻的二线创造力。"},
+{n:"布兰特", en:["Brandt"], pos:["AM","CM"], foot:"左", club:"多特蒙德", nat:"德国", st:"组织10：直塞+远射", tags:["现代10"], pair:[], d:"多特中场的老好人：跑动+最后一传稳定。"},
+{n:"麦克托米奈", en:["McTominay"], pos:["CM","ST"], foot:"右", club:"那不勒斯", nat:"苏格兰", st:"后插上重炮：意甲MVP级", tags:["B2B"], pair:[], d:"那不勒斯夺冠的最大惊喜：后插上头球+远射，被用成了第二中锋。"},
+{n:"罗杰斯", en:["M. Rogers"], pos:["AM","LW"], foot:"右", club:"维拉", nat:"英格兰", st:"持球推进型攻击中场", tags:["自由10"], pair:[], d:"维拉青训崛起的进攻核心：带球突进+肋部直塞，英格兰队新星。"},
+{n:"阿伦森", en:["Aaronson"], pos:["AM","RW"], foot:"右", club:"利兹联", nat:"美国", st:"高压逼抢型攻击中场", tags:["自由10"], pair:[], d:"跑不死的美国十号：压迫强度是他的通行证。"},
+
+/* ==================== 边锋 ==================== */
+{n:"亚马尔", en:["Yamal"], pos:["RW"], foot:"左", club:"巴萨", nat:"西班牙", st:"左脚右路：内切+直塞双威胁", tags:["逆足内切"], pair:["佩德里：右肋连线","巴尔德:套边接应"], d:"2026世界杯冠军核心：18岁就是世界第一右边锋候选——内切射门、外线爆趟、肋部直塞全都会。逆足内切流派的当代天花板。"},
+{n:"萨拉赫", en:["Salah"], pos:["RW","ST"], foot:"左", club:"利物浦", nat:"埃及", st:"左脚右路：内切射手的永动机", tags:["逆足内切"], pair:["罗伯逊:一内一外教科书","维尔茨:右肋双核"], d:"逆足内切流派历史级：右路内切爆射+肋部做球，40+进球/赛季的常年输出。"},
+{n:"拉菲尼亚", en:["Raphinha"], pos:["LW","RW","ST"], foot:"左", club:"巴萨", nat:"巴西", st:"左脚双翼：内锋式冲击", tags:["内锋","逆足内切"], pair:["亚马尔：两翼互换"], d:"名义边锋实际往禁区里砸：后点包抄+高位逼抢第一线，2025金球奖级表现；两翼都能打。"},
+{n:"维尼修斯", en:["Vinicius Jr"], pos:["LW","ST"], foot:"右", club:"皇马", nat:"巴西", st:"右脚左路：爆点型内切", tags:["逆足内切"], pair:["姆巴佩：双星兼容难题"], d:"一对一天花板级，纵向爆趟+内切射门；穆里尼奥要解决的第一道兼容题。"},
+{n:"罗德里戈", en:["Rodrygo"], pos:["RW","LW"], foot:"右", club:"皇马", nat:"巴西", st:"双足边锋：无球型爆点", tags:["顺足下底","逆足内切"], pair:["维尼修斯：左右互换"], d:"两路都能踢的无球型边锋：跑位聪明、大赛进球多，星光下的实用主义大师。"},
+{n:"克瓦拉茨赫利亚", en:["Kvaratskhelia","K77"], pos:["LW","RW"], foot:"右", club:"巴黎", nat:"格鲁吉亚", st:"右脚左路：爆点+内切", tags:["逆足内切"], pair:["登贝莱：攻击群轮转"], d:"2025冬窗从那不勒斯加盟：一对一天花板级，2025欧冠冠军成员。"},
+{n:"登贝莱", en:["O. Dembele"], pos:["ST","RW","LW"], foot:"双", club:"巴黎", nat:"法国", st:"双足自由人：2025金球奖", tags:["伪9","全能9"], pair:["克瓦拉茨赫利亚：两翼喂哺"], d:"2025金球奖：恩里克把他从边锋改造成全能前锋，双足+速度+串联，巴黎三冠王的进攻轴心。"},
+{n:"杜埃", en:["Doue"], pos:["RW","AM"], foot:"左", club:"巴黎", nat:"法国", st:"左脚右路：大场面天才", tags:["逆足内切"], pair:[], d:"2025欧冠决赛双响的19岁：变向+终结的冷血。"},
+{n:"萨卡", en:["Saka"], pos:["RW","RB"], foot:"左", club:"阿森纳", nat:"英格兰", st:"左脚右路：内切+回做双核", tags:["逆足内切"], pair:["厄德高：右肋双左脚","卡拉菲奥里/斯凯利:套边"], d:"阿森纳青训招牌：内切射门+倒三角回做+防守回追全都有，英超最全面右边锋。"},
+{n:"马丁内利", en:["Martinelli"], pos:["LW","RW"], foot:"右", club:"利雅得新月", nat:"巴西", st:"右脚左路：直线爆趟", tags:["顺足下底"], pair:[], d:"2026夏窗6000万镑转投沙特：纵向冲刺破高位线是绝活——阿森纳失去左路爆点后由特罗萨德/恩瓦内里们补位。"},
+{n:"马杜埃凯", en:["Madueke"], pos:["RW","LW"], foot:"左", club:"阿森纳", nat:"英格兰", st:"左脚右路：爆点+内切", tags:["逆足内切"], pair:["萨卡：右路轮换双保险"], d:"2025夏窗从切尔西加盟：一对一爆趟凶，内切爆射有力。"},
+{n:"加克波", en:["Gakpo"], pos:["LW","ST"], foot:"右", club:"利物浦", nat:"荷兰", st:"右脚左路：内切+抢点", tags:["逆足内切"], pair:["巴尔克拉：两翼轮换"], d:"左肋多面手：内切射门+禁区内包抄，大赛型球员。"},
+{n:"多库", en:["Doku"], pos:["LW","RW"], foot:"右", club:"曼城", nat:"比利时", st:"顺足下底：一对一天花板", tags:["顺足下底"], pair:["奥赖利:左路套边/内收互换"], d:"变向+加速把防守人晃到怀疑人生，下底传中和内切射门五五开。"},
+{n:"萨维尼奥", en:["Savinho"], pos:["LW","RW"], foot:"右", club:"热刺", nat:"巴西", st:"右脚左路：直线爆点", tags:["逆足内切"], pair:[], d:"2026夏窗7500万镑从曼城转投热刺：速度+下底，转换进攻的第一选择。"},
+{n:"奥利塞", en:["Olise"], pos:["RW","AM"], foot:"左", club:"拜仁", nat:"法国", st:"左脚右路：节奏型创造者", tags:["逆足内切"], pair:["凯恩：他做墙你内切","穆西亚拉:肋部双核轮转"], d:"持球节奏变化骗过所有人，内切直塞+远射双威胁，拜仁右路大脑。"},
+{n:"路易斯·迪亚斯", en:["L. Diaz"], pos:["LW","RW"], foot:"右", club:"拜仁", nat:"哥伦比亚", st:"右脚左路：转换爆点", tags:["逆足内切"], pair:["凯恩：他做墙你冲"], d:"直上直下的冲刺+内切射门，2025夏窗从利物浦加盟拜仁。"},
+{n:"科曼", en:["K. Coman"], pos:["LW","RW"], foot:"右", club:"拜仁", nat:"法国", st:"速度型边锋：大赛冠军收集者", tags:["顺足下底"], pair:[], d:"职业生涯每个赛季都有冠军入账的体系型爆点。"},
+{n:"格纳布里", en:["Gnabry"], pos:["RW","LW"], foot:"左", club:"拜仁", nat:"德国", st:"全能边锋：内切+无球", tags:["逆足内切"], pair:[], d:"经验丰富的轮换边锋：跑位和终结都聪明。"},
+{n:"莱奥", en:["Leao"], pos:["LW","ST"], foot:"右", club:"加拉塔萨雷", nat:"葡萄牙", st:"右脚左路：身体流爆点", tags:["逆足内切"], pair:[], d:"2026夏窗8月29日压哨转投土超豪门：启动那两步像开了加速器——阿莫林的米兰失去头号爆点，进攻重心转向拉莫斯+普利西奇。"},
+{n:"普利西奇", en:["Pulisic"], pos:["RW","LW","AM"], foot:"左", club:"米兰", nat:"美国", st:"左脚右路：无球型全能攻击手", tags:["逆足内切"], pair:["拉莫斯：右路喂哺新9号"], d:"跑动聪明+最后一传稳定，美国队长——莱奥走后他就是米兰进攻的第一轴。"},
+{n:"阿德耶米", en:["Adeyemi"], pos:["LW","RW"], foot:"右", club:"巴萨", nat:"德国", num:19, age:24, season:"12场1球2助", st:"极速爆点：直线冲刺", tags:["逆足内切"], pair:["亚马尔：两翼轮换"], d:"2026夏窗从多特蒙德转投巴萨：德甲最快球员之一，打身后和转换的大杀器——弗里克两翼再添一枚核弹，也是德国队（克洛普）边路主力候选。"},
+{n:"哈德森-奥多伊", en:["Hudson-Odoi"], pos:["LW","RW"], foot:"右", club:"森林", nat:"英格兰", st:"内切型边锋", tags:["逆足内切"], pair:[], d:"森林转换进攻的边路输出。"},
+{n:"恩迪亚耶", en:["I. Ndiaye"], pos:["RW","AM"], foot:"左", club:"曼城", nat:"塞内加尔", st:"边路爆点：一对一过人王", tags:["逆足内切"], pair:["多库：两翼轮换"], d:"2026夏窗6500万镑压哨从埃弗顿加盟：一对一天花板级，马雷斯卡为他拆了埃弗顿的进攻发动机。"},
+{n:"戈登", en:["Gordon"], pos:["LW","ST"], foot:"右", club:"纽卡斯尔", nat:"英格兰", st:"右脚左路：转换冲刺流", tags:["逆足内切"], pair:["沃尔特马德：高球+速度搭配"], d:"直线速度打高位线身后，纽卡转换进攻的箭头。"},
+{n:"巴恩斯", en:["H. Barnes"], pos:["LW"], foot:"右", club:"纽卡斯尔", nat:"英格兰", st:"右脚左路：力量型内切", tags:["逆足内切"], pair:[], d:"对抗+直线速度，英超传统型边锋。"},
+{n:"内托", en:["Pedro Neto"], pos:["RW","LW"], foot:"右", club:"切尔西", nat:"葡萄牙", st:"双足边锋：下底+内切", tags:["顺足下底"], pair:["帕尔默：右肋连线"], d:"两翼都踢，传中和回做都稳。"},
+{n:"格拉利什", en:["Grealish"], pos:["LW","AM"], foot:"右", club:"埃弗顿", nat:"英格兰", st:"持球造犯规大师", tags:["逆足内切"], pair:[], d:"曼城外租埃弗顿：控球牵制+制造定位球，节奏型边锋的另一种活法。"},
+{n:"三笘薰", en:["Mitoma"], pos:["LW"], foot:"右", club:"布莱顿", nat:"日本", st:"右脚左路：变向过人教科书", tags:["逆足内切"], pair:[], d:"大学论文研究过人技术的学者型边锋：贴地变向独步英超。"},
+
+/* ==================== 中锋 ==================== */
+{n:"哈兰德", en:["Haaland"], pos:["ST"], foot:"左", club:"曼城", nat:"挪威", st:"支点+冲击双料：进球机器", tags:["全能9","支点"], pair:["恩佐：直塞连线","德布劳内离队后:创造力由恩佐/福登接管"], d:"每90分钟进球历史级：背身做墙、冲击身后、禁区内抢点全都会——中锋位置的现代答案。"},
+{n:"凯恩", en:["Kane"], pos:["ST","AM"], foot:"右", club:"拜仁", nat:"英格兰", st:"全能9的世界模板：回撤组织+终结", tags:["全能9","伪9"], pair:["穆西亚拉：他钻肋你终结","奥利塞:右肋喂哺"], d:"回撤到中场当组织者再冲回禁区终结——「凯恩角色」已经是战术名词。无冠魔咒在拜仁打破进行时。"},
+{n:"姆巴佩", en:["Mbappe"], pos:["ST","LW"], foot:"右", club:"皇马", nat:"法国", st:"速度型全能9：左路出身中锋化", tags:["全能9"], pair:["贝林厄姆：他组织你冲刺"], d:"从左路内切王改打中路：冲刺打身历史上第一档；穆里尼奥时代的皇马进攻轴心。"},
+{n:"伊萨克", en:["Isak"], pos:["ST"], foot:"右", club:"利物浦", nat:"瑞典", st:"全能9：背身+冲刺+脚下", tags:["全能9"], pair:["萨拉赫：右肋传跑","维尔茨:直塞"], d:"2025夏窗英国纪录价加盟：中锋里少见的细腻脚下+冲刺身后的双重威胁。"},
+{n:"约克雷斯", en:["Gyokeres","约克雷斯"], pos:["ST"], foot:"右", club:"阿森纳", nat:"瑞典", st:"冲击型9：转身暴走+爆射", tags:["全能9"], pair:["厄德高(国家队):连线重启"], d:"葡超两季轰出夸张数据后2025夏窗登陆酋长球场：直塞身后接应+一条龙暴走是招牌。"},
+{n:"劳塔罗", en:["Lautaro"], pos:["ST"], foot:"右", club:"国米", nat:"阿根廷", st:"缠斗型9：压迫+抢点", tags:["逼抢9","抢点型"], pair:["图拉姆：一高一快"], d:"世界杯冠军9号：背身缠斗、反抢、抢点全干，国米队长。"},
+{n:"图拉姆", en:["M. Thuram"], pos:["ST","LW"], foot:"右", club:"国米", nat:"法国", st:"全能型9：身体+速度+拉边", tags:["全能9"], pair:["劳塔罗：一高一快双前锋"], d:"352双前锋的完美一半：能背身能冲刺能拉边。"},
+{n:"吉拉西", en:["Guirassy"], pos:["ST"], foot:"右", club:"多特蒙德", nat:"几内亚", st:"禁区抢点型9", tags:["抢点型"], pair:[], d:"禁区内效率机器：跑位+头球+一脚出球终结，欧冠淘汰赛也稳定输出。"},
+{n:"奥斯梅恩", en:["Osimhen"], pos:["ST"], foot:"右", club:"加拉塔萨雷", nat:"尼日利亚", st:"冲击型9：弹跳+逼抢", tags:["全能9","逼抢9"], pair:[], d:"那不勒斯夺冠功臣，土超延续火力：头球、冲刺、压迫全都在线。"},
+{n:"卢卡库", en:["Lukaku"], pos:["ST"], foot:"左", club:"那不勒斯", nat:"比利时", st:"重炮支点：背身碾压", tags:["支点"], pair:["德布劳内：身后球连线"], d:"德布劳内走到哪跟到哪的中锋：背身做墙+冲刺都是欧洲顶级，伤病史是变量。"},
+{n:"阿尔瓦雷斯", en:["J. Alvarez"], pos:["ST","AM"], foot:"左", club:"马竞", nat:"阿根廷", st:"全能9/10：跑动+串联+终结", tags:["全能9","伪9"], pair:["格列兹曼：双核轮转"], d:"世界杯冠军成员：梅西身后的九号半，跑动和串联是马竞进攻的新轴。"},
+{n:"格列兹曼", en:["Griezmann"], pos:["ST","AM"], foot:"左", club:"马竞", nat:"法国", st:"自由人：进攻万花筒", tags:["伪9","自由10"], pair:["阿尔瓦雷斯：新老双核"], d:"35岁的进攻万花筒：回撤、肋部、终结随时切换，齐达内国家队也在等他。"},
+{n:"沃特金斯", en:["Watkins"], pos:["ST"], foot:"右", club:"维拉", nat:"英格兰", st:"直塞身后型9", tags:["抢点型"], pair:["罗杰斯:身后球喂哺"], d:"英超最会跑身后的中锋之一：反越位+单刀冷静。"},
+{n:"埃基蒂克", en:["Ekitike"], pos:["ST","LW"], foot:"右", club:"利物浦", nat:"法国", st:"脚下型9：回撤做球", tags:["全能9"], pair:["伊萨克：双9轮换/共存实验"], d:"2025夏窗加盟：能回撤中场当组织点再冲禁区，聪明跑位型。"},
+{n:"索兰克", en:["Solanke"], pos:["ST"], foot:"右", club:"热刺", nat:"英格兰", st:"全能支点9", tags:["支点","逼抢9"], pair:[], d:"背身+压迫+终结均衡，热刺锋线的基座。"},
+{n:"若昂·佩德罗", en:["Joao Pedro"], pos:["ST","AM"], foot:"右", club:"切尔西", nat:"巴西", st:"伪9/二前锋：串联+终结", tags:["伪9","自由10"], pair:["帕尔默：双伪9轮转"], d:"2025世俱杯冠军功臣：回撤串联+禁区内终结双修。"},
+{n:"德拉普", en:["L. Delap"], pos:["ST"], foot:"右", club:"森林", nat:"英格兰", st:"冲击型9：身体流", tags:["支点","逼抢9"], pair:["伍德：双塔轮换"], d:"2026夏窗转投森林：背身对抗+压迫跑动，格拉斯纳长传体系的完美终点。"},
+{n:"马特塔", en:["Mateta"], pos:["ST"], foot:"左", club:"水晶宫", nat:"法国", st:"高支点9", tags:["支点"], pair:[], d:"水晶宫的空霸：长传冲吊体系的完美终点。"},
+{n:"沃尔特马德", en:["Woltemade"], pos:["ST"], foot:"右", club:"尤文", nat:"德国", num:11, age:24, season:"14场4球1助", st:"高中锋：脚下细腻的1米98", tags:["支点"], pair:[], d:"2026夏窗从纽卡斯尔转投尤文：身高是支点，脚下像10号——德国队克洛普体系里施塔赫们的直塞终点。"},
+{n:"伍德", en:["C. Wood"], pos:["ST"], foot:"右", club:"森林", nat:"新西兰", st:"传统英式9：争顶+做墙", tags:["支点","争顶型"], pair:[], d:"老派中锋活化石：长传冲吊体系里的完美终点站。"},
+{n:"韦尔贝克", en:["Welbeck"], pos:["ST","LW"], foot:"右", club:"布莱顿", nat:"英格兰", st:"全能老将前锋", tags:["抢点型"], pair:[], d:"34岁还在进步：支点+回防+终结的全能老将。"},
+{n:"巴里", en:["T. Barry"], pos:["ST"], foot:"右", club:"埃弗顿", nat:"法国", st:"年轻冲击型9", tags:["支点"], pair:[], d:"2025夏窗加盟的新一代中锋：身高+移动。"},
+{n:"伊斯多尔", en:["Isidor"], pos:["ST"], foot:"右", club:"桑德兰", nat:"法国", st:"速度型9", tags:["抢点型"], pair:["扎卡：直塞连线"], d:"桑德兰升超锋线：身后球+压迫。"},
+{n:"弗拉霍维奇", en:["Vlahovic"], pos:["ST"], foot:"右", club:"尤文", nat:"塞尔维亚", st:"禁区型9：右脚重炮", tags:["抢点型"], pair:[], d:"禁区内左右脚+头球都有威胁，背身做球在进步。"},
+{n:"伊尔迪兹", en:["Yildiz"], pos:["RW","AM"], foot:"右", club:"尤文", nat:"土耳其", st:"左脚?右脚肋部新星（右脚将）", tags:["自由10"], pair:[], d:"尤文10号：内切+直塞的土耳其金童。"},
+{n:"布雷默", en:["Bremer"], pos:["CB"], foot:"右", club:"尤文", nat:"巴西", st:"对抗型核心中卫", tags:["上抢型"], pair:[], d:"意甲最强单防者之一：一对一贴身缠斗。"},
+{n:"德布劳内", en:["de Bruyne","KDB"], pos:["AM"], foot:"右", club:"那不勒斯", nat:"比利时", st:"史上最佳直塞手之一", tags:["现代10","古典10余晖"], pair:["卢卡库：身后球连线"], d:"对角线+身后直塞是历史级；2025夏窗自由转会那不勒斯，孔蒂体系当组织核心——古典10的现代活法。"},
+{n:"西蒙斯", en:["X. Simons"], pos:["AM","LW","RW"], foot:"右", club:"热刺", nat:"荷兰", st:"肋部游弋型攻击手", tags:["自由10"], pair:["波尔诺：右肋二人转"], d:"持球推进和最后一传都在线，2025夏窗加盟热刺；哈维接手荷兰后他也是国家队肋部答案。"},
+{n:"吉马良斯", en:["B. Guimaraes"], pos:["CM","DM"], foot:"右", club:"已离队纽卡斯尔（2026夏窗7500万镑转会，去向以官宣为准）", nat:"巴西", st:"全能中场核心：对抗+直塞", tags:["B2B"], pair:["托纳利：中场搭档"], d:"纽卡前队长：身体对抗、远射、直塞都在线，压迫下不丢球。2026夏窗7500万镑离队，纽卡中场进入托纳利时代。"},
+{n:"马尔基尼奥斯", en:["Marquinhos"], pos:["CB","RB"], foot:"右", club:"巴黎", nat:"巴西", st:"指挥型多面手", tags:["拖后型"], pair:["帕乔：他指挥你回追"], d:"巴黎队长：中卫/后腰随时切换，大赛经验是防线软件。"},
+{n:"邓弗里斯", en:["Dumfries"], pos:["RB","RWB"], foot:"右", club:"国米", nat:"荷兰", st:"翼卫型攻击右后卫：插上重炮", tags:["攻击型","翼卫"], pair:["达米安?离队——以现役为准"], d:"荷兰式边路冲击+后插上头球，欧冠大赛型选手。<b>皇马传闻未进官方名单</b>——2026夏窗的官宣口径里没有他，去留以国米官方为准。"},
+{n:"加纳乔", en:["Garnacho"], pos:["LW","RW"], foot:"右", club:"维拉", nat:"阿根廷", st:"右脚左路：爆点型边锋", tags:["逆足内切"], pair:["罗杰斯：左肋连线"], d:"曼联青训出品，2026夏窗转投维拉：直线冲刺+内切爆射，转换进攻的大杀器——埃梅里最擅长开发的类型。"},
+{n:"热苏斯", en:["G. Jesus"], pos:["ST","LW","RW"], foot:"右", club:"巴萨", nat:"巴西", st:"逼抢型全能前锋", tags:["逼抢9","伪9"], pair:["莱万：轮换搭档"], d:"2026夏窗1000万欧低价加盟巴萨：压迫+串联+三前锋位都能踢，弗里克前场的万金油。"},
+{n:"坎塞洛", en:["Cancelo"], pos:["RB","LB","DM"], foot:"右", club:"巴萨", nat:"葡萄牙", st:"内收型边后卫鼻祖级", tags:["内收型","攻击型"], pair:["巴尔德：左路轮换"], d:"自由身回归巴萨：inverted 边后卫玩法的全球推广者，攻强守随缘——第二次效力巴萨。"},
+{n:"贡萨洛·拉莫斯", en:["Goncalo Ramos"], pos:["ST"], foot:"右", club:"米兰", nat:"葡萄牙", st:"禁区抢点型9：支点+终结", tags:["抢点型","支点"], pair:["普利西奇：右路喂哺"], d:"2026夏窗7000万欧+破米兰队史纪录加盟——阿莫林钦点的单箭头：背身+抢点+压迫全能，葡萄牙世界杯替补席上憋出来的主力级。"},
+{n:"迭戈·莫雷拉", en:["Diego Moreira"], pos:["LW","LWB"], foot:"右", club:"米兰", nat:"葡萄牙", st:"速度型边锋/翼卫两栖", tags:["顺足下底","翼卫"], pair:[], d:"切尔西青训出品：左路爆趟，阿莫林体系里翼卫/边锋两栖的年轻选项。"},
+{n:"马里奥·吉拉", en:["Mario Gila"], pos:["CB"], foot:"右", club:"米兰", nat:"西班牙", st:"出球型中卫", tags:["出球型"], pair:[], d:"拉齐奥出品的西班牙出球中卫，2026夏窗加盟——阿莫林三中卫体系的左/居中出球点。"},
+{n:"范赫克", en:["van Hecke"], pos:["CB"], foot:"右", club:"热刺", nat:"荷兰", st:"出球型年轻中卫", tags:["出球型"], pair:["罗梅罗：一稳一斗"], d:"2026夏窗从布莱顿加盟热刺：出球冷静+对抗进步快，德泽尔比在布莱顿就了解他的建队拼图。"},
+
+/* ==================== 拜仁 2026-27 名单补充（按官方框架） ==================== */
+{n:"乌尔比希", en:["Urbig"], pos:["GK"], foot:"右", club:"拜仁", nat:"德国", num:40, age:23, season:"37场 / 88扑救 / 出击41", st:"年轻主力级门将：出击果断", tags:["清球型"], pair:["诺伊尔：传承交替"], d:"23岁就扛起37场出场量：出击成功率极高、脚下敢做动作——诺伊尔40岁的时代，他是不出意外的未来。"},
+{n:"乌尔赖希", en:["Ulreich"], pos:["GK"], foot:"右", club:"拜仁", nat:"德国", num:26, age:38, season:"5场", st:"老将二号门将", tags:["门线型"], pair:[], d:"38岁更衣室老臣，杯赛轮换。"},
+{n:"金玟哉", en:["Min-jae Kim","金玟哉"], pos:["CB"], foot:"右", club:"拜仁", nat:"韩国", num:3, age:29, season:"87场4球1助", st:"对抗型中卫：贴身缠斗+出球", tags:["上抢型","出球型"], pair:["塔霍：韩德中卫组合"], d:"87场的出勤说明他有多稳：贴身对抗凶、出球冷静、卡位意识顶级；亚洲第一中卫，那不勒斯夺冠功臣。"},
+{n:"伊藤洋辉", en:["Hiroki Ito"], pos:["CB","LB","DM"], foot:"左", club:"拜仁", nat:"日本", num:21, age:27, season:"34场3球2助", st:"左脚多面手：中卫/左后卫/后腰", tags:["左脚中卫","多面手"], pair:["戴维斯：左路轮换"], d:"斯图加特出品的日本多面手：左脚出球冷静，三个位置都能踢——孔帕尼体系的战术棋子。"},
+{n:"博埃", en:["Sacha Boey"], pos:["RB","RWB"], foot:"右", club:"拜仁", nat:"法国", num:23, age:26, season:"36场1球3助", st:"冲击型右后卫", tags:["套边型"], pair:["莱默：右路轮换"], d:"2024冬窗从凯尔特人加盟：直线冲刺+往返能力，伤愈后成为右路轮换力量。"},
+{n:"布朗", en:["Braun"], pos:["CB"], foot:null, club:"拜仁", nat:"德国", num:11, age:23, season:"8场1球1助", st:"德国新生代中卫", tags:["出球型"], pair:["塔霍：新老中卫"], d:"拜仁青训/新援的23岁德国中卫，身价5000万欧+双线出场——克洛普德国队也已在用（10场）。细节画像随赛季更新。"},
+{n:"卡尔", en:["Lennart Karl"], pos:["AM","LW"], foot:null, club:"拜仁", nat:"德国", num:42, age:18, season:"48场12球9助", st:"18岁天才：双足攻击手", tags:["自由10"], pair:["穆西亚拉：肋部双灵"], d:"拜仁青训现象级新秀：48场12球9助的产量对18岁而言离谱，身价6000万——双足、敢射门、肋部嗅觉像穆西亚拉，德国队也已经征召。"},
+{n:"比朔夫", en:["Tom Bischof"], pos:["CM","DM"], foot:"右", club:"拜仁", nat:"德国", num:8, age:21, season:"48场5球5助", st:"年轻组织中场：定位球专家", tags:["组织8"], pair:["帕夫洛维奇：德国双后腰"], d:"2025年从霍芬海姆自由加盟：任意球+调度+5球5助的产量，21岁的德国中场未来拼图。"},
+{n:"B.恩迪亚耶", en:["B. Ndiaye"], pos:["CM","DM"], foot:null, club:"拜仁", nat:"塞内加尔", num:39, age:18, season:"5场", st:"青年中场储备", tags:[], pair:[], d:"拜仁青训的18岁后腰苗子（与曼城的 I.恩迪亚耶无血缘关系记录），杯赛观察名单。"},
+{n:"赛巴里", en:["Sebari"], pos:["ST","RW"], foot:null, club:"拜仁", nat:"—", num:34, age:25, season:"9场2球2助", st:"全能前锋轮换", tags:[], pair:[], d:"5500万欧身价的前锋轮换：9场2球2助的赛季开局。详细画像随赛季补充（资料有限，已按官方名单录入）。"},
+
+/* ==================== 德国国家队（克洛普首期名单核心） ==================== */
+{n:"沙德", en:["Schade"], pos:["LW","ST"], foot:null, club:"布伦特福德", nat:"德国", num:9, age:24, season:"—", st:"速度型边锋：转换爆点", tags:["顺足下底"], pair:[], d:"布伦特福德的德国快马：直线冲刺+反越位，克洛普德国队转换体系的标准零件。"},
+{n:"赛义德", en:["Said El Mala","赛义德"], pos:["LW"], foot:"右", club:"科隆", nat:"德国", num:7, age:20, season:"—", st:"20岁边路新星：一对一爆点", tags:["逆足内切"], pair:[], d:"科隆出品的5000万欧身价天才：20岁就被克洛普征召——右脚左路，变向+内切射门。"},
+{n:"伯卡特", en:["Burkardt","伯卡特"], pos:["ST"], foot:"右", club:"法兰克福", nat:"德国", num:10, age:26, season:"—", st:"抢点型9：禁区内效率", tags:["抢点型"], pair:[], d:"美因茨青训、2025转会法兰克福：禁区内效率机器，德国9号位的现实答案之一。"},
+{n:"埃布努塔", en:["Ebnouta"], pos:["RW","LW"], foot:null, club:"法兰克福", nat:"德国", num:23, age:23, season:"—", st:"边路轮换", tags:[], pair:[], d:"法兰克福23岁攻击手，克洛普名单的边路轮换选项。"},
+{n:"菲里希", en:["Führich","菲里希"], pos:["RW","LW"], foot:"左", club:"斯图加特", nat:"德国", num:7, age:28, season:"—", st:"左脚右路：内切+传中双能", tags:["逆足内切"], pair:[], d:"斯图加特边锋：双足均衡，国家队的边路轮换。"},
+{n:"恩梅查", en:["F. Nmecha","恩梅查"], pos:["CM","DM"], foot:"右", club:"多特蒙德", nat:"德国", num:8, age:26, season:"13场3球1助", st:"全能B2B：身体+推进", tags:["B2B"], pair:["布兰特：俱乐部搭档"], d:"多特中场引擎：带球推进+远射+对抗，6500万身价；克洛普体系里他可以踢6/8两处。"},
+{n:"施塔赫", en:["Anton Stach","施塔赫"], pos:["DM","CM"], foot:"右", club:"利兹联", nat:"德国", num:16, age:27, season:"—", st:"破坏型6：长传+远射", tags:["破坏型"], pair:["安德森(英格兰):英超级6号"], d:"2025加盟利兹联的德国铁腰：抢断+对角长传+重炮，克洛普6号位的现成人选。"},
+{n:"贾内特", en:["Janelt","贾内特"], pos:["DM","CB"], foot:"左", club:"布伦特福德", nat:"德国", num:23, age:28, season:"—", st:"多面手防守中场", tags:["破坏型"], pair:[], d:"布伦特福德老臣：6号位/中卫都能补，国家队的保险型选择。"},
+{n:"阿米里", en:["Amiri","阿米里"], pos:["AM","CM"], foot:"左", club:"美因茨", nat:"德国", num:11, age:29, season:"—", st:"左脚组织10：远射+直塞", tags:["自由10"], pair:[], d:"美因茨核心：左脚调度+肋部直塞，德甲顶级创造者之一。"},
+{n:"恩格哈特", en:["Engelhardt","恩格哈特"], pos:["CM","DM"], foot:null, club:"弗赖堡", nat:"德国", num:6, age:25, season:"—", st:"年轻防守中场", tags:["破坏型"], pair:[], d:"弗赖堡青训出品的25岁后腰，国家队的轮换深度。"},
+{n:"比塞克", en:["Bisseck","比塞克"], pos:["CB","RB"], foot:"右", club:"国米", nat:"德国", num:2, age:25, season:"—", st:"速度型年轻中卫", tags:["回追型"], pair:["帕瓦尔?已离队——以现役为准"], d:"国际米兰的德国年轻中卫：1米96+冲刺速度，克洛普防线的新生代。"},
+{n:"佳夫", en:["Thiaw","佳夫"], pos:["CB"], foot:"右", club:"纽卡斯尔", nat:"德国", num:2, age:25, season:"—", st:"对抗型中卫：1米97", tags:["上抢型"], pair:["利夫拉门托：俱乐部搭档"], d:"2025从米兰加盟纽卡：身高+贴身+回追速度，德国队防线主力的热门人选。"},
+{n:"耶尔奇", en:["Jeltsch","耶尔奇"], pos:["CB"], foot:"右", club:"斯图加特", nat:"德国", num:4, age:20, season:"—", st:"20岁出球中卫", tags:["出球型"], pair:[], d:"斯图加特的3500万欧年轻中卫：出球+预判，德国防线未来候选。"},
+{n:"劳姆", en:["Raum","劳姆"], pos:["LB","LWB"], foot:"左", club:"RB莱比锡", nat:"德国", num:22, age:28, season:"—", st:"攻击型左后卫：传中机器", tags:["套边型"], pair:["基米希(国家队):右路对角"], d:"莱比锡左闸：左脚传中+定位球+往返，德国队左路首选。"},
+{n:"安东", en:["W. Anton","安东"], pos:["CB","DM"], foot:"右", club:"多特蒙德", nat:"德国", num:3, age:30, season:"—", st:"出球型多面手中卫", tags:["出球型"], pair:["施洛特贝克：俱乐部搭档"], d:"多特防线指挥官：出球+客串后腰，国家队的战术变体棋子。"},
+{n:"米特尔施泰特", en:["Mittelstädt","米特尔施泰特"], pos:["LB","LWB"], foot:"左", club:"斯图加特", nat:"德国", num:18, age:29, season:"—", st:"套边左后卫：传中稳定", tags:["套边型"], pair:[], d:"斯图加特左闸：传中质量+定位球，劳姆的轮换搭档。"},
+{n:"特罗伊", en:["Troy","特罗伊"], pos:["CB"], foot:null, club:"弗赖堡", nat:"德国", num:13, age:25, season:"—", st:"年轻中卫", tags:[], pair:[], d:"弗赖堡防线新星，国家队轮换名单。"},
+{n:"巴库", en:["R. Baku","巴库"], pos:["RB","LWB","RW"], foot:"右", club:"RB莱比锡", nat:"德国", num:16, age:28, season:"—", st:"双足多面手边路", tags:["多面手"], pair:[], d:"莱比锡边路万金油：两闸+边锋都能踢，跑动能力是通行证。"},
+{n:"瓦格诺曼", en:["Vagnoman","瓦格诺曼"], pos:["RB","LB"], foot:"右", club:"斯图加特", nat:"德国", num:14, age:25, season:"—", st:"双闸轮换", tags:["多面手"], pair:[], d:"斯图加特边后卫：速度+往返，国家队轮换深度。"},
+{n:"罗森费尔德", en:["Rosenfelder","罗森费尔德"], pos:["RB","RWB"], foot:null, club:"弗赖堡", nat:"德国", num:3, age:23, season:"—", st:"年轻套边右后卫", tags:["套边型"], pair:[], d:"弗赖堡青训右闸，国家队观察名单。"},
+{n:"贝伦斯", en:["Berens","贝伦斯"], pos:["CB"], foot:null, club:"奥格斯堡", nat:"德国", num:22, age:21, season:"—", st:"年轻中卫", tags:[], pair:[], d:"奥格斯堡21岁中卫，克洛普考察名单。"},
+{n:"阿图博卢", en:["Atubolu","阿图博卢"], pos:["GK"], foot:null, club:"法兰克福", nat:"德国", num:21, age:24, season:"—", st:"年轻一号门将候选", tags:["清球型"], pair:[], d:"法兰克福主力门将：反应+出击果断，德国队一号门位的竞争者。"},
+{n:"达门", en:["Dahmen","达门"], pos:["GK"], foot:null, club:"奥格斯堡", nat:"德国", num:12, age:28, season:"—", st:"二号门将", tags:["门线型"], pair:[], d:"奥格斯堡门将，国家队轮换。"},
+{n:"努贝尔", en:["Nübel","努贝尔"], pos:["GK"], foot:"右", club:"贝西克塔斯", nat:"德国", num:21, age:30, season:"—", st:"出球型门将", tags:["清球型"], pair:[], d:"拜仁青训出身，租借摩纳哥多年后转战土超：出球型，国家队轮换人选。"},
+{n:"特尔施特根", en:["ter Stegen","特尔施特根"], pos:["GK"], foot:"右", club:"待确认（已离开巴萨）", nat:"德国", num:1, age:34, season:"8场 / 31扑救", st:"出球型门将在养伤与重建中", tags:["清球型"], pair:[], d:"巴萨十年功勋门将，离队后去向待官宣——只要健康，技术依然是德国门将位置的标杆。"}
+];
+
+/* 战术内容数据 v3 · 教练/阵容/转会信息已核实截至 2026.10（更新喊我） */
+"use strict";
+
+const FORMATIONS = [
+ {id:"4231", name:"4-2-3-1", tag:"当今使用率最高的阵型 · 卡里克曼联的底盘",
+  dots:[["门",50,92,"k"],["CB",37,79],["CB",63,79],["LB",13,74],["RB",87,74],["6",35,64],["6",65,64],["10",50,44],["LW",13,30],["RW",87,30],["9",50,22]],
+  good:["双后腰锁中路，弧顶有人兜底","10 号位自由，全队围绕他创造","无球时天然落成 4-4-2 / 4-5-1 两排，防守省心","反击时 9-10-两翼四条线层次分明"],
+  bad:["单中锋容易被两名中卫包夹孤立","10 号被冻结 = 进攻哑火（看对手怎么盯 B 费就懂了）","双后腰横向覆盖面积要求极高","双后腰之一若是「客串」（如 B 费回撤），防守落位是软肋"],
+  who:"曼联（卡里克）、拜仁（孔帕尼）、切尔西（阿隆索变体）、利物浦（斯洛特奠基）"},
+ {id:"433", name:"4-3-3", tag:"现代豪门的默认答案",
+  dots:[["门",50,92,"k"],["CB",37,79],["CB",63,79],["LB",13,74],["RB",87,74],["6",50,62,"k"],["8",28,56],["8",72,56],["LW",13,31],["9",50,23],["RW",87,31]],
+  good:["三叉戟天然拉开宽度，中锋两侧永远有人接应","压迫时前场 6 人 + 中场 3 人，围抢人数足","三线距离均匀，攻转守的回收形状好","边锋内切 + 边后卫套边 = 边路 2v1 过载"],
+  bad:["单后腰体系下<b>弧顶是最危险区</b>（罗德里伤缺时曼城的教训）","边锋不回防，边后卫就要 1v2","面对摆大巴，需要极强的肋部渗透和远射能力"],
+  who:"巴萨（弗里克）、阿森纳（阿尔特塔）、巴黎（恩里克）、法国（齐达内倾向）"},
+ {id:"442", name:"4-4-2", tag:"最老的经典，但没有死",
+  dots:[["门",50,92,"k"],["CB",37,79],["CB",63,79],["LB",13,74],["RB",87,74],["LM",13,58],["CM",38,62],["CM",62,62],["RM",87,58],["9",38,30],["9",62,30]],
+  good:["结构简单纪律性强，防守像教科书两排四人","双前锋天然牵制对方双中卫，中卫不敢随便上抢","适合中低位块 + 快速通过中场"],
+  bad:["对上三中场时中路 3v2 人数吃亏","控球时代容易被动挨跑","对边前卫的攻防两端要求极高"],
+  who:"马竞（西蒙尼）、大量英超中下游"},
+ {id:"442d", name:"4-4-2 菱形", tag:"中路人数的极端答案",
+  dots:[["门",50,92,"k"],["CB",37,79],["CB",63,79],["LB",13,74],["RB",87,74],["6",50,68,"k"],["8",28,55],["8",72,55],["10",50,42],["9",38,27],["9",62,27]],
+  good:["中路绝对人数优势，短传渗透如水银泻地","菱形顶尖的 10 号完全自由","双前锋持续压制对方防线"],
+  bad:["边路完全真空，全靠边后卫一人赌","被强边锋打爆两翼是经典死法","现代顶级球队几乎不作主力阵型"],
+  who:"偶见于搏命场次；齐达内的皇马曾用 4-3-1-2 菱形变体夺冠"},
+ {id:"3421", name:"3-4-2-1 / 3-4-3", tag:"阿莫林体系 · 现由米兰延续",
+  dots:[["门",50,92,"k"],["CB",28,80],["CB",50,83],["CB",72,80],["WB",9,57],["WB",91,57],["6",38,61],["8",62,61],["10",37,36],["10",63,36],["9",50,22]],
+  good:["三中卫天然覆盖宽度，防线横移有人数兜底","翼卫提供进攻宽度，双 10 钻肋部","后场 3+2 出球结构稳定，破压迫有天然人数网","对双前锋阵型后防人数永远占优"],
+  bad:["对翼卫要求苛刻到残忍：攻要像边锋、守要像边后卫","翼卫上前后身后被爆是经典剧本","转换时<b>双 10 身后 + 弧顶</b>是大空当","人员适配苛刻、训练周期长，落位慢时肋部漏人"],
+  who:"AC米兰（阿莫林，2026.6 上任）、切尔西（阿隆索的勒沃库森体系）、国米传统"},
+ {id:"352", name:"3-5-2", tag:"中场人数最多的一型",
+  dots:[["门",50,92,"k"],["CB",28,80],["CB",50,83],["CB",72,80],["WB",9,57],["WB",91,57],["8",28,58],["6",50,64,"k"],["8",72,58],["9",40,29],["9",60,29]],
+  good:["中场中路人数最多，控球流的三中卫变体","双前锋压对方双中卫","5-3-2 ↔ 3-5-2 一键切换，攻防形态稳定"],
+  bad:["宽度全押在两名翼卫身上","肋部 10 号位空缺，阵地战渗不进去"],
+  who:"国米（因扎吉时代经典）、德国队偶尔切换三中卫"},
+ {id:"4141", name:"4-1-4-1", tag:"低位块的标准答案",
+  dots:[["门",50,92,"k"],["CB",37,79],["CB",63,79],["LB",13,74],["RB",87,74],["6",50,68,"k"],["LM",13,52],["CM",38,55],["CM",62,55],["RM",87,52],["9",50,27]],
+  good:["两线间距小、中路密度极高","单 6 正好蹲在弧顶，远射先问他","摆大巴但不至于毫无反击能力"],
+  bad:["反击支点只有一个，解围等于给对方续命","需要一名超强的破坏型 6 号位"],
+  who:"英超中下游对豪门的标准答案、马竞变体"},
+ {id:"532", name:"5-3-2 / 5-4-1", tag:"大巴形态",
+  dots:[["门",50,92,"k"],["CB",28,82],["CB",50,85],["CB",72,82],["WB",9,70],["WB",91,70],["8",28,58],["6",50,62,"k"],["8",72,58],["9",40,32],["9",60,32]],
+  good:["禁区 + 弧顶人数拉满，传中流派的天敌","定位球进攻反而是它的强项"],
+  bad:["完全让出球权，体能崩盘有明确时间点：60-75 分钟","一丢球心理容易崩，翻盘极难"],
+  who:"弱队打豪门的保留节目；孔蒂的三中卫落位防守接近 5-3-2"},
+ {id:"4222", name:"4-2-2-2 盒子中场", tag:"安切洛蒂的专利",
+  dots:[["门",50,92,"k"],["CB",37,79],["CB",63,79],["LB",13,74],["RB",87,74],["6",35,64],["6",65,64],["10",32,44],["10",68,44],["9",38,26],["9",62,26]],
+  good:["中路 2+2 盒子人数爆炸，肋部连续小配合","双 10 在两条肋部同时作业","边后卫提供全部宽度"],
+  bad:["边后卫被锁死则宽度消失","边路防守薄，被打反击从边路走","需要顶级个人能力，普通人学不来"],
+  who:"安切洛蒂的皇马（22-24）、巴西队（安帅 2025 至今）"},
+ {id:"meta", name:"现代通用形状：进攻 2-3-5 / 防守 4-4-2", tag:"看懂这条，80% 的比赛都能看懂",
+  dots:[["门",50,92,"k"],["CB",37,80],["CB",63,80],["6",30,62],["6",50,68,"k"],["6",70,62],["LW",10,30],["LW",30,26],["9",50,20],["RW",70,26],["RW",90,30]],
+  good:["<b>阵型是起步姿势，不是站着不动的位置</b>","进攻时几乎所有豪门都摆成 2 后卫 - 3 后腰 - 5 进攻线","防守时收成 4-4-2 两排，堵中路放边路","判断一支球队，看它的进攻形状和防守形状，别看首发名单上的数字"],
+  bad:["这套形状对球员全能性要求极高：边锋要会防守、边后卫要会组织","所以现代转会市场「多面手」溢价越来越贵"],
+  who:"曼城、巴萨、拜仁、巴黎——全部如此，无一例外"}
+];
+
+const ROLES = [
+ {g:"门将", items:[
+  {n:"门线型", d:"扑救为本，长传发动进攻，站位偏门线。", ex:["库尔图瓦","多纳鲁马"]},
+  {n:"清球型（清道夫门将）", d:"站位高、敢用脚、参与后场倒脚，是防线外的第 11 人。现代豪门标配。", ex:["埃德森","阿利松","拉亚","诺伊尔","拉门斯"]}]},
+ {g:"中卫", items:[
+  {n:"拖后清道夫", d:"站位最深，指挥防线，给上抢的搭档兜底。", ex:["范戴克","鲁本·迪亚斯","马尔基尼奥斯","阿切尔比","马奎尔"]},
+  {n:"出球中卫", d:"破压迫的传球发起点，敢在对手冲脸上做动作分球。", ex:["萨利巴","库巴西","约罗","海文","斯通斯","施洛特贝克"]},
+  {n:"上抢型", d:"主动前顶扫荡、赌身后速度。刺激但有代价。", ex:["乌帕梅卡诺","L.马丁内斯","吕迪格","德利赫特"]},
+  {n:"三中卫分工", d:"居中 = 清道夫兜底指挥；左右中卫 = 上抢 + 出球兼组织推进。翼卫身后的空当靠中卫横移去补。", ex:["巴斯托尼","帕乔"]},
+  {n:"左脚中卫 vs 右脚中卫", d:"左中卫最好左脚：向左的出球线路是顺足，被逼抢时更从容；右中卫同理。右脚将踢左中卫=出球线路偏右，现代可接受但会被针对性逼抢（格瓦迪奥尔、L.马丁内斯之外的右脚将如马奎尔都属此类）。点开下面的名字看谁是谁。", ex:["加布里埃尔","巴斯托尼","帕乔","L.马丁内斯","海文","布兰斯维特"]}]},
+ {g:"边后卫 / 翼卫", items:[
+  {n:"攻击型 / 套边型", d:"沿边线超车下底，和逆足边锋打「一内一外」。现代边后卫的主流进化方向。最经典的模板就是巴黎的一右一左：阿什拉夫 + 努诺·门德斯——2025 欧冠冠军的双边引擎，点开看。", ex:["阿什拉夫","努诺·门德斯","弗林蓬","罗伯逊","阿方索·戴维斯","达洛特","迪马尔科"]},
+  {n:"内收型（inverted）", d:"无球或出球时收进中场当第二个 6 号，控制中路人数。", ex:["阿诺德","里科·刘易斯","奥赖利","马兹拉维","斯通斯"]},
+  {n:"边后腰", d:"假边后卫真后腰，内收的极端版。", ex:["阿诺德","斯通斯"]},
+  {n:"翼卫（wing-back）", d:"三中卫体系的边路永动机：攻当边锋、守当边后卫，一场跑 12 公里起。阿莫林的米兰现在用的就是这套——双翼卫是体系的咽喉。", ex:["迪马尔科","弗林蓬","达洛特","多古","埃斯图皮尼安"]}]},
+ {g:"6 号位（后腰）", items:[
+  {n:"破坏型（抢球机器）", d:"扫荡、拦截、补位，防守是唯一 KPI。", ex:["乌加特","凯塞多","帕利尼亚","楚阿梅尼","托纳利","卡塞米罗"]},
+  {n:"拖后组织核心", d:"卡里克原型——从深位接球、转身、分球，全队节拍器。<b>卡里克本人 2026 年 1 月起就是曼联主帅</b>，而他给曼联买的巴莱巴+蒂勒曼斯正是这一位的现代答案。", ex:["罗德里","苏比门迪","惠顿","基米希","格拉文贝赫","蒂勒曼斯"]},
+  {n:"单 6 vs 双 6", d:"单 6 前面放两个 8：进攻丝滑但弧顶只有一个人保；双 6 保下限，创造力全部交给前场三人。卡里克曼联 = B 费回撤组成双后腰（组织型双6），巴莱巴到位后可以换成「破坏+组织」的经典组合。", ex:["赖斯","苏比门迪"]},
+  {n:"核心职责：保护弧顶", d:"对方远射多发源于弧顶；攻转守时 6 号是第一道闸；压迫时他是「第二层清扫机」。曼联丢远射，十有八九是这个环节断了。", ex:["罗德里","巴莱巴"]}]},
+ {g:"8 号位（中中场）", items:[
+  {n:"B2B（box-to-box）", d:"禁区到禁区全勤，攻守两头都是主力输出。", ex:["巴尔韦德","贝林厄姆","托纳利","吉马良斯","索博斯洛伊"]},
+  {n:"肋部 8 号（mezzala）", d:"意大利词，从中场偏肋部斜插进禁区，制造局部多打少。", ex:["巴雷拉","赖因德斯","法比安·鲁伊斯"]},
+  {n:"组织 8", d:"用传球和节奏控制中场，防守也要落位。", ex:["佩德里","麦卡利斯特","蒂勒曼斯","梅努","恩佐"]},
+  {n:"8 和 10 的本质区别", d:"<b>8 要落位防守</b>（无球时变成 4-4-2 里的两名中场），<b>10 不落位</b>。B 费在曼联干的是 8 的活 + 10 的自由——卡里克把他改成双后腰之一，组织权重更大、防守责任也更大。", ex:["B费"]}]},
+ {g:"10 号位（前腰）", items:[
+  {n:"古典 10", d:"自由组织、不参与防守——现代足球已淘汰大半，但德布劳内在孔蒂手下给了它新活法。", ex:["德布劳内"]},
+  {n:"现代 10", d:"逼抢 + 直塞 + 远射 + 肋部小配合全能。", ex:["B费","帕尔默","厄德高","维尔茨","埃泽","穆西亚拉","西蒙斯"]},
+  {n:"双 10（三中卫体系的双前腰）", d:"一个偏组织，一个偏无球钻肋。阿莫林体系的招牌设计，现在在米兰延续。", ex:["库尼亚","芒特"]},
+  {n:"伪 10 / 自由 8", d:"名义 10 号，实际内收当第三个中场，无球时补中场人数。", ex:["福登","奥尔莫","芒特","贝林厄姆","谢尔基"]}]},
+ {g:"边锋", items:[
+  {n:"逆足内切型", d:"左脚踢右边锋（亚马尔）或右脚踢左边锋（维尼修斯），内切射门 + 送威胁球，现代主流。", ex:["亚马尔","萨拉赫","维尼修斯","萨卡","姆贝乌莫","迪亚洛","奥利塞","巴尔克拉"]},
+  {n:"顺足下底型", d:"顺脚下底传中，传中型球队的刚需。", ex:["多库","马丁内利","罗德里戈"]},
+  {n:"内锋", d:"名义边锋实际当前锋用，冲击禁区。", ex:["拉菲尼亚"]},
+  {n:"与边后卫的配合：一内一外", d:"边锋内切吸引防守 → 边后卫套边接应，边路 2v1 过载；或反向：边锋拉边带走人，边后卫内收进中场。曼联左路的经典问答题：拉什福德内切，谁套边？", ex:["萨拉赫","罗伯逊","亚马尔","阿什拉夫"]}]},
+ {g:"中锋", items:[
+  {n:"支点型", d:"背身做球当墙，给身后人做嫁衣。", ex:["谢什科","沃尔特马德","马特塔","伍德"]},
+  {n:"抢点型", d:"禁区内生存，跑位吃饭，触球少进球多。", ex:["吉拉西","沃特金斯","弗拉霍维奇"]},
+  {n:"全能 9", d:"回撤组织 + 冲击身后 + 终结全包，现代最强模板。", ex:["凯恩","哈兰德","伊萨克","约克雷斯","姆巴佩","劳塔罗","图拉姆"]},
+  {n:"伪 9", d:"回撤中场制造人数优势，无锋阵。", ex:["凯恩","齐尔克泽","若昂·佩德罗","登贝莱"]},
+  {n:"逼抢型 9", d:"防守第一中锋，全队压迫的第一触发器。", ex:["劳塔罗","奥斯梅恩","索兰克"]}]},
+ {g:"配对关系：谁和谁搭", items:[
+  {n:"单 6 + 双 8", d:"罗德里+德布劳内+京多安的曼城：进攻最丝滑，但 6 号一伤全盘崩（曼城 24-25 的教训）。", ex:["罗德里"]},
+  {n:"双 6 + 前场自由", d:"阿森纳苏比门迪+赖斯：更稳，创造力集中在萨卡/厄德高身上。", ex:["苏比门迪","赖斯"]},
+  {n:"支点 9 + 组织型 10", d:"谢什科 + B 费：9 号当墙，10 号直塞+远射——卡里克曼联的进攻设计图。", ex:["谢什科","B费"]},
+  {n:"破坏 6 + 组织 8", d:"巴莱巴 + 蒂勒曼斯：一人扫荡一人调度，现代中场的最稳双人配置——曼联 2026 夏窗一口气买齐的答案。", ex:["巴莱巴","蒂勒曼斯"]},
+  {n:"双攻击边后卫", d:"阿什拉夫 + 努诺·门德斯：一右一左同时压上，宽度拉满，三中卫居中保护——巴黎 2025 欧冠冠军的结构。风险：两人身后的弧顶全靠后腰补。", ex:["阿什拉夫","努诺·门德斯"]},
+  {n:"超高位线 + 清球门将", d:"门将站位是防线的最后一格，站位不默契 = 被吊射剧本。", ex:["诺伊尔","埃德森"]}]}
+];
+
+const CLUBS = [
+ {deep:true, name:"曼联", badge:"🔴", coach:"卡里克（2026.1 接任，转正至 2028）",
+  sys:"4-2-3-1 为主（偶变 4-4-2）· build-up 时变 3-2-5 / 4-2-4",
+  bullets:[
+   "<b>上任战绩：</b>接手后 17 场 12 胜仅 2 负，2025-26 年度最佳教练候选；INEOS 选他来终结联赛冠军荒",
+   "<b>打法核心：</b>控球导向——传球更多、传中更少；一名后腰回撤成三中卫出球，边后卫压上",
+   "<b>2026 夏窗中场改造：</b>卡塞米罗离队、乌加特重伤报销 → 引进<b>巴莱巴（6500万欧）+ A.桑托斯（4500万）+ 蒂勒曼斯（4000万）</b>，中场全部年轻化换血",
+   "<b>阵容要点：</b>拉什福德回归（9号）、齐尔克泽外租回归（11号）；B费（105场35球41助）仍是轴心",
+   "<b>待检验的软肋：</b>①让出球权的时间变多，定位球防守压力大 ②B 费回撤后前场创造力集中在库尼亚 ③双后腰横向覆盖 ④对阵速度型反击的身后",
+   "<b>欧冠看点：</b>对阵 AC 米兰——阿莫林回家，师徒重逢的战术对照实验",
+   "<b>详细球员适配解析：</b>去「球员」页 → 「曼联专属」分段"]},
+ {deep:true, name:"拜仁慕尼黑", badge:"🔴", coach:"孔帕尼（合同至 2027.6）",
+  sys:"4-2-3-1 底盘 → build-up 时变 3-2-4-1 / 3-2-5",
+  bullets:[
+   "<b>打法核心：</b>控球围攻 + 全场最高位防线 + 造越位陷阱，左后卫内收当边后腰",
+   "<b>门将交接：</b>诺伊尔（40岁）与乌尔比希（23岁，37场88扑救）轮换——清道夫门将的传承",
+   "<b>中场：</b>基米希（113场）+ 帕夫洛维奇（9000万身价）+ 比朔夫 + <b>18岁天才卡尔（48场12球9助）</b>，莱默扫荡",
+   "<b>防线：</b>乌帕梅卡诺/塔/金玟哉/布朗四中卫，戴维斯+斯塔尼希奇+博埃两翼，伊藤洋辉左脚多面手",
+   "<b>攻击群：</b>奥利塞（117场52球49助，身价1.8亿）+ 迪亚斯（30球22助）+ 凯恩（112场110球）+ 格纳布里",
+   "<b>2025-26 战绩：</b>德甲大幅领跑；2026 年 5 月欧冠出局负巴黎（激进战术的风险兑现了一次）",
+   "<b>软肋：</b>高位线身后的转换（被速度型前锋打爆的固定剧本）、中卫上抢后的空间"]},
+ {name:"曼城", badge:"🔵", coach:"马雷斯卡（2026 夏上任）", sys:"控球底色 · 瓜系遗产延续",
+  bullets:["2026 夏窗 <b>1.25 亿镑破纪录签下恩佐</b>，与罗德里组成双组织 6","<b>罗德里 7650 万欧被巴萨挖走</b>——曼城中场轴心时代结束，恩佐+赖因德斯+尼科接棒","压哨 6500 万镑签下恩迪亚耶补边锋（萨维尼奥 7500 万去了热刺）","哈兰德 + 恩佐/福登/谢尔基的中前场创造力是全欧最贵"]},
+ {name:"利物浦", badge:"🔴", coach:"伊劳拉（2026 夏上任）", sys:"高强度压迫 · 垂直转换",
+  bullets:["把伯恩茅斯式的高强度对抗压迫带上豪门：跑动、逼抢、快节奏","2026 夏窗 <b>1 亿镑级签下巴尔克拉</b>：萨拉赫+伊萨克+维尔茨+巴尔克拉的攻击群贵得吓人","风险：压迫体系对体能和轮换要求极高，多线作战见真章"]},
+ {name:"切尔西", badge:"🔵", coach:"哈维·阿隆索（2026 夏上任）", sys:"勒沃库森体系移植：3-4-2-1 / 肋部渗透",
+  bullets:["阿隆索的勒沃库森踢法：三中卫 + 双翼卫 + 肋部渗透 + 造越位激进","<b>恩佐 1.25 亿镑被曼城挖走</b>——中场组织大权移交凯塞多+帕尔默","2026 夏窗压哨签下埃米·马丁内斯（维拉）；锋线有若昂·佩德罗+德拉普"]},
+ {name:"阿森纳", badge:"🔴", coach:"阿尔特塔", sys:"4-3-3 ↔ 无球 4-4-2 中块",
+  bullets:["定位球是英超第一杀器（角球教练成风口）","苏比门迪 + 赖斯双 6 保下限，约克雷斯 9 号","防守反击+定位球赢法，被诟病「不瓜里奥拉」但真赢"]},
+ {name:"皇家马德里", badge:"⚪", coach:"穆里尼奥（2026 夏上任）", sys:"紧凑防守 + 转换优先（穆氏新篇）",
+  bullets:["重返伯纳乌：强度、紧凑、转换快攻是穆氏标识","第一课题：姆巴佩 + 维尼修斯的兼容与星权管理（他公开说过两人可以共存）","<b>夏窗防线路线改造：</b>科纳特（利物浦）、邓弗里斯（国米）、库库雷利亚（切尔西）全部来投——低价淘到三条铁闸","吕迪格/楚阿梅尼的对抗骨架很穆里尼奥；马斯坦托诺租借佛罗伦萨练级"]},
+ {name:"AC米兰", badge:"🔴⚫", coach:"阿莫林（2026.6 上任，合同至 2028/可选2029）", sys:"3-4-2-1（曼联实验的延续）",
+  bullets:["<b>夏窗大重建：</b>首签贡萨洛·拉莫斯（7000万欧+破队史纪录）当单箭头，另有吉拉、迪亚瓦拉（中卫）、莫雷拉（边锋）、科斯蒂奇（前锋）","<b>莱奥 8月29日压哨离队去加拉塔萨雷</b>——头号爆点没了，进攻重心转向拉莫斯+普利西奇","阿莫林在转会市场有决定权，净投入约 7700 万欧；10 月仍在找状态","欧冠与曼联重逢——对照他两套班子的同名体系"]},
+ {name:"巴塞罗那", badge:"🔵🔴", coach:"弗里克", sys:"4-2-3-1",
+  bullets:["全欧洲最激进的高位线 + 越位陷阱","<b>2026夏窗7650万欧签下罗德里当「新布斯克茨」</b>——激进体系补上秩序这块最缺的拼图","低价拿下热苏斯、免签坎塞洛；亚马尔右肋、拉菲尼亚内锋、佩德里节拍器","2026 世界杯冠军主产地：西班牙队一半核心在这","风险和回报同样极端：要么大胜要么被打身后"]},
+ {name:"巴黎圣日耳曼", badge:"🔵🔴", coach:"路易斯·恩里克", sys:"4-3-3",
+  bullets:["2025 欧冠冠军（决赛 5-0 国米）+ 2026 年 5 月再淘汰拜仁","全员换位 + 全员逼抢，登贝莱 2025 金球奖","阿什拉夫 + 努诺·门德斯的攻击型边后卫双引擎是战术名片","巴尔克拉 1 亿镑去利物浦、扎伊尔-埃梅里们扛起青训旗——攻击群开始被拆但底盘仍厚"]},
+ {name:"马德里竞技", badge:"🔴⚪", coach:"西蒙尼", sys:"4-4-2 中低位块",
+  bullets:["转换 + 定位球 + 强度，十五年如一日","阿尔瓦雷斯+格列兹曼双核","看马竞 = 学「如何用纪律和心脏赢球」"]},
+ {name:"国际米兰", badge:"🔵⚫", coach:"齐沃（接因扎吉）", sys:"3-5-2 传统",
+  bullets:["翼卫双核驱动（迪马尔科侧），防守紧凑","恰尔汗奥卢的伪6组织+泽默门线","<b>邓弗里斯 2026 夏窗被皇马挖走</b>——右翼卫进入重建","2025 欧冠亚军（0-5 巴黎）后进入换代期"]},
+ {name:"那不勒斯", badge:"🔵", coach:"孔蒂", sys:"三中卫体系",
+  bullets:["德布劳内 2025 夏加盟当组织核心——古典 10 在孔蒂体系里的现代用法","卢卡库伤病史+麦克托米奈后插上是锋线看点","24-25 意甲冠军，孔蒂的第三家联赛冠军"]},
+ {name:"多特蒙德", badge:"🟡⚫", coach:"科瓦奇", sys:"4-2-3-1 高位对攻",
+  bullets:["青春风暴 + 高位对攻，胜负全看心跳","威格球市现象：买年轻人-踢出来-高价卖"]}
+];
+
+/* 英超 2026-27 · 20 队（升班马：考文垂/伊普斯维奇/赫尔城；降级：西汉姆/伯恩利/狼队） */
+const PL20 = [
+ {name:"阿森纳", mgr:"阿尔特塔", sys:"4-3-3 / 无球 4-4-2", key:"萨卡 · 厄德高 · 赖斯 · 苏比门迪 · 约克雷斯 · 加布里埃尔（马丁内利已转会利雅得新月）", threat:"定位球是英超第一杀器；角球和长界外球丢分要严防。阵地战被他们打反击也很疼。左路爆点流失后转换威胁下降，但定位球依旧。"},
+ {name:"阿斯顿维拉", mgr:"埃梅里", sys:"4-2-3-1 结构化控球", key:"罗杰斯 · 沃特金斯 · 卡马拉（蒂勒曼斯已转投曼联）", threat:"埃梅里的针对性布置是教练天花板：每次碰面阵型细节都不同，别套用上一场的经验。"},
+ {name:"伯恩茅斯", mgr:"马尔科·罗泽", sys:"高强度压迫", key:"塞门约 · 克里斯蒂 · 跑动型前场群", threat:"伊劳拉留下的压迫底子+罗泽：跑动和逼抢强度会被拉满，怕中后场粘球被就地反抢。"},
+ {name:"布伦特福德", mgr:"基思·安德鲁斯（新帅）", sys:"直接打法 + 定位球", key:"维萨 · 定位球轰炸群（姆贝乌莫已转投曼联）", threat:"长界外球和角球轰炸，第二落点混战——这是他们的传统艺能。"},
+ {name:"布莱顿", mgr:"以官网为准", sys:"控球 + 年轻化轮换", key:"三笘薰 · 韦尔贝克 · 范赫克（巴莱巴已转投曼联）", threat:"控球节奏忽快忽慢，年轻人冲起来时容错率低——上半场就犯错的比赛会崩。"},
+ {name:"切尔西", mgr:"哈维·阿隆索", sys:"3-4-2-1 / 肋部渗透", key:"帕尔默 · 凯塞多 · 若昂·佩德罗 · 德拉普 · 内托（恩佐已转投曼城）", threat:"翼卫压上后的身后+帕尔默肋部自由。他们新体系磨合期也可能送分，抓转换。"},
+ {name:"水晶宫", mgr:"以官网为准（格拉斯纳 2026 离任去森林）", sys:"待观察（原 3-4-2-1 低块反击）", key:"马特塔 · 萨尔 · 惠顿 · 亨德森", threat:"格拉斯纳的遗产还在：低块+快速转换+定位球，客串教练执行度看临场。"},
+ {name:"埃弗顿", mgr:"以官网为准", sys:"低块 + 定位球", key:"皮克福德 · 布兰斯维特 · 格拉利什 · 巴里（恩迪亚耶已被曼城挖走）", threat:"皮克福德长传直接找中锋，抢第二落点；角球攻防是他们的命根子。进攻发动机离队后威胁降档，但低块纪律不变。"},
+ {name:"富勒姆", mgr:"以官网为准", sys:"中位 4-2-3-1 控球", key:"佩雷拉 · 伊沃比", threat:"中低块配反击边锋，节奏一慢就给你递刀——别跟他们比耐心。"},
+ {name:"利兹联", mgr:"以官网为准", sys:"控球对攻 + 边路冲击", key:"阿伦森 · 边路爆点群", threat:"主场气氛加成下的对攻球队：敢压出来打，转换回合数极多——对攻局看谁先失误。"},
+ {name:"利物浦", mgr:"伊劳拉", sys:"高强度压迫 + 垂直转换", key:"萨拉赫 · 伊萨克 · 维尔茨 · 巴尔克拉 · 格拉文贝赫", threat:"压迫强度+纵向一脚出球：后场出球容错率最低的一场。伊萨克打身后的跑位要盯死。"},
+ {name:"曼城", mgr:"马雷斯卡", sys:"控球围攻", key:"哈兰德 · 多纳鲁马 · 恩佐 · 恩迪亚耶 · 多库 · 格伊 · 格瓦迪奥尔 · 安德森（罗德里/埃德森/赖因德斯已离队）", threat:"控球+哈兰德终结+恩佐调度，多纳鲁马守门=失误率大降。但罗德里离队后转换保护降档——高位逼抢恩佐和安德森的出球是现实得分途径；恩迪亚耶的一对一也要盯。"},
+ {name:"曼联", mgr:"卡里克（自家）", sys:"4-2-3-1 控球+选择性压迫", key:"B费 · 库尼亚 · 姆贝乌莫 · 谢什科 · 拉什福德 · 巴莱巴", threat:"——在「模拟器」页排自己的阵容，「球员→曼联专属」看深度解析。"},
+ {name:"纽卡斯尔", mgr:"以官网为准", sys:"4-3-3 强身体压迫", key:"托纳利 · 戈登 · 佳夫 · 利夫拉门托（沃尔特马德已转会尤文、吉马良斯已离队）", threat:"中场绞杀强度仍是联盟顶级（托纳利独扛）：B费/梅努持球会非常难受。锋线支柱流失后进攻降档，但身体和定位球依然是硬仗。"},
+ {name:"诺丁汉森林", mgr:"格拉斯纳（2026 夏上任）", sys:"低块 + 快速转换 + 长传找9号", key:"伍德 · 哈德森-奥多伊 · 米伦科维奇（吉布斯-怀特已转投曼城）", threat:"全联盟最标准的「摆好了挨打然后一脚捅穿」：防线身后和转换三脚内到禁区。"},
+ {name:"桑德兰", mgr:"以官网为准", sys:"高强度 + 身体流", key:"扎卡 · 伊斯多尔", threat:"升班马的疯狗劲+扎卡的中场秩序：习惯控球的球队在光照球场会被跑死。"},
+ {name:"热刺", mgr:"德泽尔比", sys:"短传渗透 + 门将出球", key:"西蒙斯 · 罗伯逊 · 加拉格尔 · 麦迪逊 · 范赫克 · 托辛 · 塞内西 · 罗梅罗 · 索兰克 · 波尔诺 · 萨维尼奥", threat:"2026夏窗豪购整条中轴线（罗伯逊/托辛/塞内西/范赫克/加拉格尔）：后场倒脚敢传到你禁区前；西蒙斯+麦迪逊双前腰肋部作业。他们的防线身前肋部仍是软肋，但磨合完成后是欧冠区级别的对手。"},
+ {name:"考文垂", mgr:"兰帕德（带队升级）", sys:"4-2-3-1 直接+转换", key:"英冠班底整体战", threat:"兰帕德的球队纪律性强：转换直接找双前锋，防线别压太上。"},
+ {name:"伊普斯维奇", mgr:"麦肯纳", sys:"控球推进", key:"青年近卫军", threat:"一年游后杀回来：控球勇气+转换速度，轻敌的豪门都在他们身上翻过车。"},
+ {name:"赫尔城", mgr:"以官网为准", sys:"年轻化高压", key:"英冠班底", threat:"升班马主场鱼腩变老虎定律：压迫+冲击的60分钟可能决定比赛。"}
+];
+
+const NATIONS = [
+ {r:1, f:"🇪🇸", name:"西班牙", sys:"德拉富恩特 · 4-3-3",
+  d:"<b>2026 世界杯冠军</b>（决赛加时 1-0 阿根廷，费兰·托雷斯绝杀）。亚马尔 + 佩德里双核，苏比门迪 6 号，控球 + 高位 + 肋部渗透。战术看点：巴萨式肋部渗透的国家队复刻——对手收缩时靠亚马尔一对一，对手对攻时靠转换。"},
+ {r:2, f:"🇦🇷", name:"阿根廷", sys:"斯卡洛尼 · 4-4-2 菱形 / 4-3-3",
+  d:"世界杯亚军。恩佐（已转会曼城）-德保罗-麦卡利斯特中场三人组是当今最强拼图之一，梅西（41 岁）最后一舞拿到亚军。战术看点：菱形中场的人数控制+劳塔罗的压迫，把比赛拖进泥潭再赢。"},
+ {r:3, f:"🇫🇷", name:"法国", sys:"<b>齐达内</b>（2026 世界杯后接德尚）· 4-3-3 / 菱形实验",
+  d:"齐达内终于坐上了法国帅位——他执教特点：巨星管理+中场菱形+不换人玄学。姆巴佩中锋化+登贝莱（2025金球奖）+楚阿梅尼/卡马文加双闸，纸面欧洲第一。战术看点：齐祖会不会复活当年皇马的 4-3-1-2 菱形，让姆巴佩和登贝莱双箭头。"},
+ {r:4, f:"🏴󠁧󠁢󠁥󠁮󠁧󠁿", name:"英格兰", sys:"图赫尔（2025.1 上任）· 4-2-3-1",
+  d:"贝林厄姆 + 凯恩双核。战术看点：图赫尔的 4-2-3-1 高位+定位球，把「全明星」捏成「球队」的进度条。"},
+ {r:5, f:"🇵🇹", name:"葡萄牙", sys:"马丁内斯 · 4-3-3",
+  d:"2025 欧国联冠军。B 费 + B 席组织，C罗（41 岁）的角色已是「禁区终结点」。战术看点：B费在国家队踢组织8、在曼联踢后腰——同一个球员两种用法，正好对照学。"},
+ {r:6, f:"🇧🇷", name:"巴西", sys:"安切洛蒂（2025.5 上任）· 4-2-4 / 盒子中场",
+  d:"欧洲教练带巴西，维尼修斯 + 罗德里戈两翼，卡塞米罗回归 6 号。战术看点：安帅的盒子中场（4-2-2-2）在国家队复刻——两翼留给双爆点，中路堆人数。"},
+ {r:7, f:"🇲🇦", name:"摩洛哥", sys:"雷格拉吉 · 4-3-3 高位",
+  d:"非洲第一，阿什拉夫（巴黎）领衔。战术看点：以攻击型边后卫为轴的高位体系——边后卫就是他们的进攻发起点。"},
+ {r:8, f:"🇧🇪", name:"比利时", sys:"黄金一代谢幕后重建",
+  d:"蒂勒曼斯（已转会曼联）+ 多库 + 新核心轮换。战术看点：从「黄金一代遗产」转向年轻化的过渡期。"},
+ {r:9, f:"🇳🇱", name:"荷兰", sys:"<b>哈维</b>（2026 世界杯后接科曼）· 控制流 4-3-3",
+  d:"又一个俱乐部名帅转国家队：哈维的巴萨控制流+荷兰天赋。战术看点：加克波/西蒙斯/赖因德斯的肋部渗透能不能打出克鲁伊夫足球。"},
+ {r:10, f:"🇲🇽", name:"墨西哥", sys:"东道主 · 高位 + 小快灵",
+  d:"2026 世界杯东道主之一，主场作战冲进前十。"},
+ {r:11, f:"🇨🇴", name:"哥伦比亚", sys:"技术流 4-2-3-1",
+  d:"路易斯·迪亚斯（现拜仁）核心，南美技术流代表。"},
+ {r:12, f:"🇨🇭", name:"瑞士", sys:"纪律型 3-5-2 / 4-2-3-1",
+  d:"欧洲锦标赛型球队：纪律、身体、定位球，永远难缠。"},
+ {r:13, f:"🇩🇪", name:"德国", sys:"<b>克洛普</b>（2026 世界杯后接纳格尔斯曼）· Gegenpress 4-2-3-1",
+  d:"克洛普接手德国战车：Gegenpress 回归国家队。首期名单新老交替明显——老核心：基米希（回撤当6）、吕迪格、特尔施特根伤情观察；中生代：维尔茨（利物浦）+穆西亚拉（拜仁）双前腰、恩梅查/施塔赫（利兹联）中场硬度、劳姆左路；<b>新面孔潮：18岁卡尔（拜仁）、比朔夫、耶尔奇、比塞克、佳夫（纽卡）、布朗全部入队</b>。锋线哈弗茨+沃尔特马德（尤文）+沙德+伯卡特轮换。战术看点：国家队集训时间短，压迫体系能练到几成功力；以及克洛普敢不敢直接让18岁的卡尔踢主力前腰。"},
+ {r:0, f:"🇭🇷", name:"克罗地亚", sys:"技术流 4-3-3",
+  d:"莫德里奇 41 岁谢幕战，中场技术的活化石。"},
+ {r:0, f:"🇯🇵", name:"日本", sys:"森保一 · 3-4-2-1 / 4-2-3-1",
+  d:"全旅欧阵容 + 高位逼抢，亚洲天花板。看日本 = 看亚洲足球的上限。"},
+ {r:0, f:"🇺🇸", name:"美国", sys:"东道主 · 4-3-3 转换流",
+  d:"普利西奇（现米兰）领衔，主场之利 + 转换速度。"},
+ {r:0, f:"🇮🇹", name:"意大利", sys:"加图索 · 4-4-2",
+  d:"仍靠防守底蕴吃饭（传闻在接触瓜迪奥拉——听着就行），大赛永远是另一支球队。"}
+];
+
+const GLOSSARY = [
+ {w:"进攻三区", why:false, d:"场地纵向三等分，最靠近对方球门的 1/3。解说常说「推进到进攻三区」——能不能稳定把球送进这 1/3，是强队的及格线。"},
+ {w:"弧顶（为什么总是曼联丢远射？谁保护弧顶？）", why:true, d:"禁区线外那段弧圈，远射高发区，也是攻转守时最容易漏人的地方。<b>负责保护它的通常是 6 号位（后腰）落位兜底</b>；双后腰体系下是两个人的共同责任。曼联被远射，十有八九是攻转守时前场没回位、6 号又被拉走的瞬间。"},
+ {w:"半空间 / 肋部", why:false, d:"边线和中路之间的走廊。现代战术的心脏地带：站在这里既能传中又能内切射门，是「又宽又中路」的黄金区。阿莫林让双 10 钻的就是这里，穆西亚拉/维尔茨的杀手本能也长在这里。"},
+ {w:"高位 / 中位 / 低位", why:false, d:"防线站位高度。高位 = 压到中圈抢球（巴萨拜仁）；低位 = 缩在禁区前（大巴）。卡里克曼联选择中低位+选择性压迫——把压迫当触发器用，而不是常态。"},
+ {w:"高位压迫 / Gegenpress", why:false, d:"丢球后 6 秒内就地反抢。克洛普名言：「Gegenpress 是最好的组织进攻方式」——因为抢下来的地方离球门最近。伊劳拉的利物浦是它的当代样本；克洛普本人 2026 世界杯后接手了德国队。"},
+ {w:"转换（Transition）", why:true, d:"攻转守 / 守转攻的瞬间。<b>现代足球大部分进球发生在转换中</b>——所以看球别光看控球，盯「丢球后 5 秒」和「抢断后 5 秒」这两个窗口，你能看到别人看不到的东西。"},
+ {w:"造越位陷阱", why:false, d:"防线集体前压，让进攻方接球瞬间越位。高位线的标配，赌的是「我们比你快 0.5 秒」。弗里克巴萨每场造越位 5+ 次。"},
+ {w:"三中卫为什么流行？中卫为什么更容易受伤？", why:true, d:"三中卫 = 用中卫横移去覆盖宽度（而非边后卫），<b>中卫的横向冲刺距离大增</b>；叠加现代赛程（一年 60+ 场）和高节奏对抗，中卫群自然成了伤病重灾区。这是负荷问题，不是位置玄学——这也是为什么豪门都要囤 5-6 个中卫。"},
+ {w:"左脚中卫 / 右脚中卫", why:false, d:"左中卫配左脚将：向左的出球是顺足，被逼抢时从容（加布里埃尔、巴斯托尼、帕乔、L.马丁内斯、海文、布兰斯维特都是左脚将踢左中卫）。右脚将踢左中卫 = 出球线路整体偏右，对方逼他左侧时只能回传或大脚——可以踢（格瓦迪奥尔、马奎尔都这么踢过），但会被针对性设计。"},
+ {w:"双后腰 / 单后腰", why:false, d:"单 6：前面放两个 8，进攻丝滑但弧顶一人保；双 6：保下限，创造力全给前场。豪门往往联赛用单 6、欧冠硬仗用双 6。卡里克曼联用「B费回撤」组成功能不对称的双后腰，巴莱巴到位后可升级为「破坏+组织」标准双后腰。"},
+ {w:"定位球为什么突然这么重要？", why:true, d:"英超中游和豪门的分差来源：阵地战破不了密集，就靠角球和长界外球。阿森纳 24-25 靠定位球多拿了 10+ 分，「定位球教练」因此成了豪门标配岗位。"},
+ {w:"边路传中的数学期望", why:false, d:"数据结论：英超平均约每 90 次传中才换来 1 个进球——这是卡里克曼联「少传中」改革的依据。传中不是不能用，而是它应该留给「有高中锋+有二点布置」的特定场次，而不是万能解。"},
+ {w:"双线间距", why:false, d:"防线与中场线之间的距离。间距小=对手前锋背身拿不到舒服的球（马竞式）；间距大=后场出球空间多但身后危险。看比赛盯「对方前锋站防线和 midfield 之间哪个缝」。"},
+ {w:"门将扫荡范围", why:false, d:"清道夫门将敢出到禁区外断球（诺伊尔开创）。拉门斯上季 17 次出击全部成功=扫荡范围大的证据。高位线球队必须配扫荡门将，否则吊射剧本天天上演。"},
+ {w:"第二球权 / 转换落位", why:false, d:"射门、传中、解围后的球权争夺。低块球队靠它续命（布伦特福德半数进球是混战），控球球队靠它防止二次进攻。盯人时看「谁在抢第二落点」= 看赛前布置。"},
+ {w:"比赛管理（Game Management）", why:false, d:"领先后的时间管理：换人拖时间、边线控球、犯规打断对方节奏。顶级强队 1-0 领先后的 20 分钟射门比是 0-5 但赢球——这就是管理。看曼联领先后的比赛内容，是检验卡里克成色的另一把尺。"},
+ {w:"战术犯规的性价比", why:false, d:"对方转换刚发动时在最远处犯规，黄牌换掉一次绝佳反击——现代足球的会计学。瓜系和马竞都把它当常规武器。注意看曼联由攻转守时的第一反应：犯规、回追还是目送？"},
+ {w:"中卫出球三选项", why:false, d:"被压迫时中卫只有三个安全出口：短传边后卫（就近）、对角转移（换边）、长传前锋（赌第二落点）。看球时数中卫选了哪条路、为什么——出球中卫和普通中卫的区别就是「选项更少时仍敢选对」。"},
+ {w:"锋线联动：9 回撤、10 插上", why:false, d:"支点中锋回撤接球时，身后防线会跟出来——这时候肋部10号/8号斜插他拉出的空间。凯恩回撤+穆西亚拉插上=拜仁的招牌联动；谢什科回撤+库尼亚插上=曼联该有的样子。"},
+ {w:"攻防形状（2-3-5 / 4-4-2）", why:true, d:"阵型是「起步姿势」不是站位：进攻时几乎所有豪门都摆 2-3-5，防守时收 4-4-2。<b>判断一支球队看形状，不看名单数字。</b>这条是看懂现代足球的捷径。卡里克曼联 build-up 时的 3-2-5 就是这句话的活教材。"},
+ {w:"反越位跑动：时机比速度重要", why:false, d:"打身后的精髓不在冲刺而在<b>启动时机</b>：在对方防线压上的一瞬（长传出脚前）从平行线启动，比快 0.3 秒的纯冲刺更致命。看沃特金斯/伊萨克进球回放：起步那一下都踩在越位线的刀刃上——这就是「用脑子跑出来的单刀」。"},
+ {w:"门将手抛球：被低估的快攻发起点", why:false, d:"现代快攻第一传常常不是后卫而是门将的手抛球：落点精准、避开中场绞杀区、直接找边路启动。拉门斯的反击策划、埃德森的对角长传都是武器。看球时数一数：丢球后 10 秒内的快攻，几次是从门将手里开始的？"},
+ {w:"安全球哲学：横传回传不是懦弱是算术", why:false, d:"向前传丢 = 直接挨转换反击；向后/横传丢 = 全队还在球附近可以立刻反抢。所以顶级控球队的横传回传占传球 60%+——<b>用低风险传球把对方阵型「磨」变形，等肋部出现 1 秒空当再下刀</b>。骂「倒脚」之前先看丢球位置。"},
+ {w:"阵地战节奏变化：忽快忽慢的艺术", why:false, d:"破密集防守的高级玩法：连续 20 脚横传让防线打哈欠，突然一脚直塞提速。匀速围攻防线越站越稳，变速才能把人缝撕开。看巴萨/曼城进球：绝大多数来自「慢-慢-快」的三段式。"},
+ {w:"二点进攻布置：弧顶的伏兵", why:false, d:"角球战术不只在禁区内：现代豪门安排专人埋伏弧顶和大禁区线，禁区混战后远射/二次组织。阿森纳的角球得分里近三分之一来自二点。看角球时盯弧顶站谁——那是教练的暗号。"},
+ {w:"边中卫内收出球", why:false, d:"build-up 时一名中卫带球或站位内收到后腰位，制造中路人数优势（斯通斯玩法）。代价：中卫离位后防线只剩一条——所以需要「会踢后腰的中卫」。看马兹拉维/斯通斯/阿坎吉的站位图最直观。"},
+ {w:"远射的时机学", why:false, d:"远射不是「没招了才射」：它真正的价值是<b>逼迫防线前压</b>——弧顶敢射，对方中卫就必须上提封堵，身后空间就出来了。所以 B费/蒂勒曼斯式的远射型中场是破大巴体系的一环，进球只是 bonus。"},
+ {w:"领先后的换人逻辑", why:false, d:"领先换防守型（时间管理）、落后换攻击型（搏命）、平局换「节奏改变者」（换一种进攻方式）。三种换人对应三种比赛状态——看换人先猜意图，再看教练是不是这么干的，你能反推他的比赛计划。"},
+ {w:"逆转心理学：丢球后 5 分钟最危险", why:false, d:"数据规律：刚丢球后的 5 分钟是再丢球高发期——心态波动+阵型前压+注意力集中在懊悔上。顶级球队丢球后第一任务是「稳 5 分钟」而不是立刻扳平。看曼联丢球后的下一波攻防，能看出这支球队的心理成熟度。"}
+];
+
+const QUIZ_BANK = [
+ {q:"对方在弧顶起脚远射破门。按现代战术，最该为丢球负责的保护位置是？", o:["中锋","6 号位（后腰）","边锋","10 号位"], a:1, why:"弧顶是 6 号位落位兜底的辖区。攻转守时前场没回位 + 6 号被拉走 = 远射窗口。卡里克曼联用双后腰设计，就是把这道保险做成双份。"},
+ {q:"「进攻 2-3-5、防守 4-4-2」这句话想说什么？", o:["现代球队一场要变两次阵型","阵型是动态形状不是固定站位","4-4-2 已经被淘汰","2-3-5 是防守阵型"], a:1, why:"阵型是起步姿势。卡里克曼联 build-up 时 3-2-5、防守时 4-4-2，首发名单写的数字和实际形状是两回事。"},
+ {q:"8 号位和 10 号位最本质的区别是？", o:["8 号技术更好","10 号跑动更多","8 号要落位防守，10 号不落位","没有本质区别"], a:2, why:"无球时 8 号要收进 4-4-2 的中场两排，10 号保留进攻自由。B 费现在被卡里克改成双后腰之一——组织和防守两头都要干。"},
+ {q:"mezzala（肋部 8 号）指的是？", o:["拖后组织核心","从中场肋部斜插禁区制造多打少的中场","抢球机器","伪 9 号"], a:1, why:"意大利词，代表人物巴雷拉；曼城的赖因德斯是现役典型——后插上进禁区的时机就是他的价值。"},
+ {q:"对手全队高位压迫，最有效的应对是？", o:["也跟着对攻","门将 +1 参与出球，用人数网破压迫","全员大脚长传","收缩到大禁区里"], a:1, why:"2 中卫 + 2 后腰 + 门将 = 菱形出球网，对方前锋不敢冲就有传球选择；再配第三人配合快速通过中场。拉门斯的出球能力就是为此买的。"},
+ {q:"现代中卫伤病率高，主要原因是？", o:["中卫体质差","横移冲刺距离大增 + 赛程负荷 + 对抗频率","裁判不保护中卫","草皮问题"], a:1, why:"三中卫用中卫横移补宽度，横向冲刺暴增；一年 60+ 场比赛雪上加霜。负荷问题，不是玄学。"},
+ {q:"对手摆 5-4-1 大巴，下列哪种手段性价比最低？", o:["定位球","肋部小配合","远射","控球率超过 75% 本身"], a:3, why:"控球率本身不进球。破大巴三板斧：定位球、远射、肋部渗透。卡里克曼联「少传中」的改革正是认清了传中破密集效率最低。"},
+ {q:"逆足边锋（左脚踢右边锋）的价值在于？", o:["好看","内切射门角度更好，同时给套边后卫留出边路","传中更准","省体力"], a:1, why:"内切型边锋 + 套边型边后卫 = 「一内一外」，边路 2v1 过载。亚马尔、萨拉赫、萨卡、姆贝乌莫全是这个流派。"},
+ {q:"一支球队 xG 长期只有 1.0 却总赢球，说明？", o:["进攻体系优秀","大概率靠终结效率/门将超常发挥，可持续性存疑","xG 没用","防守好"], a:1, why:"xG 低 = 创造的机会少质差，靠个人效率续命的模式容易被回归均值惩罚。"},
+ {q:"曼联打利兹联这类对攻+边路冲击的球队，最该警惕的丢球方式是？", o:["对方中圈吊门","边后卫被爆 + 后点远门柱漏人 + 高球第二落点","点球","门将失误"], a:1, why:"四后卫体系边后卫压上（build-up 3-2-5）时身后是大空当；传中的标准得分点是后点远门柱。模拟器里把边后卫换成多古试试，警告会告诉你为什么。"},
+ {q:"卡里克曼联的基础阵型是？", o:["3-4-2-1","4-2-3-1（build-up 时 3-2-5 / 4-2-4）","5-3-2","4-4-2 菱形"], a:1, why:"4-2-3-1 是他米堡时期的签名阵型：控球导向、少传中、中低位选择性压迫，一名后腰回撤成三中卫出球。阿莫林的 3-4-2-1 已成曼联历史。"},
+ {q:"卡里克把 B 费改造成什么角色？", o:["右边锋","双后腰之一（组织型）","伪 9 号","清道夫"], a:1, why:"B 费回撤组成功能不对称的双后腰：他负责出球调度，搭档负责防守兜底。巴莱巴到位后可以换成「破坏+组织」的标准组合。"},
+ {q:"孔帕尼拜仁最大的战术风险是？", o:["不会进攻","高位线身后的转换空间","门将太矮","不练定位球"], a:1, why:"超高位防线+造越位陷阱是双刃剑：赌赢=对方全场越位，赌输=单刀。2026 年 5 月欧冠负巴黎就是激进战术的风险兑现。"},
+ {q:"阿莫林现在执教哪支球队？", o:["曼联","AC米兰","葡萄牙体育","本菲卡"], a:1, why:"2025 年底被曼联解雇（63 场），2026 年 6 月接手 AC 米兰，延续 3-4-2-1 体系——本赛季欧冠还有和曼联的重逢戏。"},
+ {q:"穆里尼奥 2026 年执教？", o:["费内巴切","本菲卡","皇马","那不勒斯"], a:2, why:"2026 年重返伯纳乌。第一课题是姆巴佩+维尼修斯的兼容与星权管理，打法回归紧凑+转换优先。"},
+ {q:"哈维·阿隆索执教切尔西，他体系的底色是？", o:["勒沃库森的三中卫+肋部渗透","利物浦的高位压迫","马竞的低块反击","全队长传冲吊"], a:0, why:"阿隆索在勒沃库森的 3-4-2-1：双翼卫拉宽度、维尔茨当巴（自由10）、激进造越位。现在把这套搬进斯坦福桥。"},
+ {q:"伊劳拉的利物浦战术标签是？", o:["摆大巴","高强度压迫+垂直转换","长传冲吊","控制型倒脚"], a:1, why:"他把伯恩茅斯的高强度压迫带到安菲尔德：跑动、逼抢、三脚内到禁区。体能分配和轮换是最大考题。"},
+ {q:"马雷斯卡执教的曼城会延续什么底色？", o:["长传冲吊","控球+门将参与倒脚（瓜系遗产）","纯防反","人盯人"], a:1, why:"他在切尔西的标识就是门将深度参与build-up+节奏控制，瓜系底色不会变。罗德里健康仍是曼城下限——现在还加了 1.25 亿的恩佐。"},
+ {q:"德泽尔比执教的热刺打法是？", o:["大巴","短传渗透+门将出球","全员高压","摆铁桶"], a:1, why:"德泽尔比足球哲学：从门将开始短传出球、引诱压迫再打穿。热刺后场倒脚敢传到你禁区前——逼抢时机是他们给你留的陷阱。"},
+ {q:"左脚中卫踢左中卫的核心优势是？", o:["长得帅","向左出球是顺足线路，被逼抢时更从容","跑得快","头球好"], a:1, why:"顺足出球线路=被逼抢时多一个安全出口。加布里埃尔、巴斯托尼、帕乔、L.马丁内斯、海文、布兰斯维特都是左脚将踢左中卫的现役样本；马奎尔是右脚将，踢左中卫时出球线路偏右。"},
+ {q:"阿什拉夫 + 努诺·门德斯的组合为什么被称为经典模板？", o:["都是队长","一右一左双攻击边后卫，同时压上拉满宽度","都是自由转会","都不会防守"], a:1, why:"巴黎 2025 欧冠冠军的结构名片：两名攻击型边后卫同时上，宽度由他俩承包，中路让给自由人。风险是两人身后的空间全靠后腰和居中中卫补——恩里克认为划算。"},
+ {q:"4-2-3-1 的 10 号被对方后腰贴死，最合理的调整是？", o:["换下 10 号","10 号回撤/两翼内收轮转换位","全员退防","让 10 号去踢门将"], a:1, why:"冻结 10 号的标准解法是换位制造人数：10 回撤引出对方后腰、边锋内收补肋、或者干脆改成双 10 轮转。位置是活的，人是活的。"},
+ {q:"单后腰被对方前腰盯死、弧顶暴露，体系层面的解法是？", o:["换更强的后腰就完了","后腰回撤成三中卫出球 / 边后卫内收补中路","全员退守","门将开大脚"], a:1, why:"斯通斯式内收和「后腰回撤成三中卫」都是用站位解决人数问题：中路人多了，弧顶自然有人。卡里克曼联的后腰回撤出球就是同一逻辑。"},
+ {q:"阵地战破密集防守的「三板斧」是？", o:["传中 传中 传中","定位球、远射、肋部小配合","换人 换人 换人","长传 冲吊 头球"], a:1, why:"这三样的共同点：不需要撕开人墙的正面空间。定位球是「免费」机会，远射利用弧顶空间，肋部小配合用人线路错位。"},
+ {q:"「第二落点」为什么值得专门盯？", o:["解说爱说","传中/解围/射门后的球权去向=双方布置和求胜欲的直接证据","规则要求","没什么用"], a:1, why:"谁在抢第二落点=谁练过、谁想赢。布伦特福德和埃弗顿的进球库里一半是第二落点混战。"},
+ {q:"造越位陷阱的最大风险是？", o:["裁判不喜欢","一次判断失误=对方单刀","消耗体力","容易被嘘"], a:1, why:"防线集体前压是「全员同步」的游戏：一个人慢半拍就是单刀。所以它必须搭配清球门将的站位和反复的防守演练。"},
+ {q:"Gegenpress 的「6 秒法则」说的是？", o:["6 秒内必须射门","丢球后 6 秒内就地反抢，抢不下就回位","每 6 秒传一次球","6 秒内换人"], a:1, why:"克洛普的量化原则：丢球瞬间对方阵型最乱，6 秒内是夺回球权的黄金窗口；过了就退守组织。看比赛可以默数——数得出来谁在执行。"},
+ {q:"PPDA 数据很低说明这支球队？", o:["控球多","压迫强度高","防守差","进球多"], a:1, why:"PPDA=平均每次防守动作让对手传几次球，数字越低压得越凶。瓜系 8-10，英超中游 12-15，摆大巴 20+。"},
+ {q:"Field Tilt 衡量的是？", o:["场地倾斜度","进攻三区触球占比","射门角度","球迷倾斜率"], a:1, why:"衡量「围着对方打」的程度：70% 意味着比赛大半时间球在你脚下推进。围攻不进球时用它判断是「体系问题」还是「运气问题」。"},
+ {q:"翼卫（wing-back）和边后卫（full-back）的最大区别是？", o:["翼卫跑得慢","翼卫在三中卫体系里攻当边锋、守当边后卫，两端全包","翼卫只防守","没区别"], a:1, why:"翼卫是三中卫体系的咽喉：没有顶级翼卫别踢三中卫。阿莫林的米兰成败同样系于双翼卫的往返能力。"},
+ {q:"三中卫对双前锋阵型的天然优势是？", o:["门将更强","后防 3v2 人数永远占优","边路更强","不用练定位球"], a:1, why:"双前锋最多牵制两名中卫，第三人永远自由——这就是为什么打 442 双前锋队时三中卫很舒服；反过来四后卫就变 2v2 了。"},
+ {q:"4-4-2 菱形阵的致命死穴是？", o:["中路人数少","边路完全真空","不会射门","没有门将"], a:1, why:"菱形中场四人都堆在中路，边路全靠两名边后卫赌——被强边锋+套边后卫打「一内一外」就是灾难现场。"},
+ {q:"中位块和低位块的区别是？", o:["没有区别","防线高度与压迫触发区域不同：中块在中场抢，低块在禁区前抢","中块=摆大巴","低块=高位压迫"], a:1, why:"块的高度决定你「让出哪片区域」。卡里克曼联的中低位块=让出中前场控球时间，换取转换和定位球的防守密度。"},
+ {q:"摆大巴的比赛为什么 60-75 分钟最危险？", o:["裁判偏心","体能崩盘+注意力下滑的窗口，换人调整也在此时","草皮湿了","观众太吵"], a:1, why:"低块球队的高强度跑是有预算的：60-75 分钟预算花完，防线的间距开始裂开。换上生力军冲这段时间=所有教练的固定剧本。"},
+ {q:"「压迫触发器」指的是？", o:["球场按钮","故意喂球到陷阱区引你上钩再合围（或低位队等你进触发区再压）","换人信号","越位规则"], a:1, why:"压迫不是全场狂奔：顶级球队把它做成「条件触发」——球到边线、回传门将、接球人背身时才启动。卡里克曼联的选择性压迫就是这个逻辑。"},
+ {q:"卡里克曼联「传球更多、传中更少」的改革说明什么？", o:["边锋不能传中","认清了传中破密集效率最低，转向控球渗透+定位球","守门员要求","规则变化"], a:1, why:"英超数据：平均一次传中的进球期望极低。少传中=减少球权浪费，多渗透+定位球=高质量的得分路径。这是数据驱动建队的典型决策。"},
+ {q:"拉什福德回归卡里克曼联，他最大的战术价值是？", o:["名气大","左路纵向爆点：打身后的直线速度是破低位块的硬通货","会点球","更衣室老大"], a:1, why:"对手摆低位块时，唯一解不开的就是「身后」——而直线速度是身后球的载体。他+谢什科+B费的直塞链就是为这种比赛准备的。"},
+ {q:"伊劳拉的利物浦体系里，哪类球员最吃香？", o:["站桩型中锋","能跑、能对抗、能快节奏传接的球员","纯技术慢节奏","不会防守的10号"], a:1, why:"高强度压迫体系的入场券是体能和对抗：压迫强度=全队跑动距离+冲刺次数。跑动不达标的人在他的体系里踢不了。"},
+ {q:"穆里尼奥皇马的第一道难题是？", o:["买不起人","姆巴佩与维尼修斯的兼容+星权管理","草皮太差","没有欧冠资格"], a:1, why:"两个都需要左路空间和球权的超级巨星如何共存，是现代豪门管理学的经典课题；他公开表态过「可以共存」——怎么共存就是战术看点。"},
+ {q:"罗德里 2026 夏窗转会巴萨后，曼城中场组织重任交给谁？", o:["B席","恩佐（1.25亿镑从切尔西引进）","德布劳内回租","青训小将"], a:1, why:"2026夏窗罗德里7650万欧转投巴萨当「新布斯克茨」，曼城压哨1.25亿镑签下恩佐接班——外加埃利奥特·安德森和科瓦契奇轮换。罗德里24-25伤缺时的崩盘证明了这一位有多难替代。"},
+ {q:"英超 2026-27 的三支升班马是？", o:["西汉姆/伯恩利/狼队","考文垂/伊普斯维奇/赫尔城","利兹联/桑德兰/伯恩利","莱斯特/南安普顿/伊普斯维奇"], a:1, why:"考文垂时隔 25 年回归，伊普斯维奇一年后杀回，赫尔城时隔 9 年。西汉姆/伯恩利/狼队是 2025-26 的降级队。"},
+ {q:"2025-26 英超降级的三队是？", o:["莱斯特/伊普斯维奇/南安普顿","西汉姆/伯恩利/狼队","埃弗顿/富勒姆/狼队","诺丁汉/伯恩茅斯/布伦特福德"], a:1, why:"狼队最早确定降级，伯恩利 22 分，西汉姆最后一班车。这也是为什么 2026-27 有考文垂们。"},
+ {q:"2026 世界杯决赛结果？", o:["阿根廷 2-1 法国","西班牙 1-0 阿根廷（加时）","巴西 3-1 英格兰","法国 2-0 葡萄牙"], a:1, why:"2026 年 7 月 19 日大都会球场：费兰·托雷斯加时绝杀，西班牙队史第二冠，男女足同时世界第一。"},
+ {q:"西班牙的世界杯双核是？", o:["B费+若塔","亚马尔+佩德里","姆巴佩+格列兹曼","凯恩+贝林厄姆"], a:1, why:"巴萨右肋连线直接平移到国家队：佩德里节拍+亚马尔爆点，苏比门迪当 6。德拉富恩特把俱乐部的肋部渗透打成了世界冠军。"},
+ {q:"阿根廷的中场三人组是？", o:["恩佐-德保罗-麦卡利斯特","梅西-迪马利亚-洛塞尔索","帕雷德斯-帕拉西奥斯-阿尔马达","恩佐-麦卡利斯特-阿尔马达"], a:0, why:"斯卡洛尼的中场铁三角：恩佐组织+德保罗扫荡+麦卡利斯特串联——跑动和缠斗都拉满，世界杯亚军的底盘。"},
+ {q:"世界杯后接手法国队的教练是？", o:["德尚续约","齐达内","亨利","温格"], a:1, why:"德尚按计划在 2026 世界杯后离任，齐达内终于接过法国帅位——他的菱形中场和巨星管理是最大看点。"},
+ {q:"世界杯后接手德国队的教练是？", o:["纳格尔斯曼续约","弗里克回归","克洛普","图赫尔"], a:2, why:"克洛普 2026 世界杯后执教德国：Gegenpress 回归国家队。维尔茨+穆西亚拉双前腰是他的完美素材。"},
+ {q:"恩佐·费尔南德斯 2026 夏窗转会到了？", o:["留在切尔西","曼联","曼城（1.25亿镑破纪录）","皇马"], a:2, why:"2026 夏窗压哨：恩佐告诉切尔西想去曼城，最终 1.25 亿镑破纪录成交——马雷斯卡的中场拼图，与罗德里组成双组织 6。"},
+ {q:"巴尔克拉 2026 夏窗转会到了？", o:["留在巴黎","皇马","利物浦（1亿镑级）","阿森纳"], a:2, why:"巴黎 2025 双冠功臣、右脚左边锋，2026 夏窗 1 亿镑级转投利物浦——伊劳拉高强度转换体系的完美燃料。"},
+ {q:"齐尔克泽在曼联的最佳战术用法是？", o:["纯禁区内抢点中锋","伪 9：回撤中场做球再冲禁区","边后卫","门将"], a:1, why:"他的价值在「回撤」：当伪 9 拉出来组织时，身后空间给库尼亚/迪亚洛插上——这是曼联阵中最典型的战术变体钥匙。"},
+ {q:"曼联中场「巴莱巴 + 蒂勒曼斯」的标准分工是？", o:["两人都当前锋","巴莱巴扫荡+推进当 6，蒂勒曼斯调度+肋部直塞+后插上当 8","蒂勒曼斯守门","巴莱巴踢边锋"], a:1, why:"现代标准「破坏+组织」双后腰：巴莱巴负责剥夺球权和由守转攻第一推进，横移补蒂勒曼斯身后；蒂勒曼斯掌控节奏、肋部直塞、远射和定位球，丢球时就地反抢。"},
+ {q:"乌加特重伤报销后，曼联 6 号位的第一顺位是谁？", o:["巴莱巴","B费","马奎尔","达洛特"], a:0, why:"巴莱巴（6500万欧从布莱顿引进）就是为这个位置买的：扫荡+带球推进，单 6 长期答案。桑托斯是 6/8 摇摆的第二选择。"},
+ {q:"门将 +1 出球的人数网是？", o:["2 中卫+2 后腰+门将=菱形","3 中锋+门将","11 人都参与","边裁和中裁"], a:0, why:"4 人菱形让压迫方的前锋不敢冲（一冲就漏人），门将就有从容出球的选择——破压迫的最便宜方案。"},
+ {q:"判断一支球队风格，最该看的是？", o:["首发名单上的数字","它的进攻形状和防守形状","球衣颜色","球迷数量"], a:1, why:"4-2-3-1 在卡里克手里是控球队、在别人手里可能是防反队——阵型是壳，形状是魂。这也是模拟器让你自由摆位的原因：位置是变量不是常量。"}
+];
+
+const SIMS = [
+ {k:"press", name:"高位压迫控球型", ex:"曼城 / 巴萨 / 巴黎风格",
+  idea:"对方要球权就让他控——卡里克曼联的中低位块正好接这招：让出球权，守转换，抓定位球。",
+  risks:["后场出球被掐：对方前锋锁中卫、中场锁双后腰，B费回撤接应线路被预判","低位块让出控球时间=定位球防守压力大，弧顶远射风险常驻","拉门斯/中卫被迫长传时，第二落点混战是丢球重灾区"],
+  plan:["保持 4-4-2 中低位块，触发器式压迫：球到边线/回传门将时才合围","反击找谢什科支点 + 库尼亚/拉什福德冲身后——对方防线高就是给速度送礼","定位球预期值拉满——这是破压迫流最便宜的得分方式"],
+  watch:["开场 15 分钟：对方的压迫触发器在哪，曼联敢不敢门将短传","丢球后 6 秒：有没有人就地反抢（数人数就知道赛前要求）","70 分钟后对方压迫衰减，换生力军冲身后是固定剧本"],
+  wrong:"预测：丢球来自第二落点混战或弧顶远射；进球大概率来自一次转换直塞或定位球。"},
+ {k:"midblock", name:"中位铁桶型", ex:"英超中游标配（4-4-2 中块）",
+  idea:"让出球权、两排四人、等你失误打反击。卡里克曼联控球正中对方下怀——这正是新体系的考题。",
+  risks:["控球围攻破密集是新体系最待检验的章节——好在「少传中」改革方向对了","控球 70% 但 xG 不到 1.0 的「无效围攻」","压上之后（build-up 3-2-5）被一次反击打穿"],
+  plan:["耐心渗透：库尼亚回撤造肋部 2 过 1，B 费对角转移换边","远射（B费/蒂勒曼斯）+ 定位球预期值拉满","双后腰别同时压上——身后永远留一人"],
+  watch:["前 30 分钟肋部渗透成功率——不行就早换思路（换齐尔克泽打伪 9 拉扯）","对方反击发起点是谁、谁转身","60-70 分钟换人是否改变肋部结构"],
+  wrong:"预测：控球率虚高但运动战 xG 低迷，半场 0-0 后开始急躁；丢球大概率来自一次转换反击。"},
+ {k:"lowblock", name:"低位防反型", ex:"森林 / 马竞式摆压",
+  idea:"摆 5-4-1 赌定位球和你的身后。考验卡里克体系的阵地战解题能力。",
+  risks:["全队压上后（边后卫进入进攻三区）双中卫 1v2 回追——速度型前锋的盛宴","角球丢分：人家摆大巴定位球反而是主武器","久攻不下心态崩，开始无效远射"],
+  plan:["拉什福德/库尼亚的纵向冲击打防线身后——低位块最怕的只有一个词：身后","宽度拉扯 + 远射三件套","中卫别全过半场，留一对速度兜底"],
+  watch:["对方防线高度——压得高就有越位陷阱机会","曼联第二落点控制（混战场面）","对方换上快马的时间点 = 他们要搏了"],
+  wrong:"预测：下半场 60-75 分钟压得最上的时候被打身后——体能拐点 + 阵线最高点的双重窗口。"},
+ {k:"wing", name:"边路爆破传中型", ex:"利兹联 / 传统英式边路身体流",
+  idea:"边路 1v1 + 高频传中 + 第二落点混战，用身体和体能砸你。",
+  risks:["边后卫压上参与 build-up（3-2-5）后，身后的边路走廊是最大软肋","后点远门柱漏人——传中的标准得分点","高球第二落点混战，禁区内二次进攻失分"],
+  plan:["边后卫上抢前看中卫横移距离——补不过来就别上","后点必须专人负责（盯人不盯球）","对方传中前先战术犯规——打断节奏比抢断便宜"],
+  watch:["对方边锋 1v1 成功率——连续两次被过就要收缩保护","曼联后点站位：传中瞬间远门柱有没有自己人","定位球攻防质量：这种比赛 1 个定位球 = 1 分"],
+  wrong:"预测：丢球画面大概率是——边路被爆 → 传中 → 后点包抄。以及下半场体能下降后边后卫上不去、被迫回缩。"},
+ {k:"transition", name:"快速转换型", ex:"纽卡斯尔 / 维拉风格（不控球专打失误）",
+  idea:"深块 + 凶狠反抢 + 三脚之内打到你禁区，专吃你的失误——控球队的天敌。",
+  risks:["控球体系失误率是生命线：B费/梅努持球被围抢就是警报","转换时双后腰若都压上，弧顶无人=远射送分","前场丢球权后 6 秒内没人反抢=直接被推反击"],
+  plan:["降失误率：少粘球、提前一脚出球、边路少背身","丢球瞬间就地战术犯规（性价比法则：黄牌换掉一次绝佳反击）","用中场人数优势锁死对方发起点——巴莱巴的扫荡范围就是为此买的风险保险"],
+  watch:["曼联前场丢球次数——超过 10 次就是红色警报","丢球后 6 秒内有没有人反抢（态度测试）","对方抢断的地点分布——越靠近曼联禁区越危险"],
+  wrong:"预测：丢球将集中在「前场粘球被断」和「转换落位慢」两个画面；70 分钟后体能下滑还会再加一波。"}
+];
+
+/* ==================== 曼联专属深度解析 ==================== */
+const UTD_DEEP = [
+ {g:"门将 & 后卫", items:[
+  {n:"拉门斯", num:1, line:"出球型主力门将 · 后场+1的核心", data:"上季 41场 / 100扑救 / 出击17-17",
+   plus:["出球冷静：压迫下敢短传两肋，是控球体系第一发起点","出击范围大且成功率 100%——高位线的保险","手抛球发动快攻是隐藏武器"],
+   minus:["制空和防线指挥还在涨球","大赛经验尚浅"],
+   fit:{a:"4-2-3-1：后场+1出球核心，回撤后腰身后的传球点", b:"4-3-3：同上，且单6被盯时他是唯一自由人", c:"三中卫：3+2出球网里当菱形底角"}},
+  {n:"达洛特", num:2, line:"攻击型边后卫/翼卫两栖 · 右路铁人", data:"两季 99场 4球8助",
+   plus:["体能和出勤是防线之最","传中质量和战术执行力稳定","右后卫/右翼卫/左后卫三处可用"],
+   minus:["逆足踢左路传中质量明显下降","绝对速度一般，怕顶级爆点"],
+   fit:{a:"4-2-3-1：主力RB，build-up 时压上成边锋", b:"4-3-3：RB，和迪亚洛打一内一外", c:"三中卫：右翼卫天然人选"}},
+  {n:"马兹拉维", num:3, line:"出球型边后卫 · 可内收后腰", data:"两季 82场",
+   plus:["压迫下出球冷静，内收中场像模像样","三处可轮换的体系胶水","犯规时机聪明"],
+   minus:["速度和对抗中庸","作为翼卫攻强守弱"],
+   fit:{a:"4-2-3-1：RB轮换，或B费回撤时他内收当第二后腰", b:"4-3-3：RB轮换", c:"三中卫：右翼卫/右中卫都行"}},
+  {n:"德利赫特", num:4, line:"对抗型上抢中卫 · 右中卫首选", data:"上季 59场3球",
+   plus:["贴身缠斗+争顶，英超一级","正面拦截阅读力","定位球进攻点"],
+   minus:["被拉进长距离回追是灾难","出球在高压下偶有仓促"],
+   fit:{a:"4-2-3-1：右中卫，L.马丁内斯/约罗搭档", b:"4-3-3：同", c:"三中卫：右中卫上抢角色"}},
+  {n:"L.马丁内斯", num:6, line:"左脚绞杀型中卫 · 防线情绪领袖", data:"上季 57场3球2助",
+   plus:["世界级缠斗+侵略性","左脚出球让左侧线路天然顺","世界杯冠军的心理强度"],
+   minus:["1米75防空是硬伤","伤病出勤率"],
+   fit:{a:"4-2-3-1：左中卫首选（左脚）", b:"4-3-3：同", c:"三中卫：左中卫出球+上抢双角色"}},
+  {n:"马奎尔", num:5, line:"右脚拖后保镖 · 定位球双武器", data:"上季 74场6球3助",
+   plus:["英超顶级争顶点，攻防定位球都是威胁","低位块里仍是可靠兜底","右脚出球稳健+更衣室价值"],
+   minus:["转身速度：高位线里是风险","年龄与合同年"],
+   fit:{a:"4-2-3-1：低位块比赛的首选中卫（右中卫/居中）", b:"4-3-3：轮换", c:"三中卫：居中清道夫——他最适合的形状"}},
+  {n:"约罗", num:15, line:"出球型年轻中卫 · 右中卫的未来", data:"两季 75场1球1助",
+   plus:["预判+脚下是同龄人顶级，敢带球破压迫","回追速度中上","两季75场的信任度"],
+   minus:["对抗还在增肌","定位球防守经验"],
+   fit:{a:"4-2-3-1：右中卫，德利赫特搭档", b:"4-3-3：同", c:"三中卫：右中卫组织推进"}},
+  {n:"卢克·肖", num:23, line:"左脚多面手 · LB/CB轮换", data:"上季 58场1球2助",
+   plus:["顺足左后卫里传中顶级","客串左中卫出球舒服","定位球防线价值"],
+   minus:["31岁+伤病史=出勤风险","持续跑动能力下降"],
+   fit:{a:"4-2-3-1：LB轮换/低位块首选", b:"4-3-3：LB轮换", c:"三中卫：左中卫"}},
+  {n:"多古", num:13, line:"右脚左翼卫 · 冲击型毛坯", data:"上季 57场5球7助",
+   plus:["直线冲击+往返是天赋，5球7助产量在线","21岁仍在涨价","右脚踢左路的内切护球顺脚"],
+   minus:["逆足传中质量打折","四后卫的边路防守站位还在学","技术细节粗糙"],
+   fit:{a:"4-2-3-1：LB——放这里模拟器会给两条警告（逆足+站位习惯），低位块比赛慎用", b:"4-3-3：LW可用（右脚内切型）", c:"三中卫：左翼卫——他的天然位置，体系首选"}},
+  {n:"海文", num:26, line:"左脚出球中卫 · 防线未来拼图", data:"上季 31场",
+   plus:["左脚+敢上抢+出球冷静的稀缺组合","20岁两季31场的轮换量","中卫/左后卫双能"],
+   minus:["对抗和防空待长","大赛零经验"],
+   fit:{a:"4-2-3-1：LB/LCB轮换——左脚属性让左侧出球升级", b:"4-3-3：LCB轮换", c:"三中卫：左中卫首选之一"}},
+  {n:"阿玛斯", num:41, line:"左脚青年左后卫", data:"上季 8场",
+   plus:["顺足左脚LB","传中和往返有模有样"],
+   minus:["防守对抗是下一课","经验空白"],
+   fit:{a:"4-2-3-1：LB第四选择/杯赛", b:"4-3-3：同", c:"三中卫：左翼卫备胎"}}]},
+ {g:"中场", items:[
+  {n:"巴莱巴", num:20, line:"强力6/8 · 单6位置的长期答案", data:"新援（布莱顿，6500万欧）",
+   plus:["扫荡范围大：抢断+横移覆盖是6号位稀缺品","带球破压迫——后腰里少见的推进技能","远射有货，22岁上限未到"],
+   minus:["大赛经验浅","出球选择偶有毛糙","黄油手?不存在的，但状态波动是年轻人的常态"],
+   fit:{a:"4-2-3-1：正印6号（破坏+推进），或双后腰之一", b:"4-3-3：单6——他的天然形态", c:"三中卫：双中场里的扫荡者"}},
+  {n:"A.桑托斯", num:17, line:"带球型后腰 · 6/8摇摆", data:"新援（6场）",
+   plus:["后场带球推进+肋部后插上射门","巴西国奥核心的底子","和巴莱巴构成中场未来的AB面"],
+   minus:["防守站位经验少","对抗强度英超级待验证"],
+   fit:{a:"4-2-3-1：双后腰之一/轮换", b:"4-3-3：8号轮换", c:"三中卫：中场自由人"}},
+  {n:"蒂勒曼斯", num:18, line:"组织型8 · 调度+远射+定位球", data:"新援（9场2助）",
+   plus:["对角转移和肋部直塞是欧洲顶级","远射+任意球双武器","大赛经验丰富（比利时核心）"],
+   minus:["防守横移是短板——需要扫荡型搭档","回追速度一般"],
+   fit:{a:"4-2-3-1：右8（组织型），与巴莱巴组成标准双后腰", b:"4-3-3：8号", c:"三中卫：中场出球点"}},
+  {n:"B费", num:8, line:"队长 · 现代10/回撤后腰 · 全队轴心", data:"两季 105场35球41助",
+   plus:["直塞+对角+远射三件套仍是英超顶配","负荷与产出的双重奇迹","压迫发起点和更衣室领袖"],
+   minus:["回撤后腰的防守落位习惯","32岁的负荷管理"],
+   fit:{a:"4-2-3-1：10号或回撤双后腰（卡里克用法）", b:"4-3-3：右8/前腰", c:"三中卫：双10之一（阿莫林用法）"}},
+  {n:"梅努", num:37, line:"节奏型8 · 两闸之间的转身摆脱", data:"上季 77场3球6助",
+   plus:["压迫下转身天赋级","小范围摆脱像老将","21岁+两届大赛经验"],
+   minus:["防守强度和覆盖待涨","射门终结偏保守"],
+   fit:{a:"4-2-3-1：左8（组织型），巴莱巴保护", b:"4-3-3：8号轮转", c:"三中卫：中场轮换"}},
+  {n:"芒特", num:7, line:"无球型10 · 体系粘合剂", data:"上季 58场8球2助",
+   plus:["不占球权+逼抢积极+肋部后插上","多位置：10/8/两翼都能补","健康季产出稳定"],
+   minus:["持球创造非顶级","巅峰期伤病阴影"],
+   fit:{a:"4-2-3-1：10号轮换/双10变体", b:"4-3-3：左8", c:"三中卫：双10之一"}},
+  {n:"乌加特", num:25, line:"破坏型6（重伤报销中）", data:"上季 72场2球6助 · 赛季报销",
+   plus:["抢断凶狠+覆盖大","压迫强度联盟级"],
+   minus:["重伤复出后状态未知","出球简单","面临巴莱巴/桑托斯的位置竞争"],
+   fit:{a:"4-2-3-1：复出后轮换6号", b:"4-3-3：单6轮换", c:"三中卫：双中场扫荡者"}},
+  {n:"弗莱彻 / J.弗莱彻", num:"39/38", line:"青年双胞胎中场", data:"合计 6场",
+   plus:["青训血统+传球选择成熟","杯赛轮换储备"],
+   minus:["身体和经验都在起步期"],
+   fit:{a:"4-2-3-1：杯赛轮换", b:"—", c:"—"}}]},
+ {g:"锋线", items:[
+  {n:"库尼亚", num:10, line:"自由人10 · 前场第一持球点", data:"上季 46场12球4助",
+   plus:["背身做墙+拉边爆点+远射的全能自由人","肋部小配合的发起者","巴西籍前场的高级串联"],
+   minus:["防守参与度一般","情绪管理偶有波动"],
+   fit:{a:"4-2-3-1：10号主人，或LW", b:"4-3-3：LW内切（右脚）", c:"三中卫：双10之一（组织侧）"}},
+  {n:"姆贝乌莫", num:19, line:"左脚右路 · 内切爆射+定位球", data:"上季 44场15球4助",
+   plus:["内切爆射+定位球+满场跑动","出勤最稳的攻击手","右肋与萨卡同流派"],
+   minus:["背身参与有限","左路逆足效果打折"],
+   fit:{a:"4-2-3-1：RW铁主力", b:"4-3-3：RW", c:"三中卫：双10之一（无球钻肋侧）"}},
+  {n:"谢什科", num:30, line:"支点9 · 背身做墙+争顶", data:"上季 38场14球1助",
+   plus:["身高+机动性的现代支点","给二线当墙+禁区内争顶","23岁持续上涨曲线"],
+   minus:["终结稳定性待验证","回撤组织不如凯恩式细腻"],
+   fit:{a:"4-2-3-1：9号铁主力——他往哪顶，双10往哪钻", b:"4-3-3：9号", c:"三中卫：单箭头"}},
+  {n:"迪亚洛", num:16, line:"左脚右路 · 小快灵+翼卫两栖", data:"两季 80场14球11助",
+   plus:["全队出场最多：耐操+多位置","小空间变向+倒三角回做","翼卫经验让防守参与度高于普通边锋"],
+   minus:["禁区冲击力一般","逆足左路效果未知"],
+   fit:{a:"4-2-3-1：RW轮换/LW尝试", b:"4-3-3：RW轮换", c:"三中卫：右翼卫——他踢过且好用"}},
+  {n:"拉什福德", num:9, line:"右脚左路 · 直线爆点回归", data:"上季 31场7球3助",
+   plus:["纵向速度打身后仍是英超顶级资产","低位块比赛里的唯一「身后」威胁","本土户口+青训情怀加成"],
+   minus:["状态稳定性是老问题","防守参与度低","无球跑动偏懒散"],
+   fit:{a:"4-2-3-1：LW——低位块对手时首发价值最大", b:"4-3-3：LW", c:"三中卫：LW/双10（不推荐）"}},
+  {n:"齐尔克泽", num:11, line:"伪9/二前锋 · 回撤做球流", data:"两季 81场9球3助",
+   plus:["回撤组织再冲禁区的战术变体钥匙","脚下细腻，1米93能做墙","战术多样性提供者"],
+   minus:["纯禁区内抢点不是他的活","终结效率一般"],
+   fit:{a:"4-2-3-1：伪9变体（库尼亚拉边/谢什科轮休时）", b:"4-3-3：9号轮换", c:"三中卫：双前锋之一"}},
+  {n:"莱西", num:31, line:"青训攻击手 · 肋部小空间", data:"上季 4场1球",
+   plus:["左脚肋部创造","杯赛已开张"],
+   minus:["对抗和经验起步期"],
+   fit:{a:"4-2-3-1：杯赛轮换", b:"—", c:"—"}}]}
+];
+
+const UTD_COMBOS = [
+ {t:"巴莱巴 + 蒂勒曼斯（6+8）· 现代标准双后腰", who:"巴莱巴#20 · 蒂勒曼斯#18",
+  jobs:["巴莱巴（6）：横向扫荡剥夺球权、由守转攻的第一推进、护球扛人","蒂勒曼斯（8）：掌控节奏、肋部直塞、后插上远射、定位球主罚"],
+  sync:"互补点：巴莱巴横移补蒂勒曼斯丢球后的身后台账；蒂勒曼斯用精准长传把巴莱巴抢下来的球权变成进攻。攻守分工=一人管「抢回来」，一人管「打出去」。",
+  weak:"双右脚组合：向左的对角转移靠蒂勒曼斯逆足，质量打折；两人都不快，怕被速度型双前锋冲身后——高位线慎用。"},
+ {t:"巴莱巴 + B费回撤（卡里克现方案）", who:"巴莱巴#20 · B费#8",
+  jobs:["B费：全部组织权重——出球、直塞、对角、远射","巴莱巴：B费的保镖——扫荡+补位+推进分担"],
+  sync:"比「B费+梅努」版本防守升级一档：巴莱巴的覆盖让B费可以放心压上组织。进攻发起点仍是B费一人。",
+  weak:"B费防守落位习惯一般，攻转守的弧顶保护依赖巴莱巴一人横移——他要是被拉走，弧顶就是空的（曼联被远射的病根）。"},
+ {t:"桑托斯 + 梅努（双青年8）", who:"A.桑托斯#17 · 梅努#37",
+  jobs:["两人轮流持球推进+轮流落位，动态分工"],
+  sync:"双持球点让压迫防不胜防：桑托斯从深位带出去，梅努在两闸之间转身，压迫方的围抢永远慢一步。控球局的答案。",
+  weak:"双青年=防守强度和经验双重存疑，硬仗慎用；两人都不是天然破坏者，需要边后卫回收帮忙。"},
+ {t:"谢什科 + 库尼亚（支点+自由人）", who:"谢什科#30 · 库尼亚#10",
+  jobs:["谢什科：背身做墙+争顶第一点+拉边带走中卫","库尼亚：钻他拉出来的肋部空间+远射+回撤串联"],
+  sync:"经典「9回撤、10插上」联动：谢什科回撤做墙时对方中卫跟不跟？跟→库尼亚插身后；不跟→谢什科转身面框。进攻的二段发动机。"},
+  {t:"谢什科 + 姆贝乌莫/B费（右肋直塞链）", who:"谢什科#30 · 姆贝乌莫#19 · B费#8",
+  jobs:["B费：对角与身后直塞的发牌员","姆贝乌莫：肋部接应+内切爆射","谢什科：做墙+冲身后+争顶二点"],
+  sync:"三人在右肋形成「传-接-插」的三角：B费直塞→谢什科做墙→姆贝乌莫后插上爆射，是训练场上就该磨的固定套路。"},
+ {t:"齐尔克泽伪9 + 库尼亚（无锋变体）", who:"齐尔克泽#11 · 库尼亚#10",
+  jobs:["齐尔克泽：回撤到中场当第三组织者","库尼亚：顶上伪9位，攻击重心前移"],
+  sync:"对方中卫不敢跟出来时，齐尔克泽在中场制造5v4人数优势；敢跟→身后给库尼亚。破高位压迫和破低位块通吃的变体。",
+  weak:"两人都不是禁区终结者——需要姆贝乌莫/迪亚洛的后插上补终结，进球分布会分散。"},
+ {t:"拉什福德 + 多古/肖（左路走廊）", who:"拉什福德#9 · 多古#13 / 肖#23",
+  jobs:["拉什福德：内切爆射+冲身后","多古：套边下底（逆足传中打折）或 肖：顺足传中"],
+  sync:"一内一外标准操作：拉什福德内切带走左后卫，多古/肖套边传中；反向时拉什福德拉边，边后卫内收当第二后腰。",
+  weak:"多古的逆足传中是这条走廊的短板——需要传中的比赛用肖，需要速度的比赛用多古，按对手切换。"},
+ {t:"迪亚洛 + 达洛特（右路一内一外）", who:"迪亚洛#16 · 达洛特#2",
+  jobs:["迪亚洛：左脚内切+倒三角","达洛特：套边下底传中+压上宽度"],
+  sync:"曼联右路的默认走廊：迪亚洛内切时达洛特承包边线，迪亚洛落位防守时达洛特敢压——两人互相掩护的意识已成默契。"},
+ {t:"德利赫特 + 海文/约罗（一抢一保+左右脚）", who:"德利赫特#4 · 海文#26 / 约罗#15",
+  jobs:["德利赫特：上抢缠斗+争顶","海文/约罗：出球+兜底回追"],
+  sync:"德利赫特前顶后的身后由速度更快的搭档补；左右脚搭配（右+左）让出球线路两翼均衡，破压迫时安全出口翻倍。"},
+ {t:"三中卫预案（若换帅回三中卫）", who:"德利赫特 · L.马丁内斯 · 约罗 + 翼卫多古/达洛特",
+  jobs:["L.马丁内斯：左中卫出球+上抢","德利赫特：右中卫上抢","约罗：居中清道夫","多古/达洛特：双翼卫永动机"],
+  sync:"人手竟然齐：左中卫左脚（L.马丁内斯/海文）、翼卫有两栖（达洛特/多古/迪亚洛）、双10现成（B费/库尼亚/芒特）——阿莫林的体系其实留下了适配的骨架。"},
+ {t:"换帅预案：高压型教练（克洛普式）", who:"全员体能测试",
+  jobs:["能跑的先上：巴莱巴、桑托斯、梅努、迪亚洛、多古、达洛特、谢什科（压迫合格）"],
+  sync:"高位压迫体系的入场券是跑动：卡里克这套控球班底里，上面几人可以无缝切换；负荷大的老将（B费/马奎尔/肖）需要轮换制度配套。",
+  weak:"B费的逼抢参与度和马奎尔的高位线是天然矛盾——真来了克洛普式教练，中轴线要换血。"},
+ {t:"换帅预案：控制型教练（瓜系）", who:"出球组",
+  jobs:["齐尔克泽伪9+海文/约罗出球中卫+马兹拉维内收+拉门斯+1"],
+  sync:"瓜系需要的是「每个人都会传球」：这套人手的后场出球能力其实超配——卡里克买人时已经按控球逻辑买了。"},
+ {t:"换帅预案：防反型教练（穆氏/西蒙尼式）", who:"速度+硬度组",
+  jobs:["拉什福德+谢什科双箭头+巴莱巴/乌加特双破坏6+低位块中卫（马奎尔/L.马丁内斯/德利赫特）"],
+  sync:"摆低块打转换：把球权让出去，靠拉什福德/谢什科的速度打身后+定位球——这套人打防反的上限取决于双前锋的效率。"}
+];
+
+const UTD_BACKUP_NOTE = "以上预案不是猜测教练是谁，而是确认「这套阵容在每个体系下的适配选项」——教练会换，人手清单和适配逻辑不会过期。模拟器里 6 种阵型随时可以实验。";
+
+
+/* =========================================================
+   对位引擎 v4.1
+   L1 球员本体(players.js) · L2 体系(教练/阵型) · L3 比赛态
+   ========================================================= */
+'use strict';
+var ALIAS={'维拉':'阿斯顿维拉','森林':'诺丁汉森林','纽卡':'纽卡斯尔','纽卡斯尔':'纽卡斯尔'};
+function norm(c){return ALIAS[c]||c;}
+
+var POOL={};
+PLAYERS.forEach(function(p){ var c=norm(p.club); if(!c||c.indexOf('离开')>=0) return;
+  (POOL[c]=POOL[c]||[]).push(p); });
+var byName={}; PLAYERS.forEach(function(p){ byName[p.n]=p; });
+
+var TEAMS=['曼联','曼城','阿森纳','利物浦','热刺','切尔西','阿斯顿维拉','纽卡斯尔',
+           '诺丁汉森林','埃弗顿','水晶宫','布莱顿','布伦特福德','伯恩茅斯','富勒姆',
+           '利兹联','桑德兰','考文垂','伊普斯维奇','赫尔城'];
+var GROUPS=[{t:'BIG6',list:['曼城','阿森纳','利物浦','切尔西','热刺']},
+            {t:'其余英超球队',list:['阿斯顿维拉','纽卡斯尔','布莱顿','富勒姆','布伦特福德','水晶宫','埃弗顿','诺丁汉森林']},
+            {t:'升班马',list:['伯恩茅斯','利兹联','桑德兰','考文垂','伊普斯维奇','赫尔城']}];
+var CARD={}; PL20.forEach(function(t){CARD[t.name]=t;});
+
+/* ---------------- L2 体系层：换帅只改这里 ---------------- */
+var FORM_SEL={};
+var FORM_OVERRIDE={'曼联':'4-2-3-1','曼城':'4-3-3','阿森纳':'4-3-3','利物浦':'4-3-3','热刺':'3-4-2-1'};
+var STYLE_FIX={
+ '曼联':{press:2,control:3,direct:2,low:1},
+ '曼城':{press:2,control:4,direct:1,low:0},
+ '阿森纳':{press:3,control:3,direct:1,low:1},
+ '利物浦':{press:4,control:2,direct:3,low:1},
+ '热刺':{press:2,control:4,direct:1,low:1}
+};
+var PREFERRED={
+ '曼联':{form:'4-2-3-1',xi:['拉门斯','达洛特','德利赫特','L.马丁内斯','多古','巴莱巴','蒂勒曼斯','姆贝乌莫','B费','库尼亚','谢什科']},
+ '曼城':{form:'4-3-3',xi:['多纳鲁马','里科·刘易斯','斯通斯','鲁本·迪亚斯','格瓦迪奥尔','恩佐','埃利奥特·安德森','科瓦契奇','恩迪亚耶','哈兰德','多库']},
+ '阿森纳':{form:'4-3-3',xi:['拉亚','廷贝尔','萨利巴','加布里埃尔','卡拉菲奥里','苏比门迪','赖斯','厄德高','萨卡','约克雷斯','埃泽']},
+ '利物浦':{form:'4-3-3',xi:['阿利松','布拉德利','科纳特','范戴克','罗伯逊','格拉文贝赫','麦卡利斯特','维尔茨','萨拉赫','伊萨克','巴尔克拉']}
+};
+
+var FORMS={
+ '4-2-3-1':[['GK',50,90],['RB',84,72],['CB',62,77],['CB',38,77],['LB',16,72],
+            ['DM',62,55],['DM',38,55],['RW',84,34],['AM',50,38],['LW',16,34],['ST',50,14]],
+ '4-3-3':[['GK',50,90],['RB',84,72],['CB',62,77],['CB',38,77],['LB',16,72],
+          ['CM',70,54],['DM',50,58],['CM',30,54],['RW',82,30],['ST',50,14],['LW',18,30]],
+ '3-4-2-1':[['GK',50,90],['CB',70,77],['CB',50,80],['CB',30,77],
+            ['RWB',88,54],['CM',62,54],['CM',38,54],['LWB',12,54],
+            ['AM',64,32],['AM',36,32],['ST',50,12]],
+ '4-4-2':[['GK',50,90],['RB',84,74],['CB',62,78],['CB',38,78],['LB',16,74],
+          ['RM',84,50],['CM',62,52],['CM',38,52],['LM',16,50],['ST',62,18],['ST',38,18]],
+ '4-1-4-1':[['GK',50,90],['RB',84,74],['CB',62,78],['CB',38,78],['LB',16,74],
+            ['DM',50,60],['RM',84,42],['CM',62,44],['CM',38,44],['LM',16,42],['ST',50,16]],
+ '3-1-6':[['GK',50,90],['CB',70,78],['CB',50,81],['CB',30,78],['DM',50,60],
+          ['LW',10,30],['AM',68,32],['AM',32,32],['RW',90,30],['ST',44,14],['ST',58,14]]
+};
+var POSS_FORMS={
+ '3-1-6':[['GK',50,92],['CB',72,80],['CB',50,82],['CB',28,80],['DM',50,56],
+          ['LW',10,26],['AM',68,28],['AM',32,28],['RW',90,26],['ST',44,12],['ST',58,12]],
+ '4-2-3-1':[['GK',50,92],['RB',88,44],['CB',70,80],['CB',50,82],['LB',12,44],
+            ['DM',62,60],['DM',38,60],['RW',80,26],['AM',50,34],['LW',20,26],['ST',50,12]],
+ '4-3-3':[['GK',50,92],['RB',88,42],['CB',62,80],['CB',38,80],['LB',12,42],
+          ['CM',70,52],['DM',50,62],['CM',30,52],['RW',80,24],['ST',50,12],['LW',20,24]],
+ '3-4-2-1':[['GK',50,92],['CB',72,80],['CB',50,82],['CB',28,80],
+            ['RWB',88,46],['CM',62,58],['CM',38,58],['LWB',12,46],
+            ['AM',64,30],['AM',36,30],['ST',50,12]],
+ '4-4-2':[['GK',50,92],['RB',86,50],['CB',62,80],['CB',38,80],['LB',14,50],
+          ['RM',84,44],['CM',60,54],['CM',40,54],['LM',16,44],['ST',60,20],['ST',40,20]],
+ '4-1-4-1':[['GK',50,92],['RB',88,44],['CB',62,80],['CB',38,80],['LB',12,44],
+            ['DM',50,62],['RM',84,40],['CM',62,48],['CM',38,48],['LM',16,40],['ST',50,16]]
+};
+var ADJ={RB:['RWB','CB','RM','LB'],LB:['LWB','CB','LM','RB'],RWB:['RB','RM','RW'],LWB:['LB','LM','LW'],
+  CB:['DM','RB','LB'],DM:['CM','CB'],CM:['DM','AM'],AM:['CM','RW','LW','ST'],
+  RW:['LW','AM','RWB','RM'],LW:['RW','AM','LWB','LM'],ST:['AM','RW','LW'],RM:['RW','RB'],LM:['LW','LB','GK']};
+var GRP={GK:'门',RB:'卫',CB:'卫',LB:'卫',RWB:'卫',LWB:'卫',DM:'中',CM:'中',AM:'中',RM:'中',LM:'中',RW:'锋',LW:'锋',ST:'锋'};
+
+/* ---------------- L3 比赛态 ---------------- */
+var S={home:'曼联',away:'曼城',minute:0,hs:0,as:0,
+       lineup:{},status:{},events:[],lastDiff:null,snap:null,
+       tactic:{},poss:{},subMark:{}};
+function taxOf(t){ return S.tactic[t]||'bal'; }
+function possOn(t){ return !!S.poss[t]; }
+function setTax(team,v){ S.tactic[team]=v; renderAll(); }
+var KEEP={};
+function toggleDesperate(team){
+  if(formOf(team)==='3-1-6'){
+    var k=KEEP[team];
+    FORM_SEL[team]=k&&k.form?k.form:(PREFERRED[team]?PREFERRED[team].form:'4-2-3-1');
+    changeForm(team,FORM_SEL[team]);
+    if(k&&k.lineup) S.lineup[team]=k.lineup.slice();
+    renderAll();
+  }else{
+    KEEP[team]={form:formOf(team),lineup:(S.lineup[team]||[]).slice()};
+    changeForm(team,'3-1-6');
+    S.tactic[team]='atk'; renderAll();
+  }
+}
+function togglePoss(team){ S.poss[team]=!S.poss[team]; renderAll(); }
+
+function formOf(name){
+  if(FORM_SEL[name]) return FORM_SEL[name];
+  if(FORM_OVERRIDE[name]) return FORM_OVERRIDE[name];
+  var t=CARD[name]; if(!t) return '4-2-3-1';
+  var m=(t.sys||'').match(/(\d(?:-\d){1,3})/); return m?m[1]:'4-2-3-1';
+}
+function coachOf(t){ var c=CARD[t]; return c?(c.mgr||'以官网为准'):'—'; }
+function styleOf(name){
+  if(STYLE_FIX[name]) return Object.assign({},STYLE_FIX[name]);
+  var t=CARD[name]; if(!t) return {press:2,control:2,direct:2,low:1};
+  var s=(t.sys||'')+(t.threat||'');
+  return {press:/高压|压迫|逼抢|疯狗/.test(s)?3:2,
+          control:/控球|围攻|渗透|推进/.test(s)?3:2,
+          direct:/转换|反击|直接|长传/.test(s)?3:1,
+          low:/低块|低位|摆好|挨打/.test(s)?3:1};
+}
+
+/* ---------------- 阵容 ---------------- */
+function hurt(p){ return !!(p.status&&/伤|报销|停赛/.test(p.status)); }
+function scoreFor(p,slot){
+  var sc=0;
+  if(p.pos.indexOf(slot)>=0){ sc+=10; if(p.pos[0]===slot) sc+=3; }
+  else if(p.pos.some(function(x){return (ADJ[slot]||[]).indexOf(x)>=0;})) sc+=4;
+  else if(p.pos.some(function(x){return GRP[x]===GRP[slot];})) sc+=1;
+  else sc-=8;
+  if(p.a) sc+=(p.a.sta||70)/25;
+  return sc;
+}
+function autoLineup(team){
+  var form=formOf(team), slots=FORMS[form]||FORMS['4-2-3-1'];
+  var pref=PREFERRED[team];
+  if(pref&&pref.form===form&&pref.xi.length===slots.length&&
+     pref.xi.every(function(n){return byName[n]&&norm(byName[n].club)===team;})) return pref.xi.slice();
+  var list=(POOL[team]||[]).filter(function(p){return !hurt(p);}).slice()
+    .sort(function(a,b){return (b.a?1:0)-(a.a?1:0);});
+  if(list.length<11) list=(POOL[team]||[]).slice();
+  var used={},out=[];
+  slots.forEach(function(sl){
+    var best=null,bs=-99;
+    list.forEach(function(p){ if(used[p.n])return; var sc=scoreFor(p,sl[0]);
+      if(sc>bs){bs=sc;best=p;} });
+    if(best&&bs>0){used[best.n]=1;out.push(best.n);} else out.push(null);
+  });
+  return out;
+}
+function changeForm(team,form){
+  if(!FORMS[form]) return;
+  FORM_SEL[team]=form;
+  var slots=FORMS[form];
+  var keep=(S.lineup[team]||[]).filter(Boolean).map(function(n){return byName[n];}).filter(Boolean);
+  var all=(POOL[team]||[]).filter(function(p){return !hurt(p);});
+  var used={},out=[];
+  slots.forEach(function(sl){
+    var kb=-99,keepBest=null;
+    keep.forEach(function(p){ if(used[p.n])return; var sc=scoreFor(p,sl[0]);
+      if(sc>kb){kb=sc;keepBest=p;} });
+    var pb=-99,poolBest=null;
+    all.forEach(function(p){ if(used[p.n])return; var sc=scoreFor(p,sl[0]);
+      if(sc>pb){pb=sc;poolBest=p;} });
+    var best=keepBest,bs=kb;
+    if(poolBest&&pb>kb+1){best=poolBest;bs=pb;}
+    if(best&&bs>0){used[best.n]=1;out.push(best.n);} else out.push(null);
+  });
+  S.lineup[team]=out;
+  log('form',team,form);
+  S.lastDiff=null;
+  renderAll(); save();
+}
+
+/* ---------------- 指标 ---------------- */
+var TG=function(p){return p.tags||[];};
+function hasT(p,arr){ if(!p) return false; return arr.some(function(t){return TG(p).indexOf(t)>=0;}); }
+function stOf(n){ return S.status[n]||'ok'; }
+var STMOD={hot:{wing:1,mid:1,behind:1},ok:{},low:{wing:-1,mid:-1,behind:-1},
+           inj:{air:-1,mid:-1},yellow:{def:-1,wing:-1},
+           out:{def:-3,wing:-3,mid:-3,behind:-3,air:-3}};
+function metrics(names){
+  var m={wing:0,mid:0,behind:0,air:0,build:0,press:0,def:0};
+  (names||[]).filter(Boolean).forEach(function(n){
+    var p=byName[n]; if(!p) return;
+    var mod=STMOD[stOf(n)]||{};
+    if(hasT(p,['逆足内切','顺足下底'])) m.wing+=2+(mod.wing||0);
+    if(hasT(p,['内锋','翼卫'])) m.wing+=1;
+    if(hasT(p,['破坏型','B2B'])) m.mid+=2+(mod.mid||0);
+    if(hasT(p,['组织8','拖后组织','节拍器','现代10','自由10','伪10'])) m.mid+=1+(mod.mid||0);
+    if(hasT(p,['逼抢9','全能9','抢点型'])) m.behind+=1+(mod.behind||0);
+    if(/爆点|速度|冲击|反击|突/.test(p.st||'')) m.behind+=1+(mod.behind||0);
+    if(p.a&&p.a.air) m.air+=p.a.air/10+(mod.air||0);
+    else if(hasT(p,['争顶型','支点'])) m.air+=7+(mod.air||0);
+    if(hasT(p,['出球型','拖后组织','清球型','节拍器'])) m.build+=1;
+    if(hasT(p,['破坏型','逼抢9','B2B'])) m.press+=1;
+    var g0=(p.pos||[])[0];
+    if(GRP[g0]==='卫'){ m.def+=1+(mod.def||0); if(hasT(p,['上抢型','对抗型','回追型','套边型'])) m.def+=1; }
+  });
+  return m;
+}
+function airOf(p){
+  if(p.a&&p.a.air) return p.a.air/10;
+  if(hasT(p,['争顶型'])) return 8.5;
+  if(hasT(p,['支点'])) return 7.5;
+  return 4;
+}
+function slotMap(lineup,form){
+  var slots=FORMS[form]||FORMS['4-2-3-1'],o={};
+  (lineup||[]).forEach(function(n,i){ if(n&&slots[i]) (o[slots[i][0]]=o[slots[i][0]]||[]).push(n); });
+  return o;
+}
+
+
+/* ---------------- 术语词典（白话版） ---------------- */
+var TERMS={
+ '弧顶':{d:'禁区前面那条弧线的正中央。这里是远射最舒服的位置，也是后腰必须站住的地方——没人站，对面就能随便远射。',pos:'禁区正前方',ex:'曼联被远射打穿，基本都是弧顶没人。'},
+ '肋部':{d:'中卫和边后卫之间那条竖着的缝。既不算边路也不算中路，是防守最难受的地方——两个人都会以为"这是他的"。',pos:'禁区两侧的斜向区域',ex:'边锋内切就是往肋部钻。'},
+ '半空间':{d:'就是肋部，同一个东西的不同叫法。',pos:'同肋部',ex:'—'},
+ '逆足':{d:'右脚球员踢左边、左脚球员踢右边。好处是内切射门顺脚，坏处是下底传中要用非惯用脚。',pos:'边路',ex:'姆贝乌莫左脚踢右路=逆足。'},
+ '逆足内切':{d:'逆足球员拿球后往球场中间切，寻找射门角度。防守方最怕这个，因为你以为他会下底。',pos:'禁区角',ex:'萨拉赫、姆贝乌莫的招牌。'},
+ '顺足下底':{d:'右脚球员在右路往底线走，然后用惯用脚传中。传统边锋打法。',pos:'底线附近',ex:'多库。'},
+ '套边':{d:'边后卫从边锋的外侧绕过去插上，形成二打一。英文 overlap。',pos:'边线外侧',ex:'达洛特压上就是套边。'},
+ '内收':{d:'边后卫不站边线，往中路站，变成中场人数优势。曼城、阿森纳最爱这么踢。',pos:'中场偏边',ex:'里科·刘易斯内收。'},
+ '低位块':{d:'全队退到自家半场，排成两条横线，把中路堵死，让对手在外围倒脚。也叫"摆大巴"。',pos:'自家禁区前沿',ex:'诺丁汉森林的标准打法。'},
+ '高位压迫':{d:'在对方半场就开始抢，不让对手舒服出球。费体力，但抢下来就是单刀。',pos:'对方禁区到中场',ex:'利物浦、布莱顿。'},
+ '转换':{d:'抢断成功或丢球后那 3–5 秒。全队攻守角色瞬间对调，是一场比赛最容易进球也最容易丢球的时刻。',pos:'全场',ex:'"被打转换"= 你刚压上去，球丢了，身后一片空。'},
+ '反抢':{d:'丢球后不退回防守，而是立刻在原地抢回来。克洛普、瓜迪奥拉都强调这个。',pos:'丢球点附近',ex:'—'},
+ '第二落点':{d:'第一点头球或解围之后，球落到哪、谁抢到。这个比第一点更决定比赛。',pos:'禁区前沿、中场',ex:'"抢第二落点"= 混战里谁更凶。'},
+ '支点':{d:'中锋背对球门拿球，用身体挡住后卫，把球做给队友。作用像墙。',pos:'中圈到禁区之间',ex:'谢什科就是支点型。'},
+ '伪9':{d:'中锋不回禁区，反而回撤到中场拿球，把对方中卫引出来，给队友制造身后空间。',pos:'中场偏前',ex:'齐尔克泽、菲尔米诺。'},
+ 'B2B':{d:'box-to-box，两个禁区之间来回跑的中场。既能抢又能插上。',pos:'全场',ex:'巴莱巴、B费回撤时都算。'},
+ '6号位':{d:'后腰。站在后卫线前面，负责拦截和出球。',pos:'中圈后方',ex:'巴莱巴。'},
+ '8号位':{d:'中场，介于后腰和前腰之间，要能跑、能传、能插上。',pos:'中场',ex:'蒂勒曼斯、梅努。'},
+ '10号位':{d:'前腰。负责最后一传和创造力。',pos:'对方禁区弧顶',ex:'B费。'},
+ '3-2-5':{d:'有球进攻时的站位：3 个后卫 + 2 个后腰 + 5 个人压在前场。现代控球队的标准形状。',pos:'全场',ex:'曼联有球形态就是这个。'},
+ '出球':{d:'从后场把球传出去，突破对方的第一道压迫。英文 build-up。',pos:'自家禁区到中场',ex:'出球被锁死，就只能开大脚。'},
+ '制空':{d:'高空球的争顶能力。角球、任意球、长传都靠这个。',pos:'禁区',ex:'马奎尔制空 90。'},
+ '定位球':{d:'角球、任意球、界外球这类"死球"机会。英超三成进球来自定位球。',pos:'全场',ex:'阿森纳是英超定位球第一。'},
+ '弱侧':{d:'球不在的那一边。进攻时把球转到弱侧，往往能打对手一个措手不及。',pos:'球场的另一边',ex:'—'},
+ '二点球':{d:'同"第二落点"。',pos:'—',ex:'—'},
+ '双后腰':{d:'两个后腰并排站。防守更稳，但进攻人数会少一个。',pos:'中圈后方',ex:'4-2-3-1 的基础。'},
+ '边翼卫':{d:'三中卫体系里负责整条边路的人，既要防守也要进攻，跑动量最大。',pos:'边线',ex:'多古、达洛特在三中卫里就是翼卫。'},
+ '直塞':{d:'贴着地面、穿过防线缝隙的传球，直接给到身后的队友。',pos:'防线身后',ex:'B费的招牌。'},
+ '对抗':{d:'身体接触时的强度。英超最看重这个。',pos:'全场',ex:'—'},
+ '禁区六码区':{d:'门将前面那块小禁区，抢点最危险的位置。',pos:'球门前',ex:'—'}
+};
+
+/* ---------------- 分析 ---------------- */
+var STMARK={hot:'🔥',low:'😑',inj:'🤕',yellow:'🟨',out:'⛔'};
+function mk(n){ return STMARK[stOf(n)]||''; }
+function statusLine(n){
+  var s=stOf(n); var p=byName[n];
+  if(!p||s==='ok') return '';
+  if(s==='yellow') return `（${p.n} 已吃黄牌，防守动作会收）`;
+  if(s==='inj') return `（${p.n} 带伤，覆盖面积下降）`;
+  if(s==='low') return `（${p.n} 状态低迷）`;
+  if(s==='hot') return `（${p.n} 状态火爆）`;
+  return '';
+}
+
+function analyze(){
+  var H=S.home,A=S.away,hf=formOf(H),af=formOf(A);
+  var hl=S.lineup[H]||autoLineup(H), al=S.lineup[A]||autoLineup(A);
+  var hp=slotMap(hl,hf), ap=slotMap(al,af);
+  var hs=styleOf(H), as=styleOf(A);
+  var hLow=Math.max(0,(hs.low||0)-1), hPress=Math.min(5,(hs.press||2)+1);
+  var th=taxOf(H), ta=taxOf(A);
+  var msgs=[];
+
+  /* 0 战术姿态 */
+  var taxTxt=[],taxLvl=0;
+  if(th!=='bal'){ taxTxt.push(th==='atk'
+    ? `${H} 压出去：边后卫会站到中场线，中场投入 +1，但身后空间同步变大`
+    : `${H} 收回来：防线压低、弧顶保护优先，但前场只剩反击点`); taxLvl=Math.max(taxLvl,1); }
+  if(ta!=='bal'){ taxTxt.push(ta==='atk'
+    ? `${A} 压出去：他们会把人数堆到你禁区前沿，你的出球点会被锁死`
+    : `${A} 收回来：他们会让你控球，然后打你的转换`); taxLvl=Math.max(taxLvl,1); }
+  if(possOn(H)) taxTxt.push(`${H} 切到有球形态：中卫拉开、边后卫内收，变成 3-2-5 出球 —— 这时候身后最危险`);
+  if(possOn(A)) taxTxt.push(`${A} 切到有球形态：他们会用 3+2 的结构从后场起球`);
+  if(taxTxt.length) msgs.push({area:'姿态',lvl:taxLvl,c:'infer',
+    txt:taxTxt.join('；')+'。',
+    ev:'姿态是「当时的战术选择」，不是能力值：同一套首发，压出去和收回来是两种风险。'});
+
+  /* 0.5 搏命 */
+  var despH=formOf(H)==='3-1-6', despA=formOf(A)==='3-1-6';
+  if(despH||despA){
+    var who=despH?H:A;
+    msgs.push({area:'搏命',lvl:2,c:'infer',
+      txt:`${who} 切到 3-1-6：三中卫 + 单后腰 + 6 人压上。禁区里人多、二点球密集、定位球价值翻倍，但中场只剩一层——丢球后一次直塞就是单刀。`,
+      ev:'这是「放弃中场换禁区人数」的选择，不是加强进攻，是换一种死法。'});
+    if(despH){ hm.mid-=3; hm.def-=2; hm.wing+=2; hm.behind+=2; }
+    if(despA){ am.mid-=3; am.def-=2; am.wing+=2; am.behind+=2; }
+  }
+
+  /* 1 形态 */
+  if(hLow<=1&&(as.low||0)<=1){
+    msgs.push({area:'形态',lvl:0,
+      txt:`两队都不摆低位（${H} 主场：压迫 +1、低位 −1）→ 控球对攻，回合数多，中场对拼决定谁先崩。`,
+      ev:`体系 ${H} ${CARD[H]?CARD[H].sys:''} ／ ${A} ${CARD[A]?CARD[A].sys:''}`});
+  }else if(hLow<=1&&(as.low||0)>=2){
+    msgs.push({area:'形态',lvl:1,
+      txt:`${A} 会摆低位（${CARD[A]?CARD[A].sys:''}），${H} 主控 → 围攻 vs 一脚捅穿，阵地战不会轻松。`,
+      ev:`低位倾向 ${H}=${hLow} ／ ${A}=${as.low}`});
+  }else{
+    var owner=(hs.control||2)>=(as.control||2)?H:A;
+    msgs.push({area:'形态',lvl:0,
+      txt:`${H} 主场会推到中场（不摆低位），球权重心在 ${owner} 脚下，另一队打转换更划算。`,
+      ev:`控球权重 ${H}=${hs.control} ／ ${A}=${as.control}`});
+  }
+
+  /* 2 边路 */
+  function flank(myTeam,myLu,myForm,opTeam,opLu,opForm){
+    var out=[];
+    [['RB','LW','右路'],['LB','RW','左路']].forEach(function(pr){
+      var fbN=(slotMap(myLu,myForm)[pr[0]]||[])[0], wN=(slotMap(opLu,opForm)[pr[1]]||[])[0];
+      var fb=fbN?byName[fbN]:null, w=wN?byName[wN]:null;
+      if(!w) return;
+      var wIn=hasT(w,['逆足内切']), wWd=hasT(w,['顺足下底']);
+      var fbUp=!!(fb&&hasT(fb,['套边型','攻击型'])&&!hasT(w,['翼卫']));
+      var hc=fb&&stOf(fb.n)==='yellow';
+      if(fbUp&&(wIn||wWd)){
+        out.push({lvl:2,area:pr[2],
+          txt:`${pr[2]}是主战场：${myTeam} 的 ${fb.n} 要压上（套边型），${opTeam} 的 ${w.n} 正好${wIn?'内切吃内线':'下底拉外线'}——来回拉扯${hc?'，而且他刚吃牌不敢做动作':''}。`,
+          ev:`${fb.n} tags=${TG(fb).join('/')} ｜ ${w.n} tags=${TG(w).join('/')} · ${w.foot}脚`});
+      }else if(wIn){
+        out.push({lvl:2,area:pr[2],
+          txt:`${w.n} 内切型（${w.foot||'?'}脚踢${pr[1]}），往肋部钻${fb?'，'+fb.n+'（'+fb.foot+'脚）的内线最吃这套':''}${statusLine(fb?fb.n:'')}。`,
+          ev:`${w.n} tags=${TG(w).join('/')}`});
+      }else if(fbUp){
+        out.push({lvl:2,area:pr[2],
+          txt:`${myTeam} 的 ${fb.n} 是套边型，压上后${pr[2]}身后只剩中卫，${opTeam} 抢下球第一脚就找这里。`,
+          ev:`${fb.n} tags=${TG(fb).join('/')} · st:${fb.st||''}`});
+      }else if(wWd){
+        out.push({lvl:1,area:pr[2],
+          txt:`${w.n} 顺足下底，会把${pr[2]}的边后卫拉到外线，禁区里必须有人抢第二点。`,
+          ev:`${w.n} tags=${TG(w).join('/')}`});
+      }
+    });
+    return out.slice(0,2);
+  }
+  msgs=msgs.concat(flank(H,hl,hf,A,al,af));
+
+  /* 3 中场 */
+  var hm=metrics(hl), am=metrics(al);
+  var d=hm.mid-am.mid+(th==='atk'?1:th==='def'?-1:0)-(ta==='atk'?1:ta==='def'?-1:0);
+  var mids=function(a){ return a.filter(function(n){ var p=n&&byName[n];
+    return p&&(p.pos||[]).some(function(x){return x==='DM'||x==='CM'||x==='AM';}); }).join(' / '); };
+  msgs.push({area:'中场',lvl:d<0?2:(d>0?1:0),
+    txt:d===0?`中场结构打平（${hm.mid} vs ${am.mid}）：谁先输第二落点，谁就被迫退。`
+      :d<0?`中场吃亏（${hm.mid} vs ${am.mid}）：${A} 组织/推进人手更厚，${H} 的双后腰会被拉着横移，弧顶会空。`
+            :`中场占优（${hm.mid} vs ${am.mid}）：${H} 的中场配比更完整，能把节奏压住。`,
+    ev:`${H}：${mids(hl)}\n${A}：${mids(al)}`});
+
+  /* 4 两条锋线 */
+  function lineVsCB(teamName,lu,form,oppName,oppLu,oppForm,label){
+    var stN=(slotMap(lu,form).ST||[])[0]; if(!stN) return null;
+    var st=byName[stN];
+    var cbs=(slotMap(oppLu,oppForm).CB||[]).map(function(n){return byName[n];}).filter(Boolean);
+    if(!cbs.length) return null;
+    var pusher=cbs.filter(function(c){return hasT(c,['上抢型']);})[0];
+    var deeps=cbs.filter(function(c){return hasT(c,['拖后型','回追型']);});
+    var names=cbs.map(function(c){return c.n;}).join('+');
+    if(hasT(st,['支点'])&&pusher)
+      return {lvl:1,area:label,txt:`${st.n} 支点型 9 顶 ${names}：${pusher.n} 是上抢型，会被他背身做墙拉出来，第二落点很难抢${statusLine(st.n)}。`,
+              ev:`${st.n} tags=${TG(st).join('/')} ｜ ${pusher.n} tags=${TG(pusher).join('/')}`};
+    if(hasT(st,['支点'])&&deeps.length)
+      return {lvl:0,area:label,txt:`对面中卫偏拖后（${deeps.map(function(c){return c.n;}).join('+')}）：${st.n} 的做墙压不进去，禁区里人多 → 破局点在外围远射和肋部后插上。`,
+              ev:`${st.n} tags=${TG(st).join('/')}`};
+    if(hasT(st,['抢点型','逼抢9']))
+      return {lvl:1,area:label,txt:`${st.n} 是抢点/逼抢型 9，对 ${names}：他的价值在六码区和小禁区前沿，中卫必须贴身，别让他抢前点。`,
+              ev:`${st.n} tags=${TG(st).join('/')}`};
+    if(/速度|爆点|冲击|身后/.test(st.st||''))
+      return {lvl:2,area:label,txt:`${st.n} 打身后（${st.st||''}），${names} 转身慢就是隐患 —— 防线别压太高。`,
+              ev:`${st.n} st:${st.st||''}`};
+    return null;
+  }
+  var l1=lineVsCB(H,hl,hf,A,al,af,'锋线'); if(l1) msgs.push(l1);
+  var l2=lineVsCB(A,al,af,H,hl,hf,'对方锋线'); if(l2) msgs.push(l2);
+
+  /* 5 制空 */
+  function cbAir(lu,form){
+    var cbs=(slotMap(lu,form).CB||[]).map(function(n){return byName[n];}).filter(Boolean);
+    return cbs.length?cbs.reduce(function(a,c){return a+airOf(c);},0)/cbs.length:0;
+  }
+  var ha=cbAir(hl,hf), aa=cbAir(al,af);
+  msgs.push({area:'定位球',lvl:ha>=aa?1:2,c:'fact',
+    txt:`制空 ${ha.toFixed(1)} vs ${aa.toFixed(1)}（只比中卫组合，0–10）：${ha>=aa?H+' 的高点球是稳定得分点，'+A+' 防空降档。':A+' 的中卫争顶更硬，'+H+' 禁区第一落点会吃亏。'}`,
+    ev:`中卫 ${(slotMap(hl,hf).CB||[]).join('+')} vs ${(slotMap(al,af).CB||[]).join('+')}`});
+  var PLAIN={
+   '形态':'这场球大概会怎么踢：谁控球、谁退守。',
+   '右路':'这条边会被反复冲，因为两边的人都习惯往前跑，身后会空。',
+   '左路':'这条边会被反复冲，因为两边的人都习惯往前跑，身后会空。',
+   '中场':'中场人多的一方控场，人少的一方只能往回退。',
+   '锋线':'你的中锋能不能顶住对方中卫，决定球能不能压进对方禁区。',
+   '对方锋线':'对方中锋会不会把你的中卫拉出来打身后。',
+   '定位球':'角球和任意球时，谁更能在空中赢球。',
+   '姿态':'你选的踢法：压上去抢、正常踢、还是缩回来守。',
+   '搏命':'全员压上、不要中场，赌一个进球——也赌不丢第二个球。'
+  };
+  var oppFull=(POOL[A]||[]).length;
+  msgs.forEach(function(m){
+    if(!m.p) m.p=PLAIN[m.area]||'';
+    if(!m.c) m.c='infer';
+    if(oppFull<11 && m.c==='infer') m.c='guess';
+  });
+  return {msgs:msgs,hm:hm,am:am,hl:hl,al:al};
+}
+
+/* ---------------- 可信度标签 ---------------- */
+var CONF={fact:['确定','#23c55e'],infer:['推断','#f0b429'],guess:['待确认','#e2383f']};
+function confTag(c){ var d=CONF[c]||CONF.infer;
+  return '<span class="cf" style="color:'+d[1]+';border-color:'+d[1]+'55;background:'+d[1]+'1a">'+d[0]+'</span>'; }
+
+/* ---------------- 术语 ---------------- */
+function midCnt(t){ return (S.lineup[t]||[]).filter(function(n){var p=byName[n];
+  return p&&(p.pos||[]).some(function(x){return x==='DM'||x==='CM'||x==='AM';});}).length; }
+function midsOf(t){
+  var f=formOf(t), m=slotMap(S.lineup[t]||[],f), out=[];
+  ['DM','CM','AM','RM','LM'].forEach(function(k){ if(m[k]) out=out.concat(m[k]); });
+  return out.length?out.join('、'):'—';
+}
+function rbOf(t){ var m=slotMap(S.lineup[t]||[],formOf(t)); return (m.RB||m.RWB||[])[0]; }
+function lwOf(t){ var m=slotMap(S.lineup[t]||[],formOf(t)); return (m.LW||m.LM||[])[0]; }
+function termsCard(msgs){
+  var all=msgs.map(function(m){return m.txt;}).join(' ');
+  var hits=[];
+  for(var k in TERMS){ if(all.indexOf(k)>=0) hits.push(k); }
+  hits.sort(function(a,b){ return all.split(b).length-all.split(a).length; });
+  hits=hits.slice(0,6);
+  if(!hits.length) return '';
+  return `<div class="ac l0"><div class="ah"><span class="tag">本场术语</span>
+    <span class="lv">点开看白话</span></div>
+    <div class="tchips">${hits.map(function(k){return `<button class="tchip" data-term="${esc(k)}">${esc(k)}</button>`;}).join('')}</div>
+    <div class="ae">看懂这 ${hits.length} 个词，这一页就都能读了。全部术语在右上角「术语表」。</div></div>`;
+}
+function openTerm(name){
+  var t=TERMS[name]; if(!t) return;
+  $('#sheet').innerHTML=`<div class="sheetIn"><div class="sh"><b>${esc(name)}</b>
+    <button class="x" onclick="closeSheet()">✕</button></div>
+    <div class="at" style="margin:6px 0 10px">${esc(t.d)}</div>
+    <div class="ae" style="border-top:1px dashed #ffffff14;margin-top:0">
+      一般在哪：${esc(t.pos)}<br>举个例子：${esc(t.ex)}</div></div>`;
+  $('#sheet').classList.add('on');
+}
+function openTermsAll(){
+  var keys=Object.keys(TERMS).sort();
+  $('#sheet').innerHTML=`<div class="sheetIn"><div class="sh"><b>术语表 · ${keys.length} 条</b>
+    <button class="x" onclick="closeSheet()">✕</button></div><div class="plist">
+    ${keys.map(function(k){return `<button class="pr" data-term="${esc(k)}">
+      <span><b>${esc(k)}</b> <i class="mut">${esc(TERMS[k].d.slice(0,24))}…</i></span></button>`;}).join('')}
+    </div></div>`;
+  $('#sheet').classList.add('on');
+}
+
+/* ---------------- 比赛形势（比分 × 时间） ---------------- */
+function benchOf(team){
+  var lu=S.lineup[team]||[];
+  return (POOL[team]||[]).filter(function(p){ return lu.indexOf(p.n)<0 && !hurt(p); });
+}
+function scoreCard(){
+  var m=S.minute, d=S.hs-S.as;
+  if(m<1&&d===0) return '';
+  var lvl=0,txt='',hint='',benchTip='';
+  if(d===0){
+    if(m<45) txt=`上半场 ${S.hs}:${S.as} 僵局。最忌讳先变阵——谁先动结构，谁先露出空当。`;
+    else if(m<75) txt=`${m}' 仍是 ${S.hs}:${S.as}。换人要换「类型」而不是换「人」：先解决被打穿的那条边，别动中场配比。`;
+    else txt=`${m}' 还在平局，时间不多了：想要 3 分就得冒险压上，想稳 1 分就守住弧顶。二选一，别夹在中间。`;
+    hint='平局时的换人应该有明确目的：加强压迫 / 加强控球 / 保住平局，只选一个。';
+  }else if(d>0){
+    if(m<60) txt=`领先 ${d} 球但时间还早，别急着收——收太早等于把球权交出去。先换体能，别动结构。`;
+    else if(m<80) txt=`领先 ${d} 球、${m}'：开始做减法。换下一个前锋或一个自由人，上一个破坏型 6，把防线压到中场线以下。`;
+    else { txt=`领先 ${d} 球、${m}'，该收了：能换的全换防守型，前场只留一个能反击的点。`; lvl=1; }
+    hint='领先时要保住的是「弧顶」和「第二落点」，不是控球率。';
+  }else{
+    if(m<55) txt=`落后 ${-d} 球，先别慌——确认是不是被同一条边打了三次以上，那才是根因。`;
+    else if(m<80){ txt=`落后 ${-d} 球、${m}'，该动了：换一个能打身后的，或把双后腰之一换成组织点，把进攻方向变直。`; lvl=1; }
+    else { txt=`落后 ${-d} 球、${m}'，必须压：${formOf(S.home)==='3-1-6'?'已经是搏命形态了，那就只剩一件事——把球往禁区里砸。':'可以直接切「搏命 3-1-6」：三中卫 + 单后腰 + 6 人压上。'}`; lvl=2; }
+    hint='落后时最值钱的是「身后威胁」，不是再堆一个组织手。';
+    var bench=benchOf(S.home).filter(function(p){
+      return /爆点|速度|冲击|身后|突/.test(p.st||'')||hasT(p,['逆足内切']);});
+    if(bench.length) benchTip='替补席上有 '+bench.slice(0,3).map(function(p){return p.n;}).join('、')+' —— 这类才是落后时该上的。';
+  }
+  return `<div class="ac l${lvl}"><div class="ah"><span class="tag">比赛形势</span>
+    <span class="lv">${m}' · ${S.home} ${S.hs}:${S.as} ${S.away}${confTag('infer')}</span></div>
+    <div class="at">${txt}${benchTip?'<br><span class="mut">'+benchTip+'</span>':''}</div>
+    <div class="pl"><b>人话：</b>现在这个比分和时间段，该攻还是该守。</div>
+    <div class="ae">${hint}</div></div>`;
+}
+
+/* ---------------- 赛中复盘 ---------------- */
+function phaseCard(r){
+  if(!S.snap||S.minute<1) return '';
+  var keys=[['wing','边路威胁'],['mid','中场控制'],['def','防线质量'],['behind','身后威胁'],['air','制空'],['build','出球质量']];
+  var rows=keys.map(function(k){ return [k[1], r.hm[k[0]]-S.snap.h[k[0]], r.am[k[0]]-S.snap.a[k[0]] ]; })
+    .filter(function(x){ return Math.abs(x[1])>=1||Math.abs(x[2])>=1; })
+    .sort(function(a,b){ return Math.abs(b[1])+Math.abs(b[2])-(Math.abs(a[1])+Math.abs(a[2])); }).slice(0,3);
+  var subs=S.events.filter(function(e){return e.type==='sub';}).length;
+  var body=rows.length? rows.map(function(x){
+        var hc=x[1]>0?'#23c55e':(x[1]<0?'#e2383f':'#93a0af');
+      var ac=x[2]>0?'#23c55e':(x[2]<0?'#e2383f':'#93a0af');
+      return `${x[0]} ${S.home} <b style="color:${hc}">${x[1]>0?'+':''}${x[1].toFixed(0)}</b> / ${S.away} <b style="color:${ac}">${x[2]>0?'+':''}${x[2].toFixed(0)}</b>`;
+    }).join('　') : '结构没有明显变化';
+  return `<div class="ac l1"><div class="ah"><span class="tag">${S.minute}' 复盘</span>
+    <span class="lv">${subs} 次换人${confTag('fact')}</span></div>
+    <div class="at">${body}</div>
+    <div class="pl"><b>人话：</b>从开场到现在，球队这几项能力哪项变强了、哪项掉了。</div>
+    <div class="ae">当前结构：边路 ${r.hm.wing} · 中场 ${r.hm.mid} · 防线 ${r.hm.def} · 制空 ${r.hm.air.toFixed(0)} · 出球 ${r.hm.build}<br>
+      相对开球时的变化，正值=变强，负值=被削弱。</div></div>`;
+}
+
+function timelineCard(){
+  if(!S.events.length) return '<div class="ac l0"><div class="ah"><span class="tag">比赛进程</span>'+
+    '<span class="lv">空</span></div><div class="at">还没有换人记录。去「排阵」页点场上球员，换一个人、或标一个状态，'+
+    '这里就会按分钟记下来。</div></div>';
+  var items=S.events.slice().reverse().map(function(e){
+    if(e.type==='sub') return `<div class="tl"><b>${e.min}'</b> ${esc(e.team)} <span class="mut">${esc(e.out)} → ${esc(e.in)}</span></div>`;
+    return `<div class="tl"><b>${e.min}'</b> ${esc(e.team)} <span class="mut">${esc(e.who)} 标记 ${e.mark}</span></div>`;
+  }).join('');
+  return `<div class="sec">比赛进程</div><div class="tlc">${items}</div>`;
+}
+
+/* ---------------- 换人诊断 ---------------- */
+function rolesOf(p){
+  if(!p) return '—';
+  var t=[];
+  if(hasT(p,['逆足内切','顺足下底','内锋','翼卫'])) t.push('边路');
+  if(hasT(p,['破坏型','B2B','组织8','拖后组织','节拍器','现代10','自由10','伪10'])) t.push('中场');
+  if(hasT(p,['支点','抢点型','逼抢9','全能9','伪9'])) t.push('锋线');
+  if(hasT(p,['套边型','上抢型','拖后型','回追型','左脚中卫','清球型'])) t.push('防线');
+  if(hasT(p,['出球型','拖后组织'])) t.push('出球');
+  return t.length?t.join('/'):'—';
+}
+function intentOf(p){
+  if(!p) return [];
+  var out=[], st=p.st||'';
+  if(hasT(p,['支点'])) out.push('加高点：改打边路传中和定位球');
+  if(hasT(p,['逆足内切','内锋'])||/内切/.test(st)) out.push('加内切一对一，吃对方边后卫的内线');
+  if(/爆点|速度|冲击|身后|突|快马/.test(st)) out.push('加速度/身后：把进攻变直，不再磨阵地');
+  if(hasT(p,['破坏型','B2B','逼抢9'])||/抢断|扫荡|绞杀|拦截/.test(st)) out.push('加强反抢：压缩对方出球时间，把比赛拉回中场');
+  if(hasT(p,['组织8','拖后组织','节拍器','现代10'])||/组织|调度|节拍/.test(st)) out.push('加控球：降节奏，把球留在自己脚下');
+  if(hasT(p,['套边型','翼卫'])) out.push('加边路宽度：拉开对方防线，给肋部腾空间');
+  if(hasT(p,['抢点型'])) out.push('加禁区抢点：不再追求过程，直接冲六码区');
+  if(hasT(p,['伪10','自由10'])||/盘带|魔术|创造力|最后一传|想象力/.test(st)) out.push('加一个能改变节奏的自由人：多一种"最后一传"的可能');
+  if(hasT(p,['左脚中卫','拖后型','回追型','清球型','门线型'])) out.push('补防线：保平 / 守住领先');
+  if(!out.length){
+    var g=GRP[(p.pos||[])[0]];
+    out.push(g==='锋'?'换一个进攻点：换的是「类型」，不是「体能」'
+      :g==='中'?'调整中场配比：要么加控球，要么加拦截'
+      :'补防线轮换，先把结构保住');
+  }
+  return out.slice(0,3);
+}
+function impactOf(inP,team){
+  if(!inP) return '';
+  var opp=team===S.home?S.away:S.home;
+  var f=formOf(opp), m=slotMap(S.lineup[opp]||[],f);
+  if(hasT(inP,['支点','抢点型'])) return `对面中卫（${(m.CB||[]).join('+')||'—'}）要开始把注意力放在第一落点，别被拉出来。`;
+  if(hasT(inP,['逆足内切','内锋'])||/爆点|速度/.test(inP.st||'')) return `正对你的边后卫（${(m.LB||[]).concat(m.RB||[]).join('/')||'—'}）：他会吃一对一，需要有人协防内线。`;
+  if(hasT(inP,['破坏型','B2B','逼抢9'])) return `你们的中场出球会被压：${(m.CM||[]).concat(m.DM||[]).join('/')||'—'} 接球前先看身后。`;
+  if(hasT(inP,['组织8','拖后组织','节拍器'])) return '球权会更多地停在他脚下，逼抢要提上去，别让他抬头。';
+  if(hasT(inP,['套边型','翼卫'])) return '边路会被拉开，肋部会空出来，注意后插上的人。';
+  if(hasT(inP,['伪10','自由10'])||/盘带|魔术|最后一传/.test(inP.st||'')) return '他会在肋部接球，你们的中场和边后卫之间会出现空当，得有人盯着他的接球点。';
+  var g=GRP[(inP.pos||[])[0]];
+  return g==='锋'?'前场多了一个点，你们的后腰回撤要更深。'
+    :g==='中'?'中场人数或类型变了，注意中路的第二落点。'
+    :'他们开始收结构，进攻要更耐心，别急着传中。';
+}
+function subCard(){
+  var d=S.lastDiff;
+  if(!d||!d.out||!d.in) return '';
+  var o=byName[d.out], i=byName[d.in];
+  var intents=intentOf(i);
+  var impact=impactOf(i,d.team);
+  return `<div class="ac l1"><div class="ah"><span class="tag">换人诊断 · ${esc(d.team)}</span>
+    <span class="lv">${S.minute}'${confTag('infer')}</span></div>
+    <div class="at"><b style="color:#ffb4b7">↓ ${esc(d.out)}</b>（${rolesOf(o)}）
+      → <b style="color:#8ef0b3">↑ ${esc(d.in)}</b>（${rolesOf(i)}）<br>
+      <span class="mut">换下「${esc((o&&o.st)||'')}」，换上「${esc((i&&i.st)||'')}」</span></div>
+    ${intents.length?`<div class="ae" style="border-top:0;color:#cdd7e1;padding-top:6px">
+      <b>教练可能想：</b><br>${intents.map(function(x,k){return '&nbsp;'+(k+1)+'. '+x;}).join('<br>')}</div>`:''}
+    ${impact?`<div class="ae"><b>对你的影响：</b>${esc(impact)}</div>`:''}
+    <div class="pl"><b>人话：</b>教练换这个人，是想解决什么问题。</div>
+  </div>`;
+}
+
+/* ---------------- 渲染 ---------------- */
+function $(s){return document.querySelector(s);}
+function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(m){
+  return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m];}); }
+
+function renderPitch(which){
+  var team=which==='h'?S.home:S.away;
+  var form=formOf(team);
+  var base=FORMS[form]||FORMS['4-2-3-1'];
+  var slots=possOn(team)?(POSS_FORMS[form]||base):base;
+  var lu=S.lineup[team]||autoLineup(team); S.lineup[team]=lu;
+  var full=(POOL[team]||[]).length;
+  var tok='';
+  slots.forEach(function(sl,i){
+    var n=lu[i],p=n?byName[n]:null,st=n?stOf(n):'ok';
+    var emo=STMARK[st]||'';
+    var sub=(n&&S.subMark[n])?`<u class="sbm">↑${S.subMark[n]}'</u>`:'';
+    tok+=`<div class="tk ${p?'':'empty'}" data-w="${which}" data-i="${i}" style="left:${sl[1]}%;top:${sl[2]}%">
+      <b>${p?esc(p.n):sl[0]}</b><i>${sl[0]}</i>${emo?'<em>'+emo+'</em>':''}${sub}</div>`;
+  });
+  var chips=Object.keys(FORMS).map(function(f){
+    return `<button class="fchip ${f===form?'on':''}" data-team="${esc(team)}" data-form="${f}">${f}</button>`;}).join('');
+  var tx=taxOf(team);
+  var taxRow=`<div class="frow tax">
+    <span class="mut" style="font-size:10px;align-self:center">姿态</span>
+    <button class="fchip ${tx==='atk'?'on':''}" data-tax="${esc(team)}" data-v="atk">压出去</button>
+    <button class="fchip ${tx==='bal'?'on':''}" data-tax="${esc(team)}" data-v="bal">平衡</button>
+    <button class="fchip ${tx==='def'?'on':''}" data-tax="${esc(team)}" data-v="def">收回来</button>
+    <span class="sep2"></span>
+    <button class="fchip ${possOn(team)?'on':''}" data-poss="${esc(team)}">${possOn(team)?'有球形态':'无球形态'}</button>
+    <button class="fchip desperate ${form==='3-1-6'?'on':''}" data-desp="${esc(team)}">搏命 3-1-6</button>
+  </div>`;
+  return `<div class="pitchwrap">
+    <div class="phead"><span class="dot" style="background:${which==='h'?'#e2383f':'#4ea1ff'}"></span>
+      <b>${esc(team)}</b>
+      <span class="mut">${esc(coachOf(team))} · ${full} 人库${full<11?' <b style="color:#f0b429">数据不足</b>':''}</span>
+      <button class="hbtn" style="margin-left:auto" data-coach="${esc(team)}">改教练</button></div>
+    <div class="frow">${chips}</div>
+    ${taxRow}
+    <div class="pitch">${tok}</div>
+    <div class="hint">点球员 → 换人 / 标状态</div></div>`;
+}
+
+function legendCard(){
+  return '<div class="ac l0 legend"><div class="ah"><span class="tag">怎么读这一页</span></div>'+
+   '<div class="at">每张卡右上角有个标记：'+confTag('fact')+' 来自球员库或官网；'+
+   confTag('infer')+' 引擎按规则算的结论；'+confTag('guess')+' 数据不全或凭外部信息，我在猜。</div>'+
+   '<div class="ae">先看标记再看结论。确定 ≠ 结论一定对，只是依据硬；推断 ≠ 结论一定错，只是没实证。</div></div>';
+}
+function renderHUD(){
+  $('#hud').innerHTML=`
+    <div class="hRow">
+      <span class="hTeam">${esc(S.home)}</span>
+      <button class="mini goal" onclick="addGoal('h',-1)">−</button>
+      <b class="sc" onclick="addGoal('h',1)">${S.hs}</b>
+      <button class="mini goal" onclick="addGoal('h',1)">+</button>
+      <span class="mut sc2">:</span>
+      <button class="mini goal" onclick="addGoal('a',-1)">−</button>
+      <b class="sc" onclick="addGoal('a',1)">${S.as}</b>
+      <button class="mini goal" onclick="addGoal('a',1)">+</button>
+      <span class="hTeam">${esc(S.away)}</span>
+    </div>
+    <div class="hRow">
+      <button class="mini" onclick="addMin(-5)">−5'</button>
+      <b class="mn">${S.minute}'</b>
+      <button class="mini" onclick="addMin(5)">+5'</button>
+      <span class="sep"></span>
+      <button class="mini" onclick="setMin(0)">0'</button>
+      <button class="mini" onclick="setMin(45)">45'</button>
+      <button class="mini" onclick="setMin(60)">60'</button>
+      <button class="mini" onclick="setMin(75)">75'</button>
+      <button class="mini" onclick="setMin(90)">90'</button>
+      <button class="mini warnb" onclick="resetMatch()">重置</button>
+    </div>`;
+}
+
+function renderAll(){
+  $('#pitches').innerHTML=renderPitch('h')+renderPitch('a');
+  renderSubStrip();
+  var r=analyze();
+  var cards=r.msgs.map(function(m){
+    return `<div class="ac l${m.lvl}"><div class="ah"><span class="tag">${m.area}</span>
+      <span class="lv">${['参考','注意','红灯'][m.lvl]}${confTag(m.c||'infer')}</span></div>
+      <div class="at">${m.txt}</div>
+      ${m.p?`<div class="pl"><b>人话：</b>${esc(m.p)}</div>`:''}
+      <div class="ae">依据：${esc(m.ev).replace(/\n/g,'<br>')}</div></div>`;}).join('');
+  var diff='';
+  if(S.lastDiff){
+    var after=metrics(S.lineup[S.lastDiff.team]||[]);
+    var keys=[['wing','边路威胁'],['mid','中场控制'],['def','防线质量'],['behind','身后威胁'],['air','制空'],['build','出球质量']];
+    var dl=keys.map(function(k){return [k[1], after[k[0]]-S.lastDiff.m[k[0]]];})
+      .filter(function(x){return Math.abs(x[1])>=1;})
+      .sort(function(a,b){return Math.abs(b[1])-Math.abs(a[1]);}).slice(0,3);
+    if(dl.length) diff=`<div class="ac l1"><div class="ah"><span class="tag">刚换人</span><span class="lv">结构变化</span></div>
+      <div class="at">${dl.map(function(x){return x[0]+' <b style="color:'+(x[1]>0?'#23c55e':'#e2383f')+'">'+(x[1]>0?'+':'')+x[1].toFixed(0)+'</b>';}).join(' · ')}</div>
+      <div class="ae">结构差值，不是评分：问题搬家比分数涨落更重要。</div></div>`;
+  }
+  $('#analysis').innerHTML=`<div class="sec">对位 · ${esc(S.home)}（主）vs ${esc(S.away)}</div>`
+    + legendCard() + coachNoteCard() + scoreCard() + phaseCard(r) + subCard() + timelineCard() + termsCard(r.msgs) + cards + diff;
+  renderHUD();
+  save();
+}
+
+function renderSubStrip(){
+  var el=document.getElementById('substrip'); if(!el) return;
+  var subs=S.events.filter(function(e){return e.type==='sub';});
+  if(!subs.length){ el.innerHTML=''; return; }
+  el.innerHTML='<div class="sec">换人记录</div><div class="tlc">'+subs.slice().reverse().map(function(e){
+    return '<div class="tl"><b>'+e.min+"'</b> "+esc(e.team)+' <span class="mut">'+esc(e.out)+' → '+esc(e.in)+'</span></div>';
+  }).join('')+'</div>';
+}
+function renderSetup(){
+  var opp=S.home==='曼联'?S.away:S.home;
+  var groups=GROUPS.map(function(g){ return `<details ${g.list.indexOf(opp)>=0?'open':''}>
+    <summary>${g.t}</summary><div class="grid2">${g.list.map(function(t){
+      return `<button class="tb ${opp===t?'on':''}" onclick="setTeam('a','${t}')">${t}</button>`;}).join('')}</div></details>`;}).join('');
+  $('#setup').innerHTML=`<div class="row"><span class="mut">对手</span>
+      <div class="fml">${esc(opp)} · ${esc(coachOf(opp))} · ${formOf(opp)} · ${(POOL[opp]||[]).length} 人库</div></div>
+    ${groups}
+    <div class="row" style="justify-content:space-between">
+      <div><span class="mut">主场</span> <span class="fml">${esc(S.home)}</span>
+        <span class="mut">（曼联${S.home==='曼联'?'主':'客'}场）</span></div>
+      <button class="tb" style="padding:6px 10px" onclick="swapSides()">交换主客</button></div>`;
+}
+
+/* ---------------- 交互 ---------------- */
+function openSheet(wi,idx){
+  var team=wi==='h'?S.home:S.away, form=formOf(team), slots=FORMS[form];
+  var slot=slots[idx][0];
+  var lu=S.lineup[team]||autoLineup(team); S.lineup[team]=lu;
+  var cur=lu[idx];
+  var cands=(POOL[team]||[]).slice().sort(function(a,b){return scoreFor(b,slot)-scoreFor(a,slot);});
+  var sts=[['hot','🔥'],['ok','🙂'],['low','😑'],['inj','🤕'],['yellow','🟨'],['out','⛔']];
+  var h=`<div class="sheetIn"><div class="sh"><b>${esc(team)} · ${slot}</b>
+    <button class="x" onclick="closeSheet()">✕</button></div>`;
+  if(cur) h+=`<div class="strow"><span class="mut">状态</span>${sts.map(function(s){
+      return `<button class="st ${stOf(cur)===s[0]?'on':''}" data-st="${s[0]}" data-n="${esc(cur)}">${s[1]}</button>`;}).join('')}</div>`;
+  h+=`<div class="lov">选择球员（按适配度排序）</div><div class="plist">
+      <button class="pr ${!cur?'on':''}" data-slotnull="1"><span>— 留空 —</span></button>`;
+  cands.forEach(function(p){
+    var used=lu.filter(function(n,i){return n===p.n&&i!==idx;}).length>0;
+    h+=`<button class="pr ${cur===p.n?'on':''} ${used?'used':''}" data-pick="${esc(p.n)}">
+      <span><b>${esc(p.n)}</b> <i class="mut">${(p.pos||[]).join('/')} · ${esc(p.st||'')}</i></span>
+      <em>${scoreFor(p,slot)>9?'✔':''}${used?' · 已在场(互换)':''}${hurt(p)?' ⛔':''}</em></button>`;
+  });
+  h+=`</div></div>`;
+  $('#sheet').innerHTML=h; $('#sheet').classList.add('on');
+  $('#sheet').dataset.wi=wi; $('#sheet').dataset.idx=idx;
+}
+function closeSheet(){ $('#sheet').classList.remove('on'); $('#sheet').innerHTML=''; }
+function setSlot(wi,idx,name){
+  var team=wi==='h'?S.home:S.away;
+  var lu=S.lineup[team]||autoLineup(team);
+  var before=metrics(lu);
+  var prev=lu[idx];
+  if(name){
+    var j=lu.indexOf(name);
+    if(j>=0&&j!==idx) lu[j]=prev;
+    lu[idx]=name;
+  } else lu[idx]=null;
+  S.lineup[team]=lu;
+  S.lastDiff={team:team,m:before,out:(prev&&prev!==name?prev:null),in:(name&&prev!==name?name:null)};
+  if(name&&prev&&prev!==name){
+    log('sub',team,name,prev);
+    if(S.minute>0) S.subMark[name]=S.minute;
+    if(prev&&S.subMark) delete S.subMark[prev];
+  } else log('edit',team,name||'空');
+  closeSheet(); renderAll();
+}
+function setSt(name,k){
+  S.status[name]=k;
+  log('status',S.home==='曼联'?S.home:S.away,name,STMARK[k]||k);
+  closeSheet(); renderAll();
+}
+function setTeam(which,t){
+  if(S.home==='曼联') S.away=t; else S.home=t;
+  S.lineup[t]=autoLineup(t); S.lastDiff=null; S.events=[];
+  renderAll(); renderSetup();
+}
+function swapSides(){
+  var t=S.home; S.home=S.away; S.away=t;
+  if(!S.lineup[S.home]) S.lineup[S.home]=autoLineup(S.home);
+  if(!S.lineup[S.away]) S.lineup[S.away]=autoLineup(S.away);
+  S.snap={h:metrics(S.lineup[S.home]),a:metrics(S.lineup[S.away])};
+  S.lastDiff=null; S.events=[];
+  renderAll(); renderSetup();
+}
+function addGoal(side,d){
+  if(side==='h') S.hs=Math.max(0,S.hs+d); else S.as=Math.max(0,S.as+d);
+  renderAll();
+  var arr=document.querySelectorAll('#hud .sc');
+  var el=arr[side==='h'?0:1];
+  if(el){ el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop'); }
+}
+function addMin(d){ setMin(S.minute+d); }
+function setMin(m){
+  S.minute=Math.max(0,Math.min(95,m)); renderAll();
+  var el=document.querySelector('#hud .mn'); if(el){ el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop'); }
+}
+function resetMatch(){
+  S.hs=0;S.as=0;S.minute=0;S.status={};S.events=[];S.lastDiff=null;
+  S.lineup[S.home]=autoLineup(S.home); S.lineup[S.away]=autoLineup(S.away);
+  S.snap={h:metrics(S.lineup[S.home]),a:metrics(S.lineup[S.away])};
+  renderAll();
+}
+function log(type,team,a,b){
+  if(type!=='sub'&&type!=='status') return;
+  S.events.push({type:type,min:S.minute,team:team,a:a,b:b,
+    out:(type==='sub'?b:a), in:(type==='sub'?a:null), who:(type==='status'?a:null),
+    mark:(type==='status'?b:'')});
+  if(S.events.length>60) S.events.shift();
+}
+
+/* ---------------- 存储 ---------------- */
+var KEY='tb_v41_state';
+function save(){
+  try{ localStorage.setItem(KEY,JSON.stringify({
+    home:S.home,away:S.away,form:FORM_SEL,lineup:S.lineup,status:S.status,minute:S.minute,hs:S.hs,as:S.as,
+    tactic:S.tactic,poss:S.poss,keep:KEEP,events:S.events,subMark:S.subMark
+  })); }catch(e){}
+}
+function load(){
+  try{
+    var raw=localStorage.getItem(KEY); if(!raw) return false;
+    var d=JSON.parse(raw);
+    if(!d||!d.home||!d.away) return false;
+    S.home=d.home;S.away=d.away;S.minute=d.minute||0;S.hs=d.hs||0;S.as=d.as||0;
+    FORM_SEL=d.form||{}; S.status=d.status||{};
+    S.tactic=d.tactic||{}; S.poss=d.poss||{};
+    S.events=d.events||[]; S.subMark=d.subMark||{};
+    if(d.keep){ for(var k in d.keep){ KEEP[k]=d.keep[k]; } }
+    S.lineup=d.lineup||{};
+    return true;
+  }catch(e){ return false; }
+}
+
+
+/* ---------------- 页签 ---------------- */
+var TAB='lineup';
+function switchTab(t){
+  TAB=t;
+  ['lineup','analysis','learn','log'].forEach(function(k){
+    var p=document.getElementById('pane-'+k); if(p) p.classList.toggle('on',k===t);
+  });
+  [].forEach.call(document.querySelectorAll('#tabs button'),function(b){
+    b.classList.toggle('on',b.getAttribute('data-tab')===t);
+  });
+  document.getElementById('hud').style.display=(t==='lineup'||t==='analysis')?'':'none';
+  if(t==='learn') renderLearn();
+  if(t==='log') renderLog();
+  window.scrollTo(0,0);
+}
+
+/* ---------------- 学习：6 节课 ---------------- */
+var QDONE={};
+var LESSONS=[
+{t:'1 · 一场球只看三件事',b:[
+ '别被解说带跑。任何一场球，你只需要看三件事，剩下的都是细节。',
+ '<b>第一件：谁有球。</b>有球的一方在控球，没球的一方要么抢、要么退。退到自家半场排两条线，叫<b>低位块</b>（俗称摆大巴）。这一件事定了整场球的基调。',
+ '<b>第二件：中场谁人多。</b>中圈附近是球场最值钱的位置。多一个人就能随便传，少一个人只能往回传。',
+ '<b>第三件：哪条边有人在冲。</b>边路空当最大，因为边后卫要同时管防守和助攻，管不过来。',
+ '看懂了这三件，你比 90% 的球迷看得清。'
+ ],eg:function(){var h=midCnt(S.home),a=midCnt(S.away);return [[ '现在这场：'+S.home+' '+formOf(S.home)+' vs '+S.away+' '+formOf(S.away)+'，中场 '+h+' 人 vs '+a+' 人。','fact'],[ '按这个人数差，'+(a>h?S.away:S.home)+'更容易控住中场。','infer'] ];},
+ q:[{q:'一支球队退到自家半场、排成两条线让对手控球，这叫什么？',o:['高位压迫','低位块（摆大巴）','转换'],a:1,why:'低位块=把中路堵死，逼对手在外围倒脚。代价是把球权全让出去。'},
+    {q:'中场 3 打 2 意味着什么？',o:['人数多的一方更容易控住球','人数少的一方更容易进球','没区别'],a:0,why:'多一个人就多一个接应点，传球线路翻倍。少人一方只能被动退。'}]},
+{t:'2 · 阵型是起步姿势，不是站位',b:[
+ '4-2-3-1 这串数字，是从后往前数的人数：4 后卫、2 后腰、3 中场、1 前锋。',
+ '但它只是<b>开球时的站法</b>。球一动，位置就散了——所以同一个 4-2-3-1，有球时可能变成 3-2-5，没球时可能变成 4-4-2。',
+ '这就是为什么这个工具让你在「无球形态 / 有球形态 / 搏命 3-1-6」之间切。',
+ '记住一句话：<b>阵型决定的是开局，跑位决定的是比赛。</b>'
+ ],eg:function(){return [[ formOf(S.home)+' 只是开球站法。','fact'],[ '点「有球形态」会看到边后卫压到中场线，那就是 3-2-5 出球。','infer'] ];},
+ q:[{q:'4-2-3-1 里的「2」指的是？',o:['两个中卫','两个后腰','两个边锋'],a:1,why:'从后往前：4 后卫 · 2 后腰 · 3 中场 · 1 前锋。'},
+    {q:'同一套阵型，有球和没球时站位一样吗？',o:['一样','不一样，通常会变','只有强队会变'],a:1,why:'有球时要有出球结构，没球时要排防守线，所以一定不一样。'}]},
+{t:'3 · 中场就是战场',b:[
+ '6 号位=后腰，站在后卫线前面，负责拦截和出球。<b>8 号位</b>=中场，能跑能传能插上。<b>10 号位</b>=前腰，负责最后一传。',
+ '为什么「中场少一个人」这么致命？因为对面多一个人，就多一条传球线路，你永远差半步。',
+ '所以换人最常见的操作是：<b>撤一个前锋，上一个中场</b>。这不是保守，是把球权抢回来。',
+ '反过来，落后时撤中场上前锋，就是赌——这就是「搏命 3-1-6」。'
+ ],eg:function(){return [[ '双方中场：'+midsOf(S.home)+' vs '+midsOf(S.away)+'。','fact'],[ '谁的类型更全（破坏型+组织型都有），谁就能控住节奏。','infer'] ];},
+ q:[{q:'落后一球，撤下一个中场换上一个前锋，最可能的后果是？',o:['控球变好','中场更空，容易被反击','防守变好'],a:1,why:'少一个中场=少一层屏障，压上去之后身后就是单刀。'},
+    {q:'6 号位球员的主要工作是什么？',o:['进球','拦截和出球','传中'],a:1,why:'6 号位站在后卫线前，是第一道闸和第一个出球点。'}]},
+{t:'4 · 边路是空当的来源',b:[
+ '边后卫最难的处境：<b>压上去助攻，身后就空；不压，进攻就少一个人。</b>全世界所有战术都在利用这个矛盾。',
+ '三个词要分清：<b>套边</b>（边后卫从外侧插上）、<b>内收</b>（边后卫往中路站，变成中场）、<b>逆足内切</b>（左脚球员在右路往中间切）。',
+ '所以你会看到「右路是主战场」这种判断——意思就是这一侧两边的人都在往前跑，谁丢球谁被打身后。'
+ ],eg:function(){return [[ '右路对位：'+S.home+' 的 '+(rbOf(S.home)||'—')+' vs '+S.away+' 的 '+(lwOf(S.away)||'—')+'。','fact'],[ '谁先压上，谁身后的空当就更大。','infer'] ];},
+ q:[{q:'边后卫压上助攻，最大的风险是什么？',o:['体力不够','身后空当被打反击','越位'],a:1,why:'他一走，那条边就只剩中卫补，对方一脚直塞就是单刀。'},
+    {q:'「逆足内切」是什么意思？',o:['用不擅长的脚传中','逆足球员带球往中路切寻找射门','边后卫内收'],a:1,why:'右脚踢左边、左脚踢右边，往中间切射门更顺脚。'}]},
+{t:'5 · 看懂换人',b:[
+ '换人只有三种：<b>换体能</b>（跑不动了）、<b>换类型</b>（加高度/加速度/加防守）、<b>换结构</b>（改阵型）。',
+ '为什么总是 60-70 分钟？因为那时体能开始掉、比分已经明朗、教练能看清对方弱点在哪。',
+ '判断一次换人好不好，只看一件事：<b>它解决了当时的哪个问题</b>。领先还换前锋=没解决问题；落后换后腰=自相矛盾。',
+ '这个工具里的「换人诊断」就是在替你回答这个问题。'
+ ],eg:function(){return [[ '现在 '+S.minute+' 分钟，'+S.home+' '+S.hs+':'+S.as+' '+S.away+'。','fact'],[ '领先时换防守型中场，是为了守住弧顶，不是加强进攻。','infer'] ];},
+ q:[{q:'领先 1 球、第 80 分钟，最合理的换人是？',o:['换上一个前锋','换上一个防守型中场','同时换三个人进攻'],a:1,why:'这时候要保住的是弧顶和第二落点，不是控球率。'},
+    {q:'60-70 分钟换人最集中的原因是？',o:['规则要求','体能下降+比分明朗','球员自己想下'],a:1,why:'体能拐点+战术意图清晰，是换人的黄金窗口。'}]},
+{t:'6 · 自己复盘一场球',b:[
+ '看三个时间点就够了：<b>开场 15 分钟</b>（谁控球）、<b>60 分钟</b>（哪条边被打穿）、<b>85 分钟</b>（换人改了什么）。',
+ '每场记三个问题：谁在控球？对方往哪条边打？换人之后结构变了没？',
+ '写下来，赛后对照。三个月你就有自己的判断了——这比看一百篇战术分析有用。',
+ '「复盘」页就是干这个的：写一句判断，赛完回来看对不对。'
+ ],eg:function(){return [[ '这场 '+S.home+' vs '+S.away+'，当前 '+S.hs+':'+S.as+'。','fact'],[ '把判断写下来，赛后才知道自己错在哪。','infer'] ];},
+ q:[{q:'复盘一场球，最该记录的是什么？',o:['比分','你赛前的判断和依据','球员评分'],a:1,why:'判断对了要知道为什么对，错了要知道错在哪，这才能涨球商。'},
+    {q:'哪三个时间点最值得看？',o:['开场/中场/结束','15 分钟 / 60 分钟 / 85 分钟','每次换人时'],a:1,why:'开局定基调、60 分钟见真章、85 分钟看调整。'}]}
+];
+function renderLearn(){
+  var html='<div class="sec">学习模式 · 6 节课 · 每节 3 分钟</div>'+
+    '<div class="ac l0 legend"><div class="at" style="font-size:12.5px">举例里的每句话也标了等级：'+
+    confTag('fact')+' 能查到的；'+confTag('infer')+' 由规则推出来的。看球时同样要分清这两类。</div></div>';
+  html+=LESSONS.map(function(L,li){
+    var body=L.b.map(function(x){return '<p>'+x+'</p>';}).join('');
+    var qs=L.q.map(function(q,qi){
+      var key=li+'-'+qi, chosen=QDONE[key];
+      var opts=q.o.map(function(o,oi){
+        var cls='';
+        if(chosen!==undefined){ if(oi===q.a) cls='ok'; else if(oi===chosen) cls='no'; }
+        return '<button class="opt '+cls+'" data-l="'+li+'" data-q="'+qi+'" data-o="'+oi+'">'+o+'</button>';
+      }).join('');
+      var why=chosen!==undefined?'<div class="why">'+(chosen===q.a?'✔ 对了。':'✘ 正确答案是「'+q.o[q.a]+'」。')+q.why+'</div>':'';
+      return '<div class="qz"><div class="qq">小测 '+(qi+1)+'：'+q.q+'</div>'+opts+why+'</div>';
+    }).join('');
+    var eg=L.eg().map(function(x){
+      return '<div class="egline">'+x[0]+confTag(x[1])+'</div>';}).join('');
+    return '<div class="lesson"><h3>'+L.t+'</h3>'+body+'<div class="eg"><b>用现在这场举例</b>'+eg+'</div>'+qs+'</div>';
+  }).join('');
+  document.getElementById('learn').innerHTML=html;
+}
+
+/* ---------------- 复盘日志 ---------------- */
+var LOGKEY='tb_v4_logs';
+function logs(){ try{ return JSON.parse(localStorage.getItem(LOGKEY)||'[]'); }catch(e){ return []; } }
+function saveLog(){
+  var t=document.getElementById('logtxt');
+  var v=(t&&t.value||'').trim(); if(!v) return;
+  var arr=logs();
+  arr.unshift({ts:Date.now(),txt:v,home:S.home,away:S.away,hs:S.hs,as:S.as,min:S.minute,
+    form:formOf(S.home),tax:taxOf(S.home)});
+  try{ localStorage.setItem(LOGKEY,JSON.stringify(arr.slice(0,60))); }catch(e){}
+  renderLog();
+}
+function delLog(i){
+  var arr=logs(); arr.splice(i,1);
+  try{ localStorage.setItem(LOGKEY,JSON.stringify(arr)); }catch(e){}
+  renderLog();
+}
+function backupText(){
+  return JSON.stringify({at:Date.now(),origin:location.origin,
+    state:localStorage.getItem('tb_v41_state')||'',
+    logs:localStorage.getItem('tb_v4_logs')||''},null,2);
+}
+function copyBackup(){
+  var txt=backupText();
+  if(navigator.clipboard&&window.isSecureContext){
+    navigator.clipboard.writeText(txt).then(function(){ alert('已复制。粘到微信「文件传输助手」发给自己就行。'); },
+      function(){ showBackup(txt); });
+  }else{ showBackup(txt); }
+}
+function showBackup(txt){
+  var ta=document.getElementById('bktext');
+  if(!ta) return;
+  ta.style.display='block'; ta.value=txt; ta.focus(); ta.select();
+  try{ document.execCommand('copy'); }catch(e){}
+  alert('已选中全部文本。长按选择「拷贝」，或直接按 Ctrl/⌘+C。');
+}
+function importFromText(){
+  var ta=document.getElementById('bktext');
+  var v=(ta&&ta.value||'').trim();
+  if(!v){ alert('先把备份内容粘进下面那个框'); return; }
+  try{
+    var d=JSON.parse(v);
+    if(d.state) localStorage.setItem('tb_v41_state',d.state);
+    if(d.logs) localStorage.setItem('tb_v4_logs',d.logs);
+    alert('导入成功，刷新后生效'); location.reload();
+  }catch(e){ alert('这段内容不是有效的备份'); }
+}
+function exportData(){
+  var data={at:Date.now(),origin:location.origin,
+    state:localStorage.getItem('tb_v41_state')||'',
+    logs:localStorage.getItem('tb_v4_logs')||''};
+  var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='战术板备份-'+new Date().toISOString().slice(0,10)+'.json';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+}
+function importData(f){
+  if(!f) return;
+  var r=new FileReader();
+  r.onload=function(){
+    try{
+      var d=JSON.parse(r.result);
+      if(d.logs) localStorage.setItem('tb_v4_logs',d.logs);
+      if(d.state) localStorage.setItem('tb_v41_state',d.state);
+      alert('导入成功，刷新后生效'); location.reload();
+    }catch(e){ alert('文件读不出来，可能不是备份文件'); }
+  };
+  r.readAsText(f);
+}
+function renderLog(){
+  var arr=logs();
+  var list=arr.length?arr.map(function(x,i){
+    var d=new Date(x.ts);
+    var tm=(d.getMonth()+1)+'/'+d.getDate()+' '+('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2);
+    return '<div class="lg"><button class="x" data-del="'+i+'">✕</button>'+
+      '<div class="m">'+tm+' · '+x.home+' '+x.hs+':'+x.as+' '+x.away+' · '+x.min+"' · "+x.form+'</div>'+
+      '<div class="c">'+esc(x.txt)+'</div></div>';
+  }).join(''):'<div class="lesson"><p>还没有记录。看完一场球写一句判断，赛后回来对照——这是涨球商最快的办法。</p></div>';
+  document.getElementById('log').innerHTML=
+    '<div class="sec">复盘日志</div>'+
+    '<div class="lesson"><h3>数据存在哪 · 会不会丢</h3>'+
+    '<p><b>存在你这台设备的浏览器里</b>，不是存在我这边，也不是云端。对应的地址是 <b>'+location.origin+'</b>。</p>'+
+    '<p>所以：<b>关掉网页、电脑重启，都还在</b>；但换一个地址打开（127.0.0.1 ↔ 局域网 IP ↔ 直接双击文件）就是另一份存储，互相看不见。</p>'+
+    '<p>会丢的情况只有三种：清浏览器数据、无痕模式、换设备。</p>'+
+    '<button class="hbtn2" onclick="copyBackup()">复制备份到剪贴板（手机推荐）</button>'+
+    '<button class="tb" style="width:100%;margin-top:8px;padding:10px" onclick="exportData()">下载成 JSON 文件</button>'+
+    '<div class="lov" style="margin-top:12px">恢复：把备份内容粘进下面的框，再点导入</div>'+
+    '<textarea id="bktext" style="display:none;min-height:110px;font-size:11px"></textarea>'+
+    '<button class="tb" style="width:100%;margin-top:8px;padding:10px" onclick="importFromText()">从这段内容导入</button>'+
+    '<input type="file" id="impfile" accept=".json" style="display:none" onchange="importData(this.files[0])">'+
+    '<button class="tb" style="width:100%;margin-top:8px;padding:10px" onclick="document.getElementById(\'impfile\').click()">从 JSON 文件恢复</button>'+
+    '<div class="ae">手机上下载的 JSON 会落在「文件管理 → 下载」里；小米的路径是「文件管理 → 手机 → Download」。找不到就用上面的剪贴板方式。</div>'+
+    '</div>'+
+    '<div class="lesson"><h3>记一条判断</h3>'+
+    '<p>不用写得好，写下来就行。会自动记录当前的对阵、比分、时间、阵型。</p>'+
+    '<textarea id="logtxt" placeholder="例：我觉得曼联这场右路会被打穿，因为达洛特压上后身后没人补。"></textarea>'+
+    '<button class="hbtn2" onclick="saveLog()">保存这条判断</button>'+
+    '<div class="eg">'+S.home+' vs '+S.away+' · '+S.hs+':'+S.as+' · '+S.minute+"' · "+formOf(S.home)+'</div></div>'+
+    '<div class="sec">历史（'+arr.length+'）</div>'+list;
+}
+
+/* ---------------- 教练卡（换帅） ---------------- */
+var CE=null;
+var PROFILE={};
+var CFLAGS=[['fbin','边后卫内收','压上时变中场人数'],['single6','单后腰','只留一个 6 号'],
+ ['highline','高位防线','防线压到中场'],['target9','支点中锋','中锋背身做墙'],
+ ['gkbuild','门将出球','门将参与后场倒脚']];
+function openCoach(team){
+  var st=styleOf(team);
+  var pf=PROFILE[team]||{};
+  CE={team:team,press:st.press||2,control:st.control||2,direct:st.direct||2,low:st.low||1,
+      form:formOf(team),flags:pf.flags||{}};
+  drawCoach();
+}
+function drawCoach(){
+  var rows=[['press','压迫强度','逼抢有多凶'],['control','控球意愿','想把球留在脚下'],
+            ['direct','直接程度','一脚打身后的比例'],['low','低位倾向','愿不愿意退着踢']];
+  var body=rows.map(function(r){
+    var k=r[0],label=r[1],sub=r[2];
+    var btns=[0,1,2,3].map(function(v){
+      return '<button class="fchip '+(CE[k]===v?'on':'')+'" data-ce="'+k+'" data-v="'+v+'">'+v+'</button>';
+    }).join('');
+    return '<div class="row" style="justify-content:space-between;margin:8px 0"><div>'+
+      '<div style="font-size:13px">'+label+' <span class="mut">'+sub+'</span></div></div>'+
+      '<div style="display:flex;gap:4px">'+btns+'</div></div>';
+  }).join('');
+  var forms=Object.keys(FORMS).map(function(f){
+    return '<button class="fchip '+(CE.form===f?'on':'')+'" data-cf="'+f+'">'+f+'</button>';
+  }).join('');
+  var flags=CFLAGS.map(function(f){
+    return '<button class="fchip '+(CE.flags[f[0]]?'on':'')+'" data-cflag="'+f[0]+'">'+f[1]+'</button>';
+  }).join('');
+  var pf=PROFILE[CE.team]||{};
+  $('#sheet').innerHTML='<div class="sheetIn"><div class="sh"><b>教练卡 · '+esc(CE.team)+'</b>'+
+    '<button class="x" onclick="closeSheet()">✕</button></div>'+
+    '<div class="lov">① 踢法四轴（给引擎用的方向，0=不要 3=极致）</div>'+body+
+    '<div class="lov">② 结构特征（这些才是真正区分教练的东西）</div>'+
+    '<div class="frow" style="margin:0;flex-wrap:wrap">'+flags+'</div>'+
+    '<div class="lov">③ 阵型</div><div class="frow" style="margin:0">'+forms+'</div>'+
+    '<div class="lov">④ 他的要求（人读的，写你自己的理解）</div>'+
+    '<textarea id="ceText" placeholder="例：要求边后卫内收进中场，6 号位单后腰，丢球后 5 秒内反抢。">'+esc(pf.text||'')+'</textarea>'+
+    '<div class="lov">⑤ 出处（写清楚你从哪知道的，别凭印象）</div>'+
+    '<input id="ceSrc" style="width:100%;background:var(--card2);border:1px solid var(--line);border-radius:8px;color:var(--txt);padding:9px;font-size:12.5px;font-family:inherit" placeholder="例：官网公告 / The Athletic 长文 / 他在 X 队的公开采访" value="'+esc(pf.src||'')+'">'+
+    '<button class="hbtn2" onclick="applyCoach()">应用并重排阵容</button>'+
+    '<div class="ae" style="border:0;margin-top:8px">前三项给引擎算，④⑤给你自己和以后回看。出处空的卡片，页面上会标「未核实」。</div></div>';
+  $('#sheet').classList.add('on');
+}
+function setCE(k,v){ if(CE){ CE[k]=v; drawCoach(); } }
+function setCF(f){ if(CE){ CE.form=f; drawCoach(); } }
+function applyCoach(){
+  if(!CE) return;
+  var t=CE.team;
+  STYLE_FIX[t]={press:CE.press,control:CE.control,direct:CE.direct,low:CE.low};
+  FORM_OVERRIDE[t]=CE.form;
+  var before=(S.lineup[t]||[]).slice();
+  FORM_SEL[t]=CE.form;
+  var after=autoLineup(t);
+  S.lineup[t]=after;
+  var bset={},aset={};
+  before.forEach(function(n){ if(n) bset[n]=1; });
+  after.forEach(function(n){ if(n) aset[n]=1; });
+  var inN=after.filter(function(n){ return n&&!bset[n]; });
+  var outN=before.filter(function(n){ return n&&!aset[n]; });
+  var tx=document.getElementById('ceText'), sr=document.getElementById('ceSrc');
+  PROFILE[t]={text:(tx?tx.value.trim():''),src:(sr?sr.value.trim():''),flags:CE.flags};
+  S.coachNote={team:t,form:CE.form,in:inN,out:outN,
+    style:{press:CE.press,control:CE.control,direct:CE.direct,low:CE.low},
+    text:PROFILE[t].text,src:PROFILE[t].src,flags:CE.flags};
+  CE=null; closeSheet(); renderAll(); switchTab('analysis');
+}
+function coachNoteCard(){
+  var c=S.coachNote; if(!c) return '';
+  var st=c.style, tips=[];
+  if(st.press>=3) tips.push('高位压迫：边锋和边后卫的跑动量要求暴涨，慢中卫会被暴露');
+  if(st.control>=3) tips.push('控球为主：组织型中场升值，纯破坏型中场贬值');
+  if(st.low>=2) tips.push('愿意退守：防守型中场和中卫升值，前锋变成反击支点');
+  if(st.direct>=3) tips.push('直接打法：速度型前锋升值，控球型中场贬值');
+  if(!tips.length) tips.push('这套体系比较均衡，阵容变化不会太大');
+  return '<div class="ac l1"><div class="ah"><span class="tag">换帅影响 · '+esc(c.team)+'</span>'+
+    '<span class="lv">'+c.form+confTag(c.src?'fact':'guess')+'</span></div>'+
+    '<div class="at">'+
+      (c.in.length?'新体系下首发变化：<b style="color:#8ef0b3">↑ '+esc(c.in.join('、'))+'</b><br>':'')+
+      (c.out.length?'<b style="color:#ffb4b7">↓ '+esc(c.out.join('、'))+'</b>':'')+
+      (c.in.length||c.out.length?'':'首发没有变化，说明这套人员对新体系是适配的。')+
+    '</div>'+
+    '<div class="pl"><b>人话：</b>换了教练，先动的是他的要求，不是球员的能力。</div>'+
+    (c.flags&&Object.keys(c.flags).filter(function(k){return c.flags[k];}).length?
+      '<div class="ae"><b>结构：</b>'+Object.keys(c.flags).filter(function(k){return c.flags[k];})
+        .map(function(k){ var f=CFLAGS.filter(function(x){return x[0]===k;})[0]; return f?f[1]:k; }).join(' · ')+'</div>':'')+
+    (c.text?'<div class="ae"><b>他的要求：</b>'+esc(c.text)+'</div>':'')+
+    '<div class="ae"><b>出处：</b>'+(c.src?esc(c.src):'<span style="color:#f0b429">未核实——这张卡目前只是我的推测，别当权威用</span>')+'</div>'+
+    '<div class="ae">'+tips.map(function(x){return '· '+esc(x);}).join('<br>')+'</div></div>';
+}
+
+/* ---------------- 事件委托 ---------------- */
+document.addEventListener('click',function(e){
+  var t=e.target;
+  var tb=t.closest?t.closest('#tabs button'):null;
+  if(tb){ switchTab(tb.getAttribute('data-tab')); return; }
+  var op=t.closest?t.closest('.qz .opt'):null;
+  if(op){ QDONE[op.getAttribute('data-l')+'-'+op.getAttribute('data-q')]=Number(op.getAttribute('data-o'));
+    renderLearn(); return; }
+  var dl=t.closest?t.closest('[data-del]'):null;
+  if(dl){ delLog(Number(dl.getAttribute('data-del'))); return; }
+  var tx=t.closest?t.closest('[data-tax]'):null;
+  if(tx){ setTax(tx.getAttribute('data-tax'),tx.getAttribute('data-v')); return; }
+  var cb=t.closest?t.closest('[data-coach]'):null;
+  if(cb){ openCoach(cb.getAttribute('data-coach')); return; }
+  var cfl=t.closest?t.closest('[data-cflag]'):null;
+  if(cfl){ var k=cfl.getAttribute('data-cflag'); CE.flags[k]=!CE.flags[k]; drawCoach(); return; }
+  var ce=t.closest?t.closest('[data-ce]'):null;
+  if(ce){ setCE(ce.getAttribute('data-ce'),Number(ce.getAttribute('data-v'))); return; }
+  var cf=t.closest?t.closest('[data-cf]'):null;
+  if(cf){ setCF(cf.getAttribute('data-cf')); return; }
+  var tm=t.closest?t.closest('[data-term]'):null;
+  if(tm){ openTerm(tm.getAttribute('data-term')); return; }
+  var dp=t.closest?t.closest('[data-desp]'):null;
+  if(dp){ toggleDesperate(dp.getAttribute('data-desp')); return; }
+  var ps=t.closest?t.closest('[data-poss]'):null;
+  if(ps){ togglePoss(ps.getAttribute('data-poss')); return; }
+  var fc=t.closest?t.closest('.fchip[data-form]'):null;
+  if(fc){ changeForm(fc.getAttribute('data-team'),fc.getAttribute('data-form')); return; }
+  var tk=t.closest?t.closest('.tk'):null;
+  if(tk){ openSheet(tk.getAttribute('data-w'),Number(tk.getAttribute('data-i'))); return; }
+  var stb=t.closest?t.closest('.st'):null;
+  if(stb){ setSt(stb.getAttribute('data-n'),stb.getAttribute('data-st')); return; }
+  var pick=t.closest?t.closest('[data-pick]'):null;
+  if(pick){ var sh=document.getElementById('sheet');
+    setSlot(sh.dataset.wi,Number(sh.dataset.idx),pick.getAttribute('data-pick')); return; }
+  var nul=t.closest?t.closest('[data-slotnull]'):null;
+  if(nul){ var sh2=document.getElementById('sheet');
+    setSlot(sh2.dataset.wi,Number(sh2.dataset.idx),null); return; }
+  if(e.target.id==='sheet') closeSheet();
+});
+
+/* ---------------- 启动 ---------------- */
+if(!load()){
+  S.lineup[S.home]=autoLineup(S.home);
+  S.lineup[S.away]=autoLineup(S.away);
+}
+if(!S.lineup[S.home]) S.lineup[S.home]=autoLineup(S.home);
+if(!S.lineup[S.away]) S.lineup[S.away]=autoLineup(S.away);
+S.snap={h:metrics(S.lineup[S.home]),a:metrics(S.lineup[S.away])};
+renderSetup(); renderAll(); switchTab('lineup');
+window.setTeam=setTeam; window.swapSides=swapSides; window.setSlot=setSlot;
+window.setSt=setSt; window.closeSheet=closeSheet; window.openSheet=openSheet;
+window.changeForm=changeForm; window.addGoal=addGoal; window.addMin=addMin;
+window.setMin=setMin; window.resetMatch=resetMatch;
+window.setTax=setTax; window.togglePoss=togglePoss; window.toggleDesperate=toggleDesperate;
+window.openTerm=openTerm; window.openTermsAll=openTermsAll;
+window.switchTab=switchTab; window.openCoach=openCoach; window.applyCoach=applyCoach;
+window.setCE=setCE; window.setCF=setCF; window.saveLog=saveLog; window.delLog=delLog; window.renderLearn=renderLearn;
+
+</script>
+</body></html>

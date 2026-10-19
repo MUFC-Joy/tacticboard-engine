@@ -1,0 +1,9 @@
+# 过程截图，不进仓库（需要时可单独放）
+screenshots/
+
+# macOS
+.DS_Store
+
+# 临时
+*.tmp
+__*.html
