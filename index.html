@@ -721,10 +721,10 @@ const CLUBS = [
 /* 英超 2026-27 · 20 队（升班马：考文垂/伊普斯维奇/赫尔城；降级：西汉姆/伯恩利/狼队） */
 const PL20 = [
  {name:"阿森纳", mgr:"阿尔特塔", sys:"4-2-3-1 / 无球 4-4-2 中块", key:"萨卡 · 厄德高 · 赖斯 · 刘易斯·斯凯利 · 哈弗茨 · 加布里埃尔 · 孔萨 · 本·怀特 · 措利斯（马丁内利已转会利雅得新月）", threat:"定位球是英超第一杀器；4-2-3-1 双后腰赖斯+斯凯利，厄德高10号，萨卡/措利斯两翼。萨利巴背伤、措利斯肌肉伤，短期防线/左路有变量；定位球依旧。"},
- {name:"阿斯顿维拉", mgr:"埃梅里", sys:"4-2-3-1 结构化控球", key:"罗杰斯 · 沃特金斯 · 卡马拉（蒂勒曼斯已转投曼联）", threat:"埃梅里的针对性布置是教练天花板：每次碰面阵型细节都不同，别套用上一场的经验。"},
- {name:"伯恩茅斯", mgr:"马尔科·罗泽", sys:"高强度压迫", key:"塞门约 · 克里斯蒂 · 跑动型前场群", threat:"伊劳拉留下的压迫底子+罗泽：跑动和逼抢强度会被拉满，怕中后场粘球被就地反抢。"},
- {name:"布伦特福德", mgr:"基思·安德鲁斯（新帅）", sys:"直接打法 + 定位球", key:"维萨 · 定位球轰炸群（姆贝乌莫已转投曼联）", threat:"长界外球和角球轰炸，第二落点混战——这是他们的传统艺能。"},
- {name:"布莱顿", mgr:"以官网为准", sys:"控球 + 年轻化轮换", key:"三笘薰 · 韦尔贝克 · 范赫克（巴莱巴已转投曼联）", threat:"控球节奏忽快忽慢，年轻人冲起来时容错率低——上半场就犯错的比赛会崩。"},
+ {name:"阿斯顿维拉", mgr:"埃梅里", sys:"4-2-3-1 结构化控球", key:"沃特金斯 · 罗杰斯 · 卡马拉 · 保·托雷斯 · 卡什 · 加纳乔（蒂勒曼斯已转投曼联）", threat:"埃梅里的针对性布置是教练天花板：每次碰面阵型细节都不同，别套用上一场的经验。"},
+ {name:"伯恩茅斯", mgr:"马尔科·罗泽", sys:"高强度压迫", key:"克里斯蒂 · 跑动型前场群（塞门约已转投曼城）", threat:"伊劳拉留下的压迫底子+罗泽：跑动和逼抢强度会被拉满，怕中后场粘球被就地反抢。"},
+ {name:"布伦特福德", mgr:"基思·安德鲁斯（新帅）", sys:"直接打法 + 定位球", key:"沙德 · 贾内特 · 定位球轰炸群（姆贝乌莫已转投曼联）", threat:"长界外球和角球轰炸，第二落点混战——这是他们的传统艺能。"},
+ {name:"布莱顿", mgr:"以官网为准", sys:"控球 + 年轻化轮换", key:"三笘薰 · 年轻化轮换（韦尔贝克→切尔西、范赫克→热刺、巴莱巴→曼联）", threat:"控球节奏忽快忽慢，年轻人冲起来时容错率低——上半场就犯错的比赛会崩。"},
  {name:"切尔西", mgr:"哈维·阿隆索", sys:"3-4-2-1 / 肋部渗透", key:"帕尔默 · 凯塞多 · 若昂·佩德罗 · 内托 · 埃米·马丁内斯 · 阿奇姆蓬 · 亨德森（恩佐已转投曼城）", threat:"3-4-2-1 翼卫压上后的身后+帕尔默/罗杰斯肋部自由；凯塞多+亨德森双中场。新体系磨合期也可能送分，抓转换。"},
  {name:"水晶宫", mgr:"以官网为准（格拉斯纳 2026 离任去森林）", sys:"待观察（原 3-4-2-1 低块反击）", key:"马特塔 · 萨尔 · 惠顿 · 亨德森", threat:"格拉斯纳的遗产还在：低块+快速转换+定位球，客串教练执行度看临场。"},
  {name:"埃弗顿", mgr:"以官网为准", sys:"低块 + 定位球", key:"皮克福德 · 布兰斯维特 · 格拉利什 · 巴里（恩迪亚耶已被曼城挖走）", threat:"皮克福德长传直接找中锋，抢第二落点；角球攻防是他们的命根子。进攻发动机离队后威胁降档，但低块纪律不变。"},
@@ -733,7 +733,7 @@ const PL20 = [
  {name:"利物浦", mgr:"伊劳拉", sys:"高强度压迫 + 垂直转换", key:"伊萨克 · 维尔茨 · 巴尔克拉 · 穆尼奥斯 · 格拉文贝赫", threat:"压迫强度+纵向一脚出球：后场出球容错率最低的一场。伊萨克打身后的跑位要盯死。"},
  {name:"曼城", mgr:"马雷斯卡", sys:"控球围攻", key:"哈兰德 · 多纳鲁马 · 恩佐 · 恩迪亚耶 · 多库 · 格伊 · 格瓦迪奥尔 · 安德森 · 塞门约（罗德里/埃德森/赖因德斯/斯通斯/阿坎吉已离队）", threat:"控球+哈兰德终结+恩佐调度，多纳鲁马守门=失误率大降。但罗德里离队后转换保护降档——高位逼抢恩佐和安德森的出球是现实得分途径；恩迪亚耶的一对一也要盯。"},
  {name:"曼联", mgr:"卡里克（自家）", sys:"4-2-3-1 控球+选择性压迫", key:"B费 · 库尼亚 · 姆贝乌莫 · 谢什科 · 拉什福德 · 巴莱巴", threat:"——在「模拟器」页排自己的阵容，「球员→曼联专属」看深度解析。"},
- {name:"纽卡斯尔", mgr:"以官网为准", sys:"4-3-3 强身体压迫", key:"托纳利 · 戈登 · 佳夫 · 利夫拉门托（沃尔特马德已转会尤文、吉马良斯已离队）", threat:"中场绞杀强度仍是联盟顶级（托纳利独扛）：B费/梅努持球会非常难受。锋线支柱流失后进攻降档，但身体和定位球依然是硬仗。"},
+ {name:"纽卡斯尔", mgr:"以官网为准", sys:"4-3-3 强身体压迫", key:"戈登 · 巴恩斯 · 佳夫 · 利夫拉门托（托纳利→热刺、吉马良斯→阿森纳、沃尔特马德→尤文）", threat:"中场绞杀强度仍是联盟顶级：B费/梅努持球会非常难受。托纳利/吉马良斯离队后组织降档，但身体和定位球依然是硬仗。"},
  {name:"诺丁汉森林", mgr:"格拉斯纳（2026 夏上任）", sys:"低块 + 快速转换 + 长传找9号", key:"伍德 · 哈德森-奥多伊 · 米伦科维奇 · 吉布斯-怀特", threat:"全联盟最标准的「摆好了挨打然后一脚捅穿」：防线身后和转换三脚内到禁区。"},
  {name:"桑德兰", mgr:"以官网为准", sys:"高强度 + 身体流", key:"扎卡 · 伊斯多尔", threat:"升班马的疯狗劲+扎卡的中场秩序：习惯控球的球队在光照球场会被跑死。"},
  {name:"热刺", mgr:"德泽尔比", sys:"短传渗透 + 门将出球", key:"金斯基 · 罗伯逊 · 范德文 · 托纳利 · 阿奇·格雷 · 费尔南德斯 · 库杜斯 · 马尔穆什 · 索兰克 · 塞内西 · 波尔诺", threat:"2026夏窗豪购整条中轴线（罗伯逊/托辛/塞内西/范赫克/加拉格尔），德泽尔比把4-2-3-1的门将出球和肋部渗透搬过来；托纳利+格雷双后腰、费尔南德斯10号、库杜斯/马尔穆什两翼。西蒙斯ACL缺阵、罗梅罗/维卡里奥离队。防线身前肋部仍是软肋。"},
@@ -1087,7 +1087,7 @@ var STYLE_FIX={
  '热刺':{press:2,control:4,direct:1,low:1}
 };
 var PREFERRED={
- '曼联':{form:'4-2-3-1',xi:['拉门斯','达洛特','马奎尔','L.马丁内斯','多古','巴莱巴','蒂勒曼斯','姆贝乌莫','B费','库尼亚','谢什科']},
+ '曼联':{form:'4-2-3-1',xi:['拉门斯','达洛特','马奎尔','L.马丁内斯','卢克·肖','巴莱巴','蒂勒曼斯','姆贝乌莫','B费','库尼亚','谢什科']},
  '曼城':{form:'4-2-3-1',xi:['多纳鲁马','努内斯','鲁本·迪亚斯','格伊','格瓦迪奥尔','埃利奥特·安德森','恩佐','塞门约','谢尔基','恩迪亚耶','哈兰德']},
  '阿森纳':{form:'4-2-3-1',xi:['拉亚','本·怀特','孔萨','加布里埃尔','卡拉菲奥里','赖斯','刘易斯·斯凯利','萨卡','厄德高','措利斯','哈弗茨']},
  '利物浦':{form:'4-2-3-1',xi:['阿利松','阿劳霍','杰雷米·雅凯','范戴克','科尔克兹','麦卡利斯特','索博斯洛伊','维克托·穆尼奥斯','维尔茨','巴尔克拉','伊萨克']},
@@ -1971,18 +1971,27 @@ function openSheet(wi,idx){
     <button class="x" onclick="closeSheet()">✕</button></div>`;
   if(cur) h+=`<div class="strow"><span class="mut">状态</span>${sts.map(function(s){
       return `<button class="st ${stOf(cur)===s[0]?'on':''}" data-st="${s[0]}" data-n="${esc(cur)}">${s[1]}</button>`;}).join('')}</div>`;
-  h+=`<div class="lov">选择球员（按位置分组，组内按适配度排序）</div><div class="plist">
+  h+=`<div class="lov">选择球员（同位置优先，组内按适配度排序）</div><div class="plist">
       <button class="pr ${!cur?'on':''}" data-slotnull="1"><span>— 留空 —</span></button>`;
   var buckets={};
   cands.forEach(function(p){
     var g=GRP[(p.pos||[])[0]]||'';
     (buckets[g]=buckets[g]||[]).push(p);
   });
-  [['门','门将'],['卫','后卫'],['中','中场'],['锋','前锋'],['','其他']].forEach(function(g){
+  var target=GRP[slot]||'';
+  var gDefs=[['门','门将'],['卫','后卫'],['中','中场'],['锋','前锋'],['','其他']];
+  var ordered=gDefs.filter(function(g){return g[0]===target;})
+    .concat(gDefs.filter(function(g){return g[0]!==target;}));
+  ordered.forEach(function(g){
     var arr=buckets[g[0]]||[];
     if(!arr.length) return;
-    arr.sort(function(a,b){return scoreFor(b,slot)-scoreFor(a,slot);});
-    h+=`<div class="lgrp">${g[1]} <em>${arr.length}</em></div>`;
+    arr.sort(function(a,b){
+      var ae=(a.pos||[]).indexOf(slot)>=0?1:0;
+      var be=(b.pos||[]).indexOf(slot)>=0?1:0;
+      if(ae!==be) return be-ae;
+      return scoreFor(b,slot)-scoreFor(a,slot);
+    });
+    h+=`<div class="lgrp">${g[1]} <em>${arr.length}</em>${g[0]===target?' <span class="mut">同位置优先</span>':''}</div>`;
     arr.forEach(function(p){
       var used=lu.filter(function(n,i){return n===p.n&&i!==idx;}).length>0;
       h+=`<button class="pr ${cur===p.n?'on':''} ${used?'used':''}" data-pick="${esc(p.n)}">
@@ -1993,6 +2002,14 @@ function openSheet(wi,idx){
   h+=`</div></div>`;
   $('#sheet').innerHTML=h; $('#sheet').classList.add('on');
   $('#sheet').dataset.wi=wi; $('#sheet').dataset.idx=idx;
+  setTimeout(function(){
+    var box=document.querySelector('#sheet .sheetIn');
+    var g=document.querySelector('#sheet .lgrp');
+    if(box&&g){
+      var top=g.getBoundingClientRect().top-box.getBoundingClientRect().top+box.scrollTop-6;
+      box.scrollTop=Math.max(0,top);
+    }
+  },0);
 }
 function closeSheet(){ $('#sheet').classList.remove('on'); $('#sheet').innerHTML=''; }
 function setSlot(wi,idx,name){
@@ -2737,6 +2754,20 @@ function copyBackup(){
       function(){ showBackup(txt); });
   }else{ showBackup(txt); }
 }
+function copyLog(i){
+  var x=logs()[i]; if(!x) return;
+  var txt=logTime(x.ts)+' · '+x.home+' '+x.hs+':'+x.as+' '+x.away+' · '+x.min+"' · "+x.form+(x.wx?' · '+wxLabel(x.wx):'')+'\n'+x.txt;
+  if(navigator.clipboard&&window.isSecureContext){
+    navigator.clipboard.writeText(txt).then(function(){ alert('已复制这条记录'); },function(){ showLogCopy(txt); });
+  }else{ showLogCopy(txt); }
+}
+function showLogCopy(txt){
+  $('#sheet').innerHTML='<div class="sheetIn"><div class="sh"><b>复制这条记录</b><button class="x" onclick="closeSheet()">✕</button></div>'+
+    '<textarea readonly style="min-height:140px;font-size:12px">'+esc(txt)+'</textarea>'+
+    '<div class="ae">长按全选 → 复制；或直接 Ctrl/⌘+C。</div></div>';
+  $('#sheet').classList.add('on');
+  setTimeout(function(){var t=document.querySelector('#sheet textarea');if(t){t.focus();t.select();}},0);
+}
 function showBackup(txt){
   var ta=document.getElementById('bktext');
   if(!ta) return;
@@ -2918,6 +2949,7 @@ function renderLog(){
     var wx=wxLabel(x.wx);
     var ed=x.edited?'<span class="edtag">已编辑</span>':'';
     return '<div class="lg"><div class="lgx">'+
+      '<button class="x copy" data-copylog="'+i+'" aria-label="复制">⧉</button>'+
       '<button class="x edit" data-edit="'+i+'" aria-label="编辑">✎</button>'+
       '<button class="x del" data-del="'+i+'" aria-label="删除">✕</button></div>'+
       '<div class="m">'+tm+' · '+esc(x.home)+' '+esc(x.hs)+':'+esc(x.as)+' '+esc(x.away)+' · '+esc(x.min)+"' · "+esc(x.form)+(wx?' · '+wx:'')+(ed?' '+ed:'')+'</div>'+
@@ -3067,6 +3099,8 @@ document.addEventListener('click',function(e){
   if(dgo){ switchTab('lineup'); return; }
   var ed=t.closest?t.closest('[data-edit]'):null;
   if(ed){ editLog(Number(ed.getAttribute('data-edit'))); return; }
+  var cp=t.closest?t.closest('[data-copylog]'):null;
+  if(cp){ copyLog(Number(cp.getAttribute('data-copylog'))); return; }
   var dl=t.closest?t.closest('[data-del]'):null;
   if(dl){ delLog(Number(dl.getAttribute('data-del'))); return; }
   var tx=t.closest?t.closest('[data-tax]'):null;

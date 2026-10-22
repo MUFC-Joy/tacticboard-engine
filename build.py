@@ -33,7 +33,7 @@ var STYLE_FIX={
  '热刺':{press:2,control:4,direct:1,low:1}
 };
 var PREFERRED={
- '曼联':{form:'4-2-3-1',xi:['拉门斯','达洛特','马奎尔','L.马丁内斯','多古','巴莱巴','蒂勒曼斯','姆贝乌莫','B费','库尼亚','谢什科']},
+ '曼联':{form:'4-2-3-1',xi:['拉门斯','达洛特','马奎尔','L.马丁内斯','卢克·肖','巴莱巴','蒂勒曼斯','姆贝乌莫','B费','库尼亚','谢什科']},
  '曼城':{form:'4-2-3-1',xi:['多纳鲁马','努内斯','鲁本·迪亚斯','格伊','格瓦迪奥尔','埃利奥特·安德森','恩佐','塞门约','谢尔基','恩迪亚耶','哈兰德']},
  '阿森纳':{form:'4-2-3-1',xi:['拉亚','本·怀特','孔萨','加布里埃尔','卡拉菲奥里','赖斯','刘易斯·斯凯利','萨卡','厄德高','措利斯','哈弗茨']},
  '利物浦':{form:'4-2-3-1',xi:['阿利松','阿劳霍','杰雷米·雅凯','范戴克','科尔克兹','麦卡利斯特','索博斯洛伊','维克托·穆尼奥斯','维尔茨','巴尔克拉','伊萨克']},
@@ -917,18 +917,27 @@ function openSheet(wi,idx){
     <button class="x" onclick="closeSheet()">✕</button></div>`;
   if(cur) h+=`<div class="strow"><span class="mut">状态</span>${sts.map(function(s){
       return `<button class="st ${stOf(cur)===s[0]?'on':''}" data-st="${s[0]}" data-n="${esc(cur)}">${s[1]}</button>`;}).join('')}</div>`;
-  h+=`<div class="lov">选择球员（按位置分组，组内按适配度排序）</div><div class="plist">
+  h+=`<div class="lov">选择球员（同位置优先，组内按适配度排序）</div><div class="plist">
       <button class="pr ${!cur?'on':''}" data-slotnull="1"><span>— 留空 —</span></button>`;
   var buckets={};
   cands.forEach(function(p){
     var g=GRP[(p.pos||[])[0]]||'';
     (buckets[g]=buckets[g]||[]).push(p);
   });
-  [['门','门将'],['卫','后卫'],['中','中场'],['锋','前锋'],['','其他']].forEach(function(g){
+  var target=GRP[slot]||'';
+  var gDefs=[['门','门将'],['卫','后卫'],['中','中场'],['锋','前锋'],['','其他']];
+  var ordered=gDefs.filter(function(g){return g[0]===target;})
+    .concat(gDefs.filter(function(g){return g[0]!==target;}));
+  ordered.forEach(function(g){
     var arr=buckets[g[0]]||[];
     if(!arr.length) return;
-    arr.sort(function(a,b){return scoreFor(b,slot)-scoreFor(a,slot);});
-    h+=`<div class="lgrp">${g[1]} <em>${arr.length}</em></div>`;
+    arr.sort(function(a,b){
+      var ae=(a.pos||[]).indexOf(slot)>=0?1:0;
+      var be=(b.pos||[]).indexOf(slot)>=0?1:0;
+      if(ae!==be) return be-ae;
+      return scoreFor(b,slot)-scoreFor(a,slot);
+    });
+    h+=`<div class="lgrp">${g[1]} <em>${arr.length}</em>${g[0]===target?' <span class="mut">同位置优先</span>':''}</div>`;
     arr.forEach(function(p){
       var used=lu.filter(function(n,i){return n===p.n&&i!==idx;}).length>0;
       h+=`<button class="pr ${cur===p.n?'on':''} ${used?'used':''}" data-pick="${esc(p.n)}">
@@ -939,6 +948,14 @@ function openSheet(wi,idx){
   h+=`</div></div>`;
   $('#sheet').innerHTML=h; $('#sheet').classList.add('on');
   $('#sheet').dataset.wi=wi; $('#sheet').dataset.idx=idx;
+  setTimeout(function(){
+    var box=document.querySelector('#sheet .sheetIn');
+    var g=document.querySelector('#sheet .lgrp');
+    if(box&&g){
+      var top=g.getBoundingClientRect().top-box.getBoundingClientRect().top+box.scrollTop-6;
+      box.scrollTop=Math.max(0,top);
+    }
+  },0);
 }
 function closeSheet(){ $('#sheet').classList.remove('on'); $('#sheet').innerHTML=''; }
 function setSlot(wi,idx,name){
@@ -1683,6 +1700,20 @@ function copyBackup(){
       function(){ showBackup(txt); });
   }else{ showBackup(txt); }
 }
+function copyLog(i){
+  var x=logs()[i]; if(!x) return;
+  var txt=logTime(x.ts)+' · '+x.home+' '+x.hs+':'+x.as+' '+x.away+' · '+x.min+"' · "+x.form+(x.wx?' · '+wxLabel(x.wx):'')+'\n'+x.txt;
+  if(navigator.clipboard&&window.isSecureContext){
+    navigator.clipboard.writeText(txt).then(function(){ alert('已复制这条记录'); },function(){ showLogCopy(txt); });
+  }else{ showLogCopy(txt); }
+}
+function showLogCopy(txt){
+  $('#sheet').innerHTML='<div class="sheetIn"><div class="sh"><b>复制这条记录</b><button class="x" onclick="closeSheet()">✕</button></div>'+
+    '<textarea readonly style="min-height:140px;font-size:12px">'+esc(txt)+'</textarea>'+
+    '<div class="ae">长按全选 → 复制；或直接 Ctrl/⌘+C。</div></div>';
+  $('#sheet').classList.add('on');
+  setTimeout(function(){var t=document.querySelector('#sheet textarea');if(t){t.focus();t.select();}},0);
+}
 function showBackup(txt){
   var ta=document.getElementById('bktext');
   if(!ta) return;
@@ -1864,6 +1895,7 @@ function renderLog(){
     var wx=wxLabel(x.wx);
     var ed=x.edited?'<span class="edtag">已编辑</span>':'';
     return '<div class="lg"><div class="lgx">'+
+      '<button class="x copy" data-copylog="'+i+'" aria-label="复制">⧉</button>'+
       '<button class="x edit" data-edit="'+i+'" aria-label="编辑">✎</button>'+
       '<button class="x del" data-del="'+i+'" aria-label="删除">✕</button></div>'+
       '<div class="m">'+tm+' · '+esc(x.home)+' '+esc(x.hs)+':'+esc(x.as)+' '+esc(x.away)+' · '+esc(x.min)+"' · "+esc(x.form)+(wx?' · '+wx:'')+(ed?' '+ed:'')+'</div>'+
@@ -2013,6 +2045,8 @@ document.addEventListener('click',function(e){
   if(dgo){ switchTab('lineup'); return; }
   var ed=t.closest?t.closest('[data-edit]'):null;
   if(ed){ editLog(Number(ed.getAttribute('data-edit'))); return; }
+  var cp=t.closest?t.closest('[data-copylog]'):null;
+  if(cp){ copyLog(Number(cp.getAttribute('data-copylog'))); return; }
   var dl=t.closest?t.closest('[data-del]'):null;
   if(dl){ delLog(Number(dl.getAttribute('data-del'))); return; }
   var tx=t.closest?t.closest('[data-tax]'):null;
