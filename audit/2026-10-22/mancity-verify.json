@@ -1,0 +1,1032 @@
+{
+  "team": "曼城",
+  "form": "4-2-3-1",
+  "generated": "2026-10-21",
+  "scope": "只审计/出候选，不写项目文件。用户已选 A：18 人按主位置 1/7/6/4；11 首发 + 7 替补；替补按 2026-27 本季 + 2025-26 上季出场/分钟排序。斯通斯/阿坎吉/吉布斯-怀特排除，写库时改 club/移除。PREFERRED 4-2-3-1。",
+  "sourcesPolicy": "队籍/位置：曼城官网、PL官网、维基2026-27赛季页；惯用脚：PL/FotMob/TM/EA交叉；分析文章只支撑弱点/标签。",
+  "counts": {
+    "existing": 18,
+    "stillAtClubFromOriginal": 15,
+    "removedFromClub": 3,
+    "pool": 18,
+    "poolOriginalRetained": 14,
+    "requiredAdditions": 2,
+    "depthAdditions": 2,
+    "excludedAtClub": 1,
+    "weakExplicit": 8,
+    "weakInjuryAvailability": 2,
+    "weakPending": 8,
+    "quotaOption": "A"
+  },
+  "rows": [
+    {
+      "n": "多纳鲁马",
+      "en": [
+        "Gianluigi Donnarumma",
+        "Donnarumma"
+      ],
+      "club": "曼城",
+      "nat": "意大利",
+      "num": 1,
+      "pos": [
+        "GK"
+      ],
+      "foot": "右",
+      "tags": [
+        "门线型"
+      ],
+      "weak": "压迫下失误",
+      "weakNote": "出球/脚下是相对短板：CBS 评论指其传球准确性与受压镇定受质疑；Yahoo/The Athletic 2026-08 报道马雷斯卡在专门设计出球方案保护他（后卫多给接应）。门线扑救仍是顶级。",
+      "src": [
+        "https://www.mancity.com/news/mens/gianluigi-donnarumma-hungry-to-make-history-with-man-city-63893199",
+        "https://www.transfermarkt.com/gianluigi-donnarumma/profil/spieler/315858",
+        "https://www.fotmob.com/players/618878/gianluigi-donnarumma",
+        "https://sports.yahoo.com/articles/the-goalkeeper-fit-at-manchester-city-remains-a-puzzle-to-solve-075500173.html"
+      ],
+      "conf": "已核实",
+      "note": "队籍/位置/脚已核（City 2025夏签、TM since 2025、FotMob 右）；d 的“2026夏窗”需改为“2025夏窗”；weak 新增。",
+      "changes": [
+        "d：2026夏窗→2025夏窗",
+        "weak：新增 压迫下失误"
+      ],
+      "proposedD": "2025夏窗从巴黎加盟曼城当一门+副队长：一对一扑救和反应顶级；出球相比埃德森保守——马雷斯卡的倒脚体系靠后卫线补。"
+    },
+    {
+      "n": "努内斯",
+      "en": [
+        "Matheus Nunes",
+        "Nunes"
+      ],
+      "club": "曼城",
+      "nat": "葡萄牙",
+      "num": 27,
+      "pos": [
+        "RB",
+        "CM"
+      ],
+      "foot": "右",
+      "tags": [
+        "多面手",
+        "套边型"
+      ],
+      "weak": "待确认",
+      "weakNote": "无可靠战术弱点：Yahoo 2026-03 指其已改掉此前错误、防守“more than solid”，速度与对抗是强项；Pep 早前“不够聪明踢中场”的评价是位置改造背景，不等于右后卫稳定短板。替代观察点：后点争顶、被内切型边锋拉进禁区、压上后的身后空间。",
+      "src": [
+        "https://www.transfermarkt.com/matheus-nunes/profil/spieler/601883",
+        "https://www.fotmob.com/players/955529/matheus-nunes",
+        "https://sports.yahoo.com/articles/manchester-city-could-look-young-065000360.html",
+        "https://www.mancity.com/news/mens/matheus-nunes-west-ham-premier-league-preview-63901757",
+        "https://footballapi.pulselive.com/football/stats/player/76204?comp=1&compSeasons=841"
+      ],
+      "conf": "待确认",
+      "note": "新增（实际首发需要）：曼城 #27，RB/CM，右脚；2026-27 英超 5 场 4 首发/379 分钟；tags 多面手/套边型；weak 待确认。",
+      "changes": [
+        "新增",
+        "weak：待确认"
+      ]
+    },
+    {
+      "n": "鲁本·迪亚斯",
+      "en": [
+        "Ruben Dias",
+        "R. Dias",
+        "鲁本·迪亚斯"
+      ],
+      "club": "曼城",
+      "nat": "葡萄牙",
+      "num": 3,
+      "pos": [
+        "CB"
+      ],
+      "foot": "右",
+      "tags": [
+        "拖后型"
+      ],
+      "weak": "伤病史",
+      "weakNote": "【可用性风险，非战术弱点】2026-01 腿筋伤缺 4–6 周（Guardian/Athletic）；2026-04 踝伤缺席对阿森纳（Yahoo）。拖后指挥与出球仍是防线轴心；不硬编“回追慢”。",
+      "src": [
+        "https://www.transfermarkt.com/ruben-dias/profil/spieler/258004",
+        "https://www.fotmob.com/players/614006/ruben-dias",
+        "https://www.theguardian.com/football/2026/jan/06/manchester-city-ruben-dias-injury-out-for-up-to-six-weeks",
+        "https://sports.yahoo.com/articles/why-ruben-dias-not-playing-152000666.html"
+      ],
+      "conf": "已核实",
+      "note": "队籍/位置/脚已核；weak=伤病史，仅作可用性风险，不混写成战术短板。",
+      "changes": [
+        "weak：新增 伤病史（可用性风险）"
+      ]
+    },
+    {
+      "n": "格瓦迪奥尔",
+      "en": [
+        "Josko Gvardiol",
+        "Joško Gvardiol",
+        "Gvardiol"
+      ],
+      "club": "曼城",
+      "nat": "克罗地亚",
+      "num": 24,
+      "pos": [
+        "CB",
+        "LB"
+      ],
+      "foot": "左",
+      "tags": [
+        "左脚中卫",
+        "出球型"
+      ],
+      "weak": "待确认",
+      "weakNote": "无可靠战术弱点：BBC 2026-09 称其伤愈后 1v1/抢断回到最佳；PL 2026-01 分析也认为其防守强于艾特-努里。替代观察点：高位线身后、伤后连续作战负荷、左脚出球受压。2026-01 骨折仅作可用性备注，不硬套伤病史。",
+      "src": [
+        "https://www.transfermarkt.com/josko-gvardiol/profil/spieler/475959",
+        "https://www.bbc.com/sport/football/articles/cm0e35jrqyd7o",
+        "https://www.premierleague.com/en/news/4531379/how-do-man-city-cope-without-injured-defenders"
+      ],
+      "conf": "待确认",
+      "note": "脚右→左（TM 明确 left）；tags 出球型/内收型→左脚中卫/出球型；d 重写；weak 待确认。TM 主位列 LB，现库 CB 在前，保留 CB 优先但在 note 标注。",
+      "changes": [
+        "foot：右→左",
+        "tags：出球型/内收型→左脚中卫/出球型",
+        "d：删除“右脚将踢左路”",
+        "weak：待确认"
+      ],
+      "proposedD": "从莱比锡到曼城：左脚中卫/左后卫，带球突进像边锋，世界杯一战成名；左脚让左侧出球天然顺，防守 1v1 也硬。"
+    },
+    {
+      "n": "恩佐",
+      "en": [
+        "Enzo Fernandez",
+        "Enzo Fernández",
+        "恩佐·费尔南德斯"
+      ],
+      "club": "曼城",
+      "nat": "阿根廷",
+      "num": 17,
+      "pos": [
+        "CM",
+        "DM"
+      ],
+      "foot": "右",
+      "tags": [
+        "组织8"
+      ],
+      "weak": "回追慢",
+      "weakNote": "The Athletic 2026-08：他在双后腰时球队防守更脆弱；Breaking The Lines：不具爆发力、不适合大空间一防一，缺速度覆盖转换。组织、长传与后插上仍是强项。",
+      "src": [
+        "https://www.transfermarkt.com/enzo-fernandez/profil/spieler/648195",
+        "https://www.fotmob.com/players/1137705/enzo-fernandez",
+        "https://www.premierleague.com/en/players/448047/enzo-fernandez/overview",
+        "https://www.nytimes.com/athletic/7537847/2026/08/26/chelsea-enzo-fernandez-transfer-tactics-analysis/",
+        "https://breakingthelines.com/@btl/enzo-fernandez-the-double-standard-at-chelsea"
+      ],
+      "conf": "已核实",
+      "note": "队籍曼城、位置 CM/DM、右脚已核；st/d 的“左脚对角线大师”需改为右脚；weak 新增。",
+      "changes": [
+        "st：左脚对角线→右脚对角线",
+        "weak：新增 回追慢"
+      ],
+      "proposedSt": "组织8/6：右脚对角线大师"
+    },
+    {
+      "n": "埃利奥特·安德森",
+      "en": [
+        "Elliot Anderson"
+      ],
+      "club": "曼城",
+      "nat": "英格兰",
+      "num": 5,
+      "pos": [
+        "DM",
+        "CM"
+      ],
+      "foot": "右",
+      "tags": [
+        "B2B",
+        "拖后组织"
+      ],
+      "weak": "待确认",
+      "weakNote": "无可靠战术弱点：TFA 2026-03 将其评为攻守两端 two-way player；WhoScored 列传球/盘带/定位球为强项，未给明确弱项。替代观察点：禁区前沿犯规、空中对抗、被高强度逼抢时的转身出球。",
+      "src": [
+        "https://www.transfermarkt.com/elliot-anderson/profil/spieler/567576",
+        "https://www.premierleague.com/en/players/215379/elliot-anderson/overview",
+        "https://www.fotmob.com/players/1089691/elliot-anderson",
+        "https://totalfootballanalysis.com/player-analysis/elliot-anderson-scout-report-nottingham-forest-2025-2026-analysis",
+        "https://www.whoscored.com/players/402596/show/elliot-anderson"
+      ],
+      "conf": "待确认",
+      "note": "队籍曼城/位置 DM/CM/右脚已核（TM 主位 DM，PL/FotMob 右脚）；weak 待确认。",
+      "changes": [
+        "weak：待确认"
+      ]
+    },
+    {
+      "n": "科瓦契奇",
+      "en": [
+        "Mateo Kovacic",
+        "Mateo Kovačić"
+      ],
+      "club": "曼城",
+      "nat": "克罗地亚",
+      "num": 8,
+      "pos": [
+        "CM",
+        "DM"
+      ],
+      "foot": "右",
+      "tags": [
+        "组织8"
+      ],
+      "weak": "伤病史",
+      "weakNote": "【可用性风险，非战术弱点】2025-06 与 2025-11 两次跟腱手术，2026 年才逐步复出（Sky/Yahoo）；32 岁，连续作战负荷是主要风险。不硬编战术弱项。",
+      "src": [
+        "https://www.transfermarkt.com/mateo-kovacic/profil/spieler/51471",
+        "https://www.fotmob.com/players/239219/mateo-kovacic",
+        "https://www.premierleague.com/en/players/91651/mateo-kovacic/career",
+        "https://ca.sports.yahoo.com/news/manchester-city-midfielder-undergo-surgery-114100187.html"
+      ],
+      "conf": "已核实",
+      "note": "队籍/位置/脚已核；weak=伤病史，仅作可用性风险；实际近期首发仍在用他。",
+      "changes": [
+        "weak：新增 伤病史（可用性风险）"
+      ]
+    },
+    {
+      "n": "恩迪亚耶",
+      "en": [
+        "Iliman Ndiaye"
+      ],
+      "club": "曼城",
+      "nat": "塞内加尔",
+      "num": 7,
+      "pos": [
+        "LW",
+        "RW",
+        "AM"
+      ],
+      "foot": "右",
+      "tags": [
+        "逆足内切"
+      ],
+      "weak": "待确认",
+      "weakNote": "无可靠战术弱点：TM 列左边锋、右脚；2026-27 英超前段助攻产出正常（2 助），没有稳定的“终结效率低”证据。替代观察点：最后一传选择、右脚内切后的终结、无球回防落位。",
+      "src": [
+        "https://www.transfermarkt.us/iliman-ndiaye/profil/spieler/623570",
+        "https://www.premierleague.com/en/players/440993/iliman-ndiaye/stats",
+        "https://statshub.com/player/iliman-ndiaye/23817"
+      ],
+      "conf": "待确认",
+      "note": "脚左→右（TM 明确 right）；pos RW/AM→LW/RW/AM（TM 主位左边锋）；tags 逆足内切保留（右脚踢左路，逻辑自洽）；weak 待确认。",
+      "changes": [
+        "foot：左→右",
+        "pos：RW/AM→LW/RW/AM",
+        "weak：待确认"
+      ]
+    },
+    {
+      "n": "哈兰德",
+      "en": [
+        "Haaland",
+        "Erling Haaland"
+      ],
+      "club": "曼城",
+      "nat": "挪威",
+      "num": 9,
+      "pos": [
+        "ST"
+      ],
+      "foot": "左",
+      "tags": [
+        "全能9",
+        "支点"
+      ],
+      "weak": "逆足限制",
+      "weakNote": "相对短板：右脚使用率明显低，2022 年统计其 133 个职业进球仅 15 个来自右脚（AllFootball/球员自述）；Mastermind 2021 球员分析也以“weaker right foot”描述其终结。防守者可诱导其用右脚处理球。左脚终结、冲击身后仍是顶级。",
+      "src": [
+        "https://www.transfermarkt.com/erling-haaland/profil/spieler/418560",
+        "https://www.fotmob.com/players/737066/erling-haaland",
+        "https://www.allfootballapp.com/articles/2918208-defenders-beware-erling-haaland-doing-extra",
+        "https://themastermindsite.com/2021/03/09/erling-haaland-player-analysis/"
+      ],
+      "conf": "已核实",
+      "note": "队籍/位置/左脚已核；tags 全能9/支点保留；weak=逆足限制（相对短板，不是主要限制）。",
+      "changes": [
+        "weak：新增 逆足限制"
+      ]
+    },
+    {
+      "n": "多库",
+      "en": [
+        "Jeremy Doku",
+        "Jérémy Doku"
+      ],
+      "club": "曼城",
+      "nat": "比利时",
+      "num": 11,
+      "pos": [
+        "LW",
+        "RW"
+      ],
+      "foot": "右",
+      "tags": [
+        "顺足下底"
+      ],
+      "weak": "待确认",
+      "weakNote": "无可靠战术弱点：PL 2025-10 与 Athletic 均指其“终结/最后一传”在改善；FotMob 2026-05 记其近 5 场 4 球 2 助，2026-27 前 3 轮 1 球 1 助。样本小，不沿用旧标签“终结效率低”。替代观察点：受压下的最后一传、无球回防、右脚外线传中。",
+      "src": [
+        "https://www.transfermarkt.com/jeremy-doku/profil/spieler/486049",
+        "https://www.fotmob.com/players/942368/jeremy-doku",
+        "https://www.premierleague.com/en/players/248875/jeremy-doku/overview",
+        "https://www.premierleague.com/en/news/4432018/analysis-doku-adding-end-product-to-match-dribbling-skills",
+        "https://www.fotmob.com/topnews/27946-jeremy-doku-has-added-goals-his-game-that-could-make-him-best-winger-world"
+      ],
+      "conf": "待确认",
+      "note": "队籍/位置/右脚已核；不沿用旧“终结效率低”，weak 待确认。",
+      "changes": [
+        "weak：待确认"
+      ]
+    },
+    {
+      "n": "格伊",
+      "en": [
+        "Marc Guehi",
+        "Marc Guéhi",
+        "格伊"
+      ],
+      "club": "曼城",
+      "nat": "英格兰",
+      "num": 6,
+      "pos": [
+        "CB"
+      ],
+      "foot": "右",
+      "tags": [
+        "上抢型"
+      ],
+      "weak": "防空弱",
+      "weakNote": "Andrew Beasley 2025-06 专文《The Aerial Question》：争顶是主要短板；Athletic 2024 数据其每 90 空中对抗获胜 1.29 次，居欧洲五大联赛中卫倒数 13%。地面缠斗、出球与指挥仍是强项。",
+      "src": [
+        "https://www.transfermarkt.com/marc-guehi/profil/spieler/392757",
+        "https://www.fotmob.com/players/844425/marc-guehi",
+        "https://www.premierleague.com/en/players/209036/marc-guehi/overview",
+        "https://www.andrewbeasleyfootball.com/p/marc-guehi-the-aerial-question",
+        "https://www.nytimes.com/athletic/5686580/2024/08/08/marc-guehi-analysed-newcastle-palace-england/"
+      ],
+      "conf": "已核实",
+      "note": "队籍/位置/右脚已核；TM since 2025、维基明确 2026-01-19 加盟；d 的“2026夏窗压哨”需改为“2026年1月”；weak=防空弱。",
+      "changes": [
+        "d：2026夏窗压哨→2026年1月19日",
+        "weak：新增 防空弱"
+      ],
+      "proposedD": "2026年1月从水晶宫加盟：欧洲杯主力级缠斗+出球，水晶宫多年的防线核心终于去了豪门。"
+    },
+    {
+      "n": "艾特-努里",
+      "en": [
+        "Rayan Ait-Nouri",
+        "Rayan Aït-Nouri"
+      ],
+      "club": "曼城",
+      "nat": "阿尔及利亚",
+      "num": 21,
+      "pos": [
+        "LB",
+        "LWB"
+      ],
+      "foot": "左",
+      "tags": [
+        "攻击型",
+        "套边型"
+      ],
+      "weak": "易失位",
+      "weakNote": "Sky 2025-06：其站位从来不是简单问题（狼队前助教原话）；PL 分析指其防守数据低于格瓦迪奥尔；BTL 指其注意力会走神、身后空间暴露。进攻推进与套边是强项。",
+      "src": [
+        "https://www.transfermarkt.com/rayan-ait-nouri/profil/spieler/578391",
+        "https://www.fotmob.com/players/933845/rayan-ait-nouri",
+        "https://www.premierleague.com/en/players/448514/rayan-ait-nouri/overview",
+        "https://www.skysports.com/football/news/13375301/rayan-ait-nouri-to-man-city-wolves-wing-back-is-technically-excellent-and-a-good-fit-for-pep-guardiolas-game",
+        "https://www.premierleague.com/en/news/4323205/analysis-will-ait-nouri-signing-signal-guardiola-evolution",
+        "https://breakingthelines.com/@btl/player-analysis-rayan-ait-nouri"
+      ],
+      "conf": "已核实",
+      "note": "脚右→左（PL 官网/FotMob/EA FC 27 三源一致）；tags 加套边型；weak=易失位。",
+      "changes": [
+        "foot：右→左",
+        "tags：攻击型→攻击型/套边型",
+        "weak：新增 易失位"
+      ]
+    },
+    {
+      "n": "奥赖利",
+      "en": [
+        "Nico O'Reilly",
+        "O'Reilly"
+      ],
+      "club": "曼城",
+      "nat": "英格兰",
+      "num": 33,
+      "pos": [
+        "LB",
+        "CM",
+        "DM"
+      ],
+      "foot": "左",
+      "tags": [
+        "内收型",
+        "多面手"
+      ],
+      "weak": "待确认",
+      "weakNote": "无可靠战术弱点：TFA 2026-02 指其不是持续破线的推进器；Squawka 2026 指其每 90 仅 0.8 次成功过人、0.7 次机会创造。但防守与多位置价值受认可（Guardian 2026-04）。替代观察点：最后三分之一创造力、1v1 防守、空中对抗。",
+      "src": [
+        "https://www.fotmob.com/players/1300526/nico-oreilly",
+        "https://learn.englandfootball.com/sitecore/content/EnglandFootball/Home/england/mens-senior-team/squad/Nico-o-reilly",
+        "https://www.premierleague.com/en/players/472769/nico-o-reilly/stats",
+        "https://totalfootballanalysis.com/player-analysis/nico-oreilly-scout-report-manchester-city-2025-2026-analysis-tactics",
+        "https://www.squawka.com/en/features/tactical-analysis-nico-oreilly-man-city-tweaks/",
+        "https://www.theguardian.com/football/2026/apr/19/nico-oreilly-manchester-city-arsenal-premier-league-title-race"
+      ],
+      "conf": "待确认",
+      "note": "脚右→左（英足总档案/FotMob）；pos 加 CM（官方列 CM/LB/AM，2025-26 约70%分钟在LB）；tags 加多面手；d 重写；weak 待确认。",
+      "changes": [
+        "foot：右→左",
+        "pos：LB/DM→LB/CM/DM",
+        "tags：内收型→内收型/多面手",
+        "d：删除“右脚踢左路”",
+        "weak：待确认"
+      ],
+      "proposedD": "青训中场改造的左脚多面手：左后卫/中场都能踢；内收后多用左脚出球，身高带来空中优势。"
+    },
+    {
+      "n": "福登",
+      "en": [
+        "Phil Foden",
+        "Foden"
+      ],
+      "club": "曼城",
+      "nat": "英格兰",
+      "num": 47,
+      "pos": [
+        "AM",
+        "LW",
+        "RW"
+      ],
+      "foot": "左",
+      "tags": [
+        "伪10",
+        "自由10"
+      ],
+      "weak": "逆足限制",
+      "weakNote": "PL 官网 Preferred Foot=Left；Coaches' Voice 指其几乎全用左脚带球，TFA 球探报告要求其改进右脚；防守者可逼其走右路/用右脚出球。不是状态问题。",
+      "src": [
+        "https://www.premierleague.com/en/players/209244/phil-foden/overview",
+        "https://www.transfermarkt.com/phil-foden/profil/spieler/406635",
+        "https://learning.coachesvoice.com/cv/phil-foden-manchester-city-pep-guardiola/",
+        "https://totalfootballanalysis.com/article/phil-foden-201920-scout-report-tactical-analysis-tactics"
+      ],
+      "conf": "已核实",
+      "note": "脚右→左（PL 官网明确 Left）；位置/队籍已核；weak=逆足限制。",
+      "changes": [
+        "foot：右→左",
+        "weak：新增 逆足限制"
+      ]
+    },
+    {
+      "n": "谢尔基",
+      "en": [
+        "Rayan Cherki",
+        "Cherki"
+      ],
+      "club": "曼城",
+      "nat": "法国",
+      "num": 10,
+      "pos": [
+        "AM",
+        "RW"
+      ],
+      "foot": "双",
+      "tags": [
+        "自由10"
+      ],
+      "weak": "不参与防守",
+      "weakNote": "PL 2025-06 分析其球员雷达“并不显示防守跑动”；BTL 2025-04 指其防守工作率仍在补课，不会持续压迫/回追。进攻创造力是顶级。",
+      "src": [
+        "https://www.transfermarkt.com/rayan-cherki/profil/spieler/607223",
+        "https://www.fotmob.com/players/1104053/rayan-cherki",
+        "https://www.premierleague.com/en/news/4323533",
+        "https://breakingthelines.com/@btl/rayan-cherki-a-rising-star-nearing-a-defining-summer-move"
+      ],
+      "conf": "冲突",
+      "note": "脚：现库=左，FotMob=Both（双足）；建议按“双”录入，标冲突待你确认。weak=不参与防守（PL/BTL 一致）。",
+      "changes": [
+        "foot：左→双（冲突）",
+        "weak：新增 不参与防守"
+      ]
+    },
+    {
+      "n": "塞门约",
+      "en": [
+        "Antoine Semenyo",
+        "Semenyo"
+      ],
+      "club": "曼城",
+      "nat": "加纳",
+      "num": 42,
+      "pos": [
+        "RW",
+        "LW"
+      ],
+      "foot": "右",
+      "tags": [
+        "顺足下底",
+        "多面手"
+      ],
+      "weak": "终结效率低",
+      "weakNote": "The Athletic 2025-06：决策偶有让队友沮丧；2026-10 PSG 赛后评论指其决策与终结浪费机会。2026-27 英超 7 场 2 球 3 助（553 分钟）产出不差，但相对其创造的机会量，最后一传/终结仍是可针对点。",
+      "src": [
+        "https://www.transfermarkt.com/antoine-semenyo/profil/spieler/583255",
+        "https://www.fotmob.com/players/933576/antoine-semenyo",
+        "https://www.nytimes.com/athletic/6440724/2025/06/23/tottenham-antoine-semenyo-analysis/",
+        "https://footballapi.pulselive.com/football/stats/player/25474?comp=1&compSeasons=841"
+      ],
+      "conf": "已核实",
+      "note": "新增（实际首发需要）：曼城 #42，RW/LW，右脚（双足）；2026-27 英超 7 场 6 首发/553 分钟，2 球 3 助；tags 顺足下底/多面手；weak=终结效率低。",
+      "changes": [
+        "新增",
+        "weak：新增 终结效率低"
+      ]
+    },
+    {
+      "n": "布阿迪",
+      "en": [
+        "Ayyoub Bouaddi",
+        "Bouaddi"
+      ],
+      "club": "曼城",
+      "nat": "摩洛哥",
+      "num": 32,
+      "pos": [
+        "DM",
+        "CM"
+      ],
+      "foot": "右",
+      "tags": [
+        "拖后组织"
+      ],
+      "weak": "待确认",
+      "weakNote": "无可靠战术弱点（2026-27 英超 4 场/122 分钟，1 首发）：TFA 指 progressive passing 是相对弱项，但不在本项目 11 词表，不硬套；替代观察点：英超强度下的对抗、被逼抢时转身、防守定位。",
+      "src": [
+        "https://www.transfermarkt.com/ayyoub-bouaddi/profil/spieler/1097139",
+        "https://www.fotmob.com/players/1561552/ayyoub-bouaddi",
+        "https://footballapi.pulselive.com/football/stats/player/141425?comp=1&compSeasons=841",
+        "https://totalfootballanalysis.com/player-analysis/ayyoub-bouaddi-scout-report-lille-2025-2026-analysis-tactics"
+      ],
+      "conf": "待确认",
+      "note": "可选第18人（配额位）：曼城 #32，DM/CM，右脚；2026-27 英超 4 场/122 分钟；不在最常用 XI。若不要凑满18人，可不勾选，保持17人真实轮换池。",
+      "optional": true,
+      "quotaSlot": true,
+      "changes": [
+        "新增（可选配额位）",
+        "weak：待确认"
+      ]
+    },
+    {
+      "n": "库萨诺夫",
+      "en": [
+        "Abdukodir Khusanov",
+        "Khusanov"
+      ],
+      "club": "曼城",
+      "nat": "乌兹别克斯坦",
+      "num": 45,
+      "pos": [
+        "CB",
+        "RB"
+      ],
+      "foot": "右",
+      "tags": [
+        "上抢型",
+        "回追型"
+      ],
+      "weak": "待确认",
+      "weakNote": "无可靠战术弱点：Goal 2026-04 形容其 aggressive/tenacious，回追与对抗是卖点；替代观察点：后场出球受压、禁区后点争顶、上抢后的身后空间。",
+      "src": [
+        "https://www.transfermarkt.com/abdukodir-khusanov/profil/spieler/763079",
+        "https://www.fotmob.com/players/1362998/abdukodir-khusanov",
+        "https://www.premierleague.com/en/players/578153/abdukodir-khusanov/overview",
+        "https://www.goal.com/en/lists/abdukodir-khusanov-man-city-cult-hero/blt3831aed94eb7abb0"
+      ],
+      "conf": "待确认",
+      "note": "入选18人（替补）：曼城 #45，CB/RB，右脚；2026-27 4场/283分钟 + 2025-26 21场/1429分钟 = 1712；按分钟替换刘易斯（459）。",
+      "changes": [
+        "入选18人",
+        "weak：待确认"
+      ]
+    }
+  ],
+  "removed": [
+    {
+      "n": "斯通斯",
+      "club": "曼城",
+      "actualClub": "国米",
+      "pos": [
+        "CB",
+        "DM"
+      ],
+      "foot": "右",
+      "reason": "2026夏窗离开曼城、加盟国米；TM 显示 Inter since 2026；维基2026-27曼城离队名单含 Stones (Inter)。",
+      "action": "写库阶段必须改 club=国米（保留球员条目）或删除；不能只在候选行排除。",
+      "src": [
+        "https://www.transfermarkt.com/john-stones/profil/spieler/186590",
+        "https://en.wikipedia.org/wiki/2026%E2%80%9327_Manchester_City_F.C._season"
+      ],
+      "weak": "伤病史",
+      "weakNote": "【可用性风险】2026-02 官网仍称其因伤缺阵；2026夏转投国米。离队行，若改挂国米需在写入阶段复核出勤。",
+      "conf": "已核实"
+    },
+    {
+      "n": "阿坎吉",
+      "club": "曼城",
+      "actualClub": "国米",
+      "pos": [
+        "CB",
+        "RB"
+      ],
+      "foot": "右",
+      "reason": "2026年永久转会国米；TM 显示 Inter since 2026；维基2026-27曼城离队名单含 Akanji (Inter)。",
+      "action": "写库阶段必须改 club=国米（保留球员条目）或删除；不能只在候选行排除。",
+      "src": [
+        "https://www.transfermarkt.com/manuel-akanji/profil/spieler/284730",
+        "https://en.wikipedia.org/wiki/2026%E2%80%9327_Manchester_City_F.C._season"
+      ],
+      "weak": "待确认",
+      "weakNote": "本轮未做国米版本弱点审计；若保留为球员库成员，需另查 2026-27 在国米的战术角色与出勤。",
+      "conf": "已核实"
+    },
+    {
+      "n": "吉布斯-怀特",
+      "club": "曼城",
+      "actualClub": "诺丁汉森林",
+      "pos": [
+        "AM",
+        "CM"
+      ],
+      "foot": "右",
+      "reason": "TM 26/27 仍列 Nottingham Forest；维基2026-27曼城转入名单无此人；2026-02/06 只有转会传闻。现库队籍=曼城是错误。",
+      "action": "写库阶段必须改 club=诺丁汉森林（保留球员条目）或删除；不能只在候选行排除。",
+      "src": [
+        "https://www.transfermarkt.com/morgan-gibbs-white/profil/spieler/429014",
+        "https://en.wikipedia.org/wiki/2026%E2%80%9327_Manchester_City_F.C._season"
+      ],
+      "weak": "待确认",
+      "weakNote": "本轮只审曼城；其森林版本弱点未审。2026-27 仍有英超出场，不能按“离队/无样本”处理。",
+      "conf": "已核实"
+    }
+  ],
+  "preferred": {
+    "standard": "2026-27 当前最常用首发阵型 + 最常用首发 11 人（截至 2026-10-21，英超 7 场）",
+    "currentForm": "4-3-3",
+    "currentXI": [
+      "多纳鲁马",
+      "里科·刘易斯",
+      "斯通斯",
+      "鲁本·迪亚斯",
+      "格瓦迪奥尔",
+      "恩佐",
+      "埃利奥特·安德森",
+      "科瓦契奇",
+      "恩迪亚耶",
+      "哈兰德",
+      "多库"
+    ],
+    "validInSquad": 10,
+    "invalid": [
+      "斯通斯（已转国米）"
+    ],
+    "proposedForm": "4-2-3-1",
+    "proposedXI": [
+      "多纳鲁马",
+      "努内斯",
+      "鲁本·迪亚斯",
+      "格伊",
+      "格瓦迪奥尔",
+      "埃利奥特·安德森",
+      "恩佐",
+      "塞门约",
+      "谢尔基",
+      "恩迪亚耶",
+      "哈兰德"
+    ],
+    "changes": [
+      "阵型 4-3-3→4-2-3-1：2026-27 英超 7/7 场官方 formation 均为 4-2-3-1",
+      "右后卫 里科·刘易斯→努内斯：努内斯 4 首发/379 分钟，刘易斯 1 首发/57 分钟",
+      "中卫 斯通斯→格伊：斯通斯已转国米；格伊 7 首发/630 分钟",
+      "中场第三人 科瓦契奇→谢尔基：实际是双后腰安德森+恩佐，谢尔基在哈兰德身后",
+      "两翼 多库/恩迪亚耶→塞门约/恩迪亚耶：塞门约 6 首发/553 分钟；多库因伤仅 3 场/126 分钟",
+      "多库、福登、奥赖利仍在 17 人池，但不在最常用 11 人"
+    ],
+    "basis": {
+      "sample": "2026-27 英超前 7 轮（截至 2026-10-17），全部 4-2-3-1",
+      "startsTop": [
+        "7 首发：多纳鲁马、鲁本·迪亚斯、格伊、哈兰德",
+        "6 首发：塞门约（553 分钟）、安德森（518 分钟）",
+        "5 首发：格瓦迪奥尔（488 分钟）、谢尔基（395 分钟）",
+        "4 首发：恩迪亚耶（533 分钟）、恩佐（393 分钟）、努内斯（379 分钟）",
+        "4 首发但分钟更少：福登（296 分钟）、奥赖利（292 分钟）"
+      ],
+      "tieBreak": "同为 4 首发时按英超出场分钟取前 3：恩迪亚耶 533 > 恩佐 393 > 努内斯 379 > 福登 296 > 奥赖利 292。",
+      "sources": [
+        "https://footballapi.pulselive.com/football/fixtures?comp=1&compSeasons=841&teams=11&page=0&pageSize=50",
+        "https://footballapi.pulselive.com/football/stats/player/76204?comp=1&compSeasons=841",
+        "https://footballapi.pulselive.com/football/stats/player/25474?comp=1&compSeasons=841",
+        "https://www.premierleague.com/en/clubs/43/manchester-city/squad"
+      ]
+    },
+    "note": "4-2-3-1 槽位顺序：GK,RB,CB,CB,LB,DM,DM,RW,AM,LW,ST。安德森+恩佐双后腰；塞门约 RW、谢尔基 AM、恩迪亚耶 LW、哈兰德 ST。",
+    "actualRecentXI": {
+      "date": "2026-10-17",
+      "form": "4-2-3-1",
+      "xi": [
+        "多纳鲁马",
+        "努内斯",
+        "迪亚斯",
+        "格伊",
+        "奥赖利",
+        "布阿迪",
+        "科瓦契奇",
+        "多库",
+        "福登",
+        "恩迪亚耶",
+        "哈兰德"
+      ],
+      "note": "伊普斯维奇场确认首发，属轮换场；不是最常用 11 人。努内斯/塞门约已加入候选，布阿迪本轮不入库。",
+      "src": [
+        "https://sports.yahoo.com/articles/man-city-xi-vs-ipswich-192316462.html"
+      ]
+    },
+    "quotaNote": "用户已选 A：18 人主位置 1/7/6/4；PREFERRED 仍是 4-2-3-1：多纳鲁马；努内斯、迪亚斯、格伊、格瓦迪奥尔；安德森、恩佐；塞门约、谢尔基、恩迪亚耶；哈兰德。写库同步 FORM_OVERRIDE 4-3-3→4-2-3-1。"
+  },
+  "conflicts": [
+    {
+      "topic": "7 名替补按分钟重排，刘易斯落选",
+      "detail": "替补分钟：奥赖利 2940、布阿迪 2476、福登 2380、多库 1910、库萨诺夫 1712、艾特-努里 976、科瓦契奇 218。刘易斯 459 为第 8，落选 18 人；他仍在曼城，不是离队，不要删条目。",
+      "level": "中"
+    },
+    {
+      "topic": "两名实际首发未入库",
+      "detail": "努内斯（RB，4 首发/379 分钟）和塞门约（RW，6 首发/553 分钟）是当前最常用 11 人，但 src/players.js 没有他们；必须新增才能让 PREFERRED 与现实一致。",
+      "level": "高"
+    },
+    {
+      "topic": "PREFERRED 与最常用首发不一致",
+      "detail": "现 PREFERRED 是 4-3-3，且含斯通斯；2026-27 英超 7/7 场官方阵型为 4-2-3-1。按“最常用阵型+最常用 11 人”，应改为：多纳鲁马；努内斯、迪亚斯、格伊、格瓦迪奥尔；安德森、恩佐；塞门约、谢尔基、恩迪亚耶；哈兰德。",
+      "level": "高"
+    },
+    {
+      "topic": "三处队籍错误（导致“现有18人”口径失真）",
+      "detail": "斯通斯/阿坎吉=国米；吉布斯-怀特=诺丁汉森林。现有18条中只有15人还在曼城；配额核算必须以此为前提，不能为凑18人保留错误队籍。",
+      "level": "高"
+    },
+    {
+      "topic": "六处惯用脚错误",
+      "detail": "格瓦迪奥尔 右→左；福登 右→左；奥赖利 右→左；艾特-努里 右→左；恩迪亚耶 左→右；谢尔基 左→双（FotMob=Both，与现库冲突）。",
+      "level": "高"
+    },
+    {
+      "topic": "位置主次",
+      "detail": "恩迪亚耶 RW/AM→LW/RW/AM；奥赖利 LB/DM→LB/CM/DM；格瓦迪奥尔 TM 主位 LB、官方 CB/LB。里科·刘易斯官方 RB/CM，但按替补分钟落选 18 人。",
+      "level": "中"
+    },
+    {
+      "topic": "阵型口径",
+      "detail": "build.py FORM_OVERRIDE=4-3-3，但 2026-27 英超前 7 轮官方 formation 全部为 4-2-3-1（Bournemouth/Palace/Coventry/Man Utd/Sunderland/Liverpool/Ipswich）。PREFERRED 与新标准要求应改 4-2-3-1；本轮不改 build.py。",
+      "level": "高"
+    },
+    {
+      "topic": "data.js 曼城卡文案过期",
+      "detail": "卡内仍写“恩佐与罗德里组成双组织6”“恩佐+赖因德斯+尼科接棒”；罗德里已去巴萨、赖因德斯已去 Al-Qadsiah、尼科·冈萨雷斯已去纽卡。应按 2026-27 实际改为恩佐+安德森+科瓦契奇/布阿迪。",
+      "level": "中"
+    },
+    {
+      "topic": "data.js 森林卡文案错误",
+      "detail": "森林卡写“吉布斯-怀特已转投曼城”，与 TM/维基不符；他仍在森林。",
+      "level": "中"
+    },
+    {
+      "topic": "描述日期错误",
+      "detail": "多纳鲁马 d 写“2026夏窗从巴黎加盟”，实际为 2025夏窗（City 官网 2025-09）。格伊 d 写“2026夏窗压哨加盟”，维基明确 2026-01-19。",
+      "level": "低"
+    },
+    {
+      "topic": "描述脚错误",
+      "detail": "恩佐 st 写“左脚对角线大师”（实际右脚）；格瓦迪奥尔 d 写“右脚将踢左路”；奥赖利 d 写“右脚踢左路”；均需重写。",
+      "level": "中"
+    },
+    {
+      "topic": "A 已批准：1/7/6/4",
+      "detail": "用户拍板 A：18 人按主位置 1/7/6/4（DEF +1、FWD -1）。不删超配额分组，不补第 5 前锋；B（1/6/6/5 备选位）已否决。",
+      "level": "中"
+    }
+  ],
+  "openQuestions": [
+    "艾特-努里本季 0 场、上季 976 分钟、有 1 月外租传闻；若确认外租/长期缺阵，用刘易斯替换。",
+    "科瓦契奇仅 218 分钟，但保留为第 6 中场（两次跟腱手术后回归）；若后续长期缺阵，需另找中场替换。",
+    "刘易斯落选 18 人（459 分钟 < 库萨诺夫 1712）；仍在曼城，不删条目；艾特-努里离队时第一替换。",
+    "福登 vs 谢尔基：数据选谢尔基（5 首发/395 分钟）；福登 4 首发/296 分钟。",
+    "多库伤后 3 场/126 分钟，已复出；若下一轮回到首发，右翼可能变多库/塞门约轮换。",
+    "谢尔基惯用脚：现库=左，FotMob=Both；建议按“双”录入，标冲突。",
+    "格瓦迪奥尔主位置：TM 列 LB、官方列 CB/LB；现库 CB 在前。",
+    "斯通斯/阿坎吉/吉布斯-怀特：写库时改 club=国米/森林，或删除；不能只在候选行排除。",
+    "多纳鲁马/格伊/恩佐/奥赖利的 d/st 是否按 proposedD/proposedSt 改。"
+  ],
+  "quota": {
+    "selected": "A",
+    "label": "A · 1/7/6/4（真实主位置）",
+    "target": {
+      "total": 18,
+      "GK": 1,
+      "DEF": 6,
+      "MID": 6,
+      "FWD": 5
+    },
+    "final18ByPrimary": {
+      "total": 18,
+      "GK": 1,
+      "DEF": 7,
+      "MID": 6,
+      "FWD": 4
+    },
+    "final18Delta": {
+      "GK": 0,
+      "DEF": 1,
+      "MID": 0,
+      "FWD": -1
+    },
+    "overQuotaReport": "A 方案主位置 1/7/6/4：DEF +1、FWD -1。按要求只报告、不删人；不使用备选位，不补第 5 前锋。",
+    "rejectedB": "B（1/6/6/5，奥赖利/福登备选位）已被用户否决，不作为候选口径。",
+    "approval": "A 已批准；写库时按 A 执行。"
+  },
+  "substitutes": {
+    "count": 7,
+    "rankingBasis": "2026-27 本赛季 + 2025-26 上赛季出场/分钟（PL；Bouaddi 用 Ligue 1 2025-26）",
+    "rows": [
+      {
+        "n": "奥赖利",
+        "pos": "LB/CM/DM",
+        "apps2627": 7,
+        "mins2627": 292,
+        "apps2526": 34,
+        "mins2526": 2648,
+        "totalMins": 2940,
+        "note": "本季 4 首发；上季 29 首发，分钟最高。"
+      },
+      {
+        "n": "布阿迪",
+        "pos": "DM/CM",
+        "apps2627": 4,
+        "mins2627": 122,
+        "apps2526": 30,
+        "mins2526": 2354,
+        "totalMins": 2476,
+        "note": "上季 Ligue 1 30 场/2354 分钟；本季 4 场/122 分钟，非 10 分钟凑数。"
+      },
+      {
+        "n": "福登",
+        "pos": "AM/LW/RW",
+        "apps2627": 5,
+        "mins2627": 296,
+        "apps2526": 33,
+        "mins2526": 2084,
+        "totalMins": 2380,
+        "note": "本季 4 首发；上季 33 场/2084 分钟。"
+      },
+      {
+        "n": "多库",
+        "pos": "LW/RW",
+        "apps2627": 3,
+        "mins2627": 126,
+        "apps2526": 30,
+        "mins2526": 1784,
+        "totalMins": 1910,
+        "note": "本季伤后 3 场/126 分钟，已对 Ipswich 首发；保留。"
+      },
+      {
+        "n": "库萨诺夫",
+        "pos": "CB/RB",
+        "apps2627": 4,
+        "mins2627": 283,
+        "apps2526": 21,
+        "mins2526": 1429,
+        "totalMins": 1712,
+        "note": "本季 3 首发；上季 21 场/1429 分钟；按分钟替刘易斯入选。"
+      },
+      {
+        "n": "艾特-努里",
+        "pos": "LB/LWB",
+        "apps2627": 0,
+        "mins2627": 0,
+        "apps2526": 17,
+        "mins2526": 976,
+        "totalMins": 976,
+        "note": "本季 0 场但非赛季报销；有 1 月外租传闻；保留待观察，若离队用刘易斯替换。"
+      },
+      {
+        "n": "科瓦契奇",
+        "pos": "CM/DM",
+        "apps2627": 3,
+        "mins2627": 92,
+        "apps2526": 6,
+        "mins2526": 126,
+        "totalMins": 218,
+        "note": "两次跟腱手术后已回归；按“赛季中旬可恢复”保留（乌加特口径），不是 10 分钟凑数。"
+      }
+    ],
+    "firstOmission": {
+      "n": "里科·刘易斯",
+      "pos": "RB/LB/DM",
+      "apps2627": 1,
+      "mins2627": 57,
+      "apps2526": 11,
+      "mins2526": 402,
+      "totalMins": 459,
+      "note": "仍在曼城；按分钟第 8，落选 18 人；不要删球员条目。若艾特-努里外租/伤停，刘易斯是第一替换。"
+    }
+  },
+  "excluded": [
+    {
+      "n": "里科·刘易斯",
+      "mins": 459,
+      "reason": "仍在曼城；18 人替补第 8，按分钟落选；第一替换。"
+    },
+    {
+      "n": "麦卡伊杜",
+      "mins": 11,
+      "reason": "本季 2 场/11 分钟；10 分钟级，不入选。"
+    },
+    {
+      "n": "阿兰",
+      "mins": 10,
+      "reason": "本季 1 场/10 分钟；10 分钟级，不入选。"
+    },
+    {
+      "n": "桑巴",
+      "mins": 0,
+      "reason": "本季 0 场；不入选。"
+    },
+    {
+      "n": "雷斯",
+      "mins": 1,
+      "reason": "本季 1 分钟；不入选。"
+    },
+    {
+      "n": "布雷斯韦特",
+      "mins": 1,
+      "reason": "本季 1 分钟；不入选。"
+    },
+    {
+      "n": "贝蒂内利/鲁利",
+      "mins": 0,
+      "reason": "替补门将；GK 配额只 1，不进 18 人。"
+    }
+  ],
+  "quotaOptions": {
+    "A": {
+      "label": "A · 1/7/6/4（真实主位置）",
+      "total": 18,
+      "GK": 1,
+      "DEF": 7,
+      "MID": 6,
+      "FWD": 4,
+      "delta": "DEF +1、FWD -1",
+      "description": "按每名球员 pos[0] 主位置统计，不借备选位。18 人 = 11 首发 + 7 替补（奥赖利/布阿迪/福登/多库/库萨诺夫/艾特-努里/科瓦契奇）。",
+      "status": "已批准"
+    },
+    "B": {
+      "label": "B · 1/6/6/5（只用真实可打备选位）",
+      "total": 18,
+      "GK": 1,
+      "DEF": 6,
+      "MID": 6,
+      "FWD": 5,
+      "delta": "正好配额",
+      "description": "同一 18 人，不新增/不删人；奥赖利 LB/CM/DM 计中场；福登 AM/LW/RW 计前锋。两人都有真实可打备选位。",
+      "status": "已否决（用户拍板 A）"
+    },
+    "recommendation": "A 已批准：1/7/6/4；不使用备选位；DEF +1、FWD -1 只报告不删；不补第 5 前锋。"
+  },
+  "writePlan": {
+    "preferred": "PREFERRED['曼城'] = {form:'4-2-3-1', xi:['多纳鲁马','努内斯','鲁本·迪亚斯','格伊','格瓦迪奥尔','埃利奥特·安德森','恩佐','塞门约','谢尔基','恩迪亚耶','哈兰德']}",
+    "formOverride": "FORM_OVERRIDE['曼城'] 4-3-3 → 4-2-3-1",
+    "clubs": "斯通斯/阿坎吉 → 国米；吉布斯-怀特 → 诺丁汉森林；改 club 或删除，不能只在候选行排除。",
+    "addToPlayers": "努内斯、塞门约、布阿迪、库萨诺夫",
+    "keepOutOf18": "里科·刘易斯仍在曼城，但不入 18 人；不要删球员条目。",
+    "notThisRound": "本轮不写 players.js/data.js/build.py/index.html，不跑 build，不提交 git。",
+    "quotaOption": "A · 1/7/6/4（已批准）",
+    "noAltPositions": "不使用奥赖利/福登备选位；不补第 5 前锋。"
+  },
+  "decision": {
+    "selected": "A",
+    "label": "A · 1/7/6/4（真实主位置）",
+    "approvedBy": "用户已拍板",
+    "date": "2026-10-22",
+    "note": "18 人按 pos[0] 主位置统计；不使用 O’Reilly/Foden 备选位凑 1/6/6/5；不补第 5 前锋纯凑数。"
+  }
+}

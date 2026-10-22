@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>利物浦 · 球员审核</title>
+<style>
+:root{--bg:#0c1015;--card:#151a21;--card2:#1b222c;--line:#2a323d;--txt:#e8eef5;--mut:#93a0af;
+--green:#23c55e;--red:#e2383f;--amber:#f0b429;--blue:#4ea1ff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);font:14px/1.55 -apple-system,BlinkMacSystemFont,"PingFang SC",Roboto,"Microsoft YaHei",sans-serif}
+main{max-width:520px;margin:0 auto;padding:14px 12px 96px}
+header{padding:4px 2px 10px}
+h1{font-size:19px;margin:0 0 4px}
+.sub{font-size:12px;color:var(--mut);line-height:1.6}
+.legend{font-size:11px;color:var(--mut);margin-top:8px}
+.badge{display:inline-block;font-size:10px;border:1px solid;border-radius:99px;padding:1px 7px;margin-left:6px;white-space:nowrap}
+.badge.ok{color:#8ef0b3;border-color:rgba(35,197,94,.5);background:rgba(35,197,94,.1)}
+.badge.warn{color:#f5d28a;border-color:rgba(240,180,41,.5);background:rgba(240,180,41,.1)}
+.badge.bad{color:#ffb4b7;border-color:rgba(226,56,63,.5);background:rgba(226,56,63,.1)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px;margin:0 0 10px}
+.card.done{border-color:rgba(35,197,94,.55)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:15px}
+.en{font-size:11px;color:var(--mut);margin-top:2px;overflow-wrap:anywhere}
+.meta{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;margin-top:8px}
+.kv{color:var(--mut)}
+.kv b{color:var(--txt);font-weight:700}
+.tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
+.tag{font-size:10.5px;color:#a8d2ff;background:rgba(78,161,255,.12);border:1px solid rgba(78,161,255,.35);border-radius:99px;padding:2px 7px}
+.weak{font-size:12px;color:#d3dce6;margin-top:8px}
+.weaknote{font-size:11px;color:#8fa3b8;margin-top:4px;line-height:1.55}
+.note{font-size:11.5px;color:#b9c6d3;margin-top:6px;background:rgba(255,255,255,.03);border-radius:6px;padding:6px 8px}
+.src{font-size:11px;color:var(--mut);margin-top:8px;overflow-wrap:anywhere}
+.src a{color:#a8d2ff;text-decoration:none;margin-right:4px}
+.muted{color:#6b7887}
+.check{display:flex;align-items:center;gap:9px;margin-top:11px;border-top:1px dashed #ffffff14;padding-top:10px;font-size:12.5px;min-height:42px}
+.check input{width:22px;height:22px;accent-color:var(--green);flex:0 0 22px}
+.memo{display:block;width:100%;margin-top:8px;background:var(--card2);border:1px solid var(--line);color:var(--txt);
+border-radius:8px;padding:10px;font:12px/1.5 inherit;min-height:40px}
+.memo::placeholder{color:#6b7887}
+footer{position:fixed;left:0;right:0;bottom:0;background:rgba(12,16,21,.97);border-top:1px solid var(--line);
+padding:10px 12px calc(10px + env(safe-area-inset-bottom));z-index:9}
+.fbar{max-width:520px;margin:0 auto;display:flex;gap:8px;align-items:center}
+.count{font-size:12px;color:var(--mut);flex:0 0 auto;min-width:80px}
+.count b{color:#fff}
+button{font:13px/1.2 inherit;border-radius:9px;min-height:42px;padding:10px 12px;border:1px solid var(--line);
+background:var(--card2);color:var(--txt)}
+button.primary{background:rgba(35,197,94,.16);border-color:rgba(35,197,94,.55);color:#dfffe9;font-weight:700}
+button:active{transform:scale(.98)}
+#fallback{display:none;margin-top:8px}
+#fallback textarea{width:100%;height:90px;background:var(--card2);border:1px solid var(--line);color:var(--txt);
+border-radius:8px;padding:8px;font:11px/1.5 ui-monospace,Menlo,monospace}
+.toast{position:fixed;left:50%;bottom:70px;transform:translateX(-50%);background:#1f2a35;border:1px solid #3a4a5a;
+color:#fff;border-radius:99px;padding:7px 13px;font-size:12px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:20}
+.toast.on{opacity:1}
+@media(min-width:521px){main{padding-top:20px}}
+</style></head>
+<body>
+<main>
+<header>
+  <h1>利物浦 · 球员审核</h1>
+  <div class="sub">4-2-3-1 · 18 行候选 · 勾选=同意写入；不勾=不写。<br>
+  要改的写在备注里。底栏下载的 JSON 只包含已勾选行。</div>
+  <div class="legend"><span class="badge ok">已核实</span> 来源较硬 · <span class="badge warn">待确认</span> 需你判断 · <span class="badge bad">冲突</span> 来源互相矛盾</div>
+</header>
+<section class="card" style="border-color:rgba(78,161,255,.5)">
+  <div class="top"><b>审计结论（先看这里）</b><span class="badge warn">18 人</span></div>
+  <div class="note" style="font-size:12px;line-height:1.75">
+    <b>目标配额：1 GK / 6 DEF / 6 MID / 5 FWD（按 pos[0] 主位置）。</b><br>
+    现有 14 按主位置是 GK1/DEF4/MID4/FWD5；但萨拉赫实际已去 Trabzonspor，剔除后 GK1/DEF4/MID4/FWD4 → 缺口 <b>DEF2 / MID2 / FWD1</b>。<br>
+    <b>补 5 人：</b>阿劳霍、雅凯（DEF）；远藤航、麦康奈尔（MID）；穆尼奥斯（FWD）→ 最终 <b>1/6/6/5 = 18 人</b>。<br>
+    <b>现有 14 人未删除：</b>萨拉赫只改队籍；布拉德利、埃基蒂克保留在 18 人内但标伤停。<br>
+    <b>PREFERRED（4-2-3-1，7/7 场 PL 最常用）：</b>阿利松 / 阿劳霍 / 雅凯 / 范戴克 / 科尔克兹 / 麦卡利斯特 / 索博斯洛伊 / 穆尼奥斯 / 维尔茨 / 巴尔克拉 / 伊萨克。<br>
+    <b>关键：</b>build.py 的 <code>FORM_OVERRIDE['利物浦']</code> 也要从 4-3-3 改 4-2-3-1；只改 PREFERRED 不改它，默认阵型仍是 4-3-3，新 PREFERRED 不会生效。<br>
+    <b>注意：</b>18 行里 14 行是现有对象（含阿劳霍租借改队籍），勾选＝应用修改；4 行是新增（雅凯、远藤航、麦康奈尔、穆尼奥斯）。<br>
+    <b>当前伤停：</b>弗林蓬、索博斯洛伊、布拉德利、埃基蒂克；替补有 Gakpo/Endo/McConnell，比 14 人版更稳。
+  </div>
+</section>
+
+<section class="card" data-card="0">
+  <div class="top"><b>阿利松</b><span class="badge ok">已核实</span></div>
+  <div class="en">Alisson / Alisson Becker</div>
+  <div class="meta">
+    <span class="kv">位置 <b>GK</b></span>
+    <span class="kv">惯用脚 <b>右</b></span>
+  </div>
+  <div class="tags"><span class="tag">清球型</span></div>
+  <div class="weak">弱点：伤病史</div>
+  <div class="weaknote">弱点依据：【可用性风险，非战术弱点】2025-26 多次肌肉/腿筋伤：2025-10 腿筋伤缺至 11 月，2026-03 肌肉伤缺至 5 月（TM/官网伤情）。2026-10-18 已可出场；不是站位/出球短板。替代观察点：高位防线后的出击范围、连续一周双赛的轮换。</div>
+  <div class="note">备注：现有球员 · GK 配额 1/1：7/7 场 PL 首发；队籍/位置/脚核实；补 weak。</div>
+  <div class="src"><a href="https://www.premierleague.com/en/clubs/14/liverpool/squad" target="_blank" rel="noopener">来源 1</a> · <a href="https://www.transfermarkt.com/alisson/verletzungen/spieler/105470" target="_blank" rel="noopener">来源 2</a> · <a href="https://www.liverpoolfc.com/news/injury-updates-alisson-becker-and-milos-kerkez" target="_blank" rel="noopener">来源 3</a></div>
+  <label class="check"><input type="checkbox" data-check="0"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="0" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="1">
+  <div class="top"><b>阿劳霍</b><span class="badge ok">已核实</span></div>
+  <div class="en">Ronald Araujo / Araujo / 阿劳霍</div>
+  <div class="meta">
+    <span class="kv">位置 <b>CB / RB</b></span>
+    <span class="kv">惯用脚 <b>右</b></span>
+  </div>
+  <div class="tags"><span class="tag">上抢型</span><span class="tag">多面手</span></div>
+  <div class="weak">弱点：易失位</div>
+  <div class="weaknote">弱点依据：TFA 2026：防守端容易做不必要的扑抢（can often lunge in when unnecessary），失误/吃牌风险来自这里；BBC 称他是补洞方案，右后卫不是本职，站位与 1v1 是代价。5/7 场 PL 首发打 RB；伤病史另记，不混写。</div>
+  <div class="note">备注：现有球员 · DEF 配额：库内 club=巴萨；2026-27 租借利物浦，建议改 club=利物浦（租借）、pos 补 RB、tags 补多面手。最常用 XI 的 RB，5/7 场首发；未删除原条目。</div>
+  <div class="src"><a href="https://www.liverpoolfc.com/news/liverpool-agree-deal-sign-ronald-araujo-loan" target="_blank" rel="noopener">来源 1</a> · <a href="https://tacticalfootballanalysis.com/ronald-araujo-scout-report-liverpool-2026-2027-tactics-analysis/" target="_blank" rel="noopener">来源 2</a> · <a href="https://www.bbc.com/sport/football/articles/ck8dz7pp4089o" target="_blank" rel="noopener">来源 3</a> · <a href="https://www.transfermarkt.com/ronald-araujo/profil/spieler/480267" target="_blank" rel="noopener">来源 4</a></div>
+  <label class="check"><input type="checkbox" data-check="1"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="1" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="2">
+  <div class="top"><b>杰雷米·雅凯</b><span class="badge ok">已核实</span></div>
+  <div class="en">Jérémy Jacquet / Jeremy Jacquet / Jacquet / 雅凯 / 杰里米·雅凯 / 热雷米·雅凯</div>
+  <div class="meta">
+    <span class="kv">位置 <b>CB</b></span>
+    <span class="kv">惯用脚 <b>右</b></span>
+  </div>
+  <div class="tags"><span class="tag">上抢型</span><span class="tag">出球型</span></div>
+  <div class="weak">弱点：怕一对一</div>
+  <div class="weaknote">弱点依据：TFA 2025-26 球探报告：速度型边锋在 pace 上占优，他会被“turned inside-out or wrong-footed”；前顶和争顶是强项，但被拉进边路 1v1 是明确针对点。EA FC 27 右脚、Pace 64/Sprint 70；FotMob 右脚、188cm。</div>
+  <div class="note">备注：新增 · DEF 配额：2026-07-01 官方签约雷恩（£60m）；7/7 场 PL 首发；右脚右中卫。</div>
+  <div class="src"><a href="https://www.premierleague.com/en/clubs/14/liverpool/squad" target="_blank" rel="noopener">来源 1</a> · <a href="https://www.liverpoolfc.com/news/liverpool-complete-signing-jeremy-jacquet" target="_blank" rel="noopener">来源 2</a> · <a href="https://totalfootballanalysis.com/player-analysis/jeremy-jacquet-scout-report-rennes-2025-2026-analysis-tactics" target="_blank" rel="noopener">来源 3</a> · <a href="https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/jeremy-jacquet/278903" target="_blank" rel="noopener">来源 4</a> · <a href="https://www.fotmob.com/players/1473534/jeremy-jacquet" target="_blank" rel="noopener">来源 5</a></div>
+  <label class="check"><input type="checkbox" data-check="2"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="2" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="3">
+  <div class="top"><b>范戴克</b><span class="badge ok">已核实</span></div>
+  <div class="en">van Dijk / Virgil van Dijk</div>
+  <div class="meta">
+    <span class="kv">位置 <b>CB</b></span>
+    <span class="kv">惯用脚 <b>右</b></span>
+  </div>
+  <div class="tags"><span class="tag">拖后型</span><span class="tag">出球型</span></div>
+  <div class="weak">弱点：回追慢</div>
+  <div class="weaknote">弱点依据：2026-10 Anfield Agenda/ESPN 评述：35 岁后转身与长距离回追下降，靠预判和站位弥补；不是被速度型前锋一碰就穿，而是防线压高时身后空间需要保护。</div>
+  <div class="note">备注：现有球员 · DEF 配额：7/7 场 PL 首发；队籍/位置/脚核实；补 weak。</div>
+  <div class="src"><a href="https://www.premierleague.com/en/clubs/14/liverpool/squad" target="_blank" rel="noopener">来源 1</a> · <a href="https://anfieldagenda.com/2026/10/16/craigs-column-i-love-virgil-van-dijk-but-liverpool-may-have-to-make-a-painful-decision/" target="_blank" rel="noopener">来源 2</a> · <a href="https://www.espn.co.uk/football/story/_/id/44508996/liverpool-show-grit-derby-win-virgil-van-dijk-decline" target="_blank" rel="noopener">来源 3</a> · <a href="https://www.bbc.com/sport/football/articles/cr4kp6d1e5xo" target="_blank" rel="noopener">来源 4</a></div>
+  <label class="check"><input type="checkbox" data-check="3"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="3" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="4">
+  <div class="top"><b>科尔克兹</b><span class="badge warn">待确认</span></div>
+  <div class="en">Kerkez / Milos Kerkez</div>
+  <div class="meta">
+    <span class="kv">位置 <b>LB / LWB</b></span>
+    <span class="kv">惯用脚 <b>左</b></span>
+  </div>
+  <div class="tags"><span class="tag">套边型</span></div>
+  <div class="weak">弱点：待确认</div>
+  <div class="weaknote">弱点依据：无可靠公开战术弱点：PL 官方 2025 分析强调其前压是设计，不是防守缺陷；The Athletic 2025-12 的“inhibited/tactical tweak”更像角色适配（付费墙）。替代观察点：1v1 防守身体姿态、后点高球、前压后的回位。</div>
+  <div class="note">备注：现有球员 · DEF 配额：6/7 场 PL 首发；队籍/位置/脚核实；弱点待确认。</div>
+  <div class="src"><a href="https://www.premierleague.com/en/clubs/14/liverpool/squad" target="_blank" rel="noopener">来源 1</a> · <a href="https://www.premierleague.com/en/news/4266713" target="_blank" rel="noopener">来源 2</a></div>
+  <label class="check"><input type="checkbox" data-check="4"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="4" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="5">
+  <div class="top"><b>弗林蓬</b><span class="badge ok">已核实</span></div>
+  <div class="en">Frimpong / Jeremie Frimpong</div>
+  <div class="meta">
+    <span class="kv">位置 <b>RB / RWB / RW</b></span>
+    <span class="kv">惯用脚 <b>右</b></span>
+  </div>
+  <div class="tags"><span class="tag">套边型</span><span class="tag">翼卫</span></div>
+  <div class="weak">弱点：防空弱</div>
+  <div class="weaknote">弱点依据：TFA 球探报告：空中对抗成功率 30.8%；Coaches&#39; Voice 记其 5ft8 身高、面对高大边锋常避战。四后卫右路后点高球是明确针对点。当前腿筋伤（官方 10-19 伤停页，预计 11 月国际比赛日后），属可用性风险，另记。</div>
+  <div class="note">备注：现有球员 · DEF 配额：2/7 场 PL 首发；RB/RWB 替补；当前腿筋伤，Araujo 打 RB。</div>
+  <div class="src"><a href="https://www.premierleague.com/en/clubs/14/liverpool/squad" target="_blank" rel="noopener">来源 1</a> · <a href="https://totalfootballanalysis.com/player-analysis/jeremie-frimpong-at-bayer-leverkusen-202223-scout-report-tactical-analysis-tactics" target="_blank" rel="noopener">来源 2</a> · <a href="https://learning.coachesvoice.com/cv/jeremie-frimpong-position-and-style-of-play/" target="_blank" rel="noopener">来源 3</a></div>
+  <label class="check"><input type="checkbox" data-check="5"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="5" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="6">
+  <div class="top"><b>布拉德利</b><span class="badge ok">已核实</span></div>
+  <div class="en">Bradley / Conor Bradley</div>
+  <div class="meta">
+    <span class="kv">位置 <b>RB / RWB</b></span>
+    <span class="kv">惯用脚 <b>右</b></span>
+  </div>
+  <div class="tags"><span class="tag">套边型</span></div>
+  <div class="weak">弱点：伤病史</div>
+  <div class="weaknote">弱点依据：【可用性风险，非战术弱点】2025-26 右膝手术缺阵 316 天，另有腿筋/肌肉伤；官方 2026-10-19 伤停页称其“离恢复训练还远”，预计 12 月/1 月回归。健康时是套边右后卫，防守站位不是主要问题。替代观察点：复出后的连续出场能力、对抗强度。</div>
+  <div class="note">备注：现有球员 · DEF 配额：0/7 场 PL 首发；长期膝伤。保留在 18 人内并标 status，不删除。</div>
+  <div class="src"><a href="https://www.premierleague.com/en/clubs/14/liverpool/squad" target="_blank" rel="noopener">来源 1</a> · <a href="https://www.transfermarkt.com/conor-bradley/verletzungen/spieler/624258" target="_blank" rel="noopener">来源 2</a> · <a href="https://www.liverpoolfc.com/news/liverpools-injury-list-suspensions-and-availability" target="_blank" rel="noopener">来源 3</a></div>
+  <label class="check"><input type="checkbox" data-check="6"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="6" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="7">
+  <div class="top"><b>麦卡利斯特</b><span class="badge ok">已核实</span></div>
+  <div class="en">Mac Allister / Alexis Mac Allister</div>
+  <div class="meta">
+    <span class="kv">位置 <b>CM / DM</b></span>
+    <span class="kv">惯用脚 <b>右</b></span>
+  </div>
+  <div class="tags"><span class="tag">组织8</span></div>
+  <div class="weak">弱点：回追慢</div>
+  <div class="weaknote">弱点依据：Distance Covered/The Athletic 分析：缺乏顶级速度，一旦被过很难再追回（“once beaten, essentially out of the game”）；防守靠预判和站位，不是覆盖型 8 号。</div>
+  <div class="note">备注：现有球员 · MID 配额：5/7 场 PL 首发；4-2-3-1 双后腰之一；补 weak。</div>
+  <div class="src"><a href="https://www.premierleague.com/en/clubs/14/liverpool/squad" target="_blank" rel="noopener">来源 1</a> · <a href="https://distancecovered.substack.com/p/what-to-do-with-alexis-mac-allister" target="_blank" rel="noopener">来源 2</a></div>
+  <label class="check"><input type="checkbox" data-check="7"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="7" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="8">
+  <div class="top"><b>索博斯洛伊</b><span class="badge warn">待确认</span></div>
+  <div class="en">Szoboszlai / Dominik Szoboszlai</div>
+  <div class="meta">
+    <span class="kv">位置 <b>CM / DM / AM / RM</b></span>
+    <span class="kv">惯用脚 <b>右</b></span>
+  </div>
+  <div class="tags"><span class="tag">B2B</span></div>
+  <div class="weak">弱点：待确认</div>
+  <div class="weaknote">弱点依据：无可靠战术弱点：2025-26 英超 8 黄为队内最多（FotMob），但纪律属可用性风险、不足以定为战术短板；TFA 2026 反而称其为利物浦 MVP。当前腿筋伤需复核（10-17 首发，10-19 官方伤停页仍列）。替代观察点：双后腰站位、右肋接球第一脚、压迫后的回位。</div>
+  <div class="note">备注：现有球员 · MID 配额：7/7 场 PL 首发；4-2-3-1 双后腰，pos 补 DM；当前腿筋伤需复核。</div>
+  <div class="src"><a href="https://www.premierleague.com/en/clubs/14/liverpool/squad" target="_blank" rel="noopener">来源 1</a> · <a href="https://www.fotmob.com/leagues/47/stats/season/27110/players/yellow_card/team/8650/liverpool" target="_blank" rel="noopener">来源 2</a> · <a href="https://totalfootballanalysis.com/player-analysis/dominik-szoboszlai-scout-report-liverpool-2025-2026-analysis-tactics" target="_blank" rel="noopener">来源 3</a></div>
+  <label class="check"><input type="checkbox" data-check="8"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="8" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="9">
+  <div class="top"><b>维尔茨</b><span class="badge ok">已核实</span></div>
+  <div class="en">Wirtz / Florian Wirtz</div>
+  <div class="meta">
+    <span class="kv">位置 <b>AM / CM</b></span>
+    <span class="kv">惯用脚 <b>右</b></span>
+  </div>
+  <div class="tags"><span class="tag">自由10</span><span class="tag">组织8</span></div>
+  <div class="weak">弱点：压迫下失误</div>
+  <div class="weaknote">弱点依据：The Athletic 2025-10 与 Guardian 2026-10：初到英超时对抗下容易被挤开、丢球；TAW 2026-02 指其回撤过深、破坏阵型。取“压迫下失误”（受压护球/出球），不是态度问题。</div>
+  <div class="note">备注：现有球员 · MID 配额：7/7 场 PL 首发；4-2-3-1 的 AM；补 weak。</div>
+  <div class="src"><a href="https://www.premierleague.com/en/clubs/14/liverpool/squad" target="_blank" rel="noopener">来源 1</a> · <a href="https://www.theguardian.com/football/2026/oct/16/florian-wirtz-mystery-found-bayer-leverkusen-form-liverpool" target="_blank" rel="noopener">来源 2</a> · <a href="https://www.theanfieldwrap.com/2026/02/liverpool-are-seeing-something-special-emerge-in-florian-wirtz/" target="_blank" rel="noopener">来源 3</a></div>
+  <label class="check"><input type="checkbox" data-check="9"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="9" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="10">
+  <div class="top"><b>格拉文贝赫</b><span class="badge warn">待确认</span></div>
+  <div class="en">Gravenberch / Ryan Gravenberch</div>
+  <div class="meta">
+    <span class="kv">位置 <b>DM / CM</b></span>
+    <span class="kv">惯用脚 <b>右</b></span>
+  </div>
+  <div class="tags"><span class="tag">拖后组织</span></div>
+  <div class="weak">弱点：易失位</div>
+  <div class="weaknote">弱点依据：The Athletic 2025 与 Anfield Index/Stats Man 2026 分析：他是被改造的 6 号，单后腰位置感/站位纪律不是天然强项；被拉出位置后身后需要人补。带球推进和摆脱仍是强项。属分析观点，不是官方统计。</div>
+  <div class="note">备注：现有球员 · MID 配额：2/7 场 PL 首发；双后腰轮换/替补；弱点为分析候选。</div>
+  <div class="src"><a href="https://www.premierleague.com/en/clubs/14/liverpool/squad" target="_blank" rel="noopener">来源 1</a> · <a href="https://www.premierleague.com/en/news/4316446" target="_blank" rel="noopener">来源 2</a></div>
+  <label class="check"><input type="checkbox" data-check="10"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="10" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="11">
+  <div class="top"><b>远藤航</b><span class="badge ok">已核实</span></div>
+  <div class="en">Wataru Endo / Endo / 远藤航</div>
+  <div class="meta">
+    <span class="kv">位置 <b>DM / CM / CB</b></span>
+    <span class="kv">惯用脚 <b>右</b></span>
+  </div>
+  <div class="tags"><span class="tag">破坏型</span><span class="tag">多面手</span></div>
+  <div class="weak">弱点：回追慢</div>
+  <div class="weaknote">弱点依据：EA FC 27：Pace 56 / Acceleration 61；33 岁的纯破坏型 6 号，靠预判和对抗，不是覆盖型后腰。2026-02 左脚手术缺阵约 3 个月，属可用性风险另记。替代观察点：被拉出 6 号位后的回追、连续首发能力。</div>
+  <div class="note">备注：新增 · MID 配额：官方 25 人名单在队；DM/CM/CB 多面手，按主位置 DM 计入 6 中场配额；主要作为双后腰替补。</div>
+  <div class="src"><a href="https://www.premierleague.com/en/clubs/14/liverpool/squad" target="_blank" rel="noopener">来源 1</a> · <a href="https://www.liverpoolfc.com/teams/mens-team/wataru-endo" target="_blank" rel="noopener">来源 2</a> · <a href="https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/wataru-endo/232487" target="_blank" rel="noopener">来源 3</a></div>
+  <label class="check"><input type="checkbox" data-check="11"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="11" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="12">
+  <div class="top"><b>詹姆斯·麦康奈尔</b><span class="badge warn">待确认</span></div>
+  <div class="en">James McConnell / McConnell / 麦康奈尔</div>
+  <div class="meta">
+    <span class="kv">位置 <b>CM / DM</b></span>
+    <span class="kv">惯用脚 <b>右</b></span>
+  </div>
+  <div class="tags"><span class="tag">拖后组织</span></div>
+  <div class="weak">弱点：待确认</div>
+  <div class="weaknote">弱点依据：无可靠战术弱点（2026-27 英超出场 3）：22 岁青训中场，样本不足；替代观察点：对抗强度、受压出球、双后腰站位。</div>
+  <div class="note">备注：新增 · MID 配额：官方 25 人名单在队；TM 主位置 CM、右脚；按主位置 CM 计入 6 中场配额，作为双后腰/中场深度。</div>
+  <div class="src"><a href="https://www.premierleague.com/en/clubs/14/liverpool/squad" target="_blank" rel="noopener">来源 1</a> · <a href="https://www.liverpoolfc.com/teams/mens-team/james-mcconnell" target="_blank" rel="noopener">来源 2</a> · <a href="https://www.premierleague.com/en/players/491501/james-mcconnell/overview" target="_blank" rel="noopener">来源 3</a> · <a href="https://www.ea.com/games/ea-sports-fc/ratings/player-ratings/james-mc-connell/278292" target="_blank" rel="noopener">来源 4</a></div>
+  <label class="check"><input type="checkbox" data-check="12"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="12" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="13">
+  <div class="top"><b>维克托·穆尼奥斯</b><span class="badge ok">已核实</span></div>
+  <div class="en">Víctor Muñoz / Victor Munoz / Munoz / 穆尼奥斯</div>
+  <div class="meta">
+    <span class="kv">位置 <b>RW / LW</b></span>
+    <span class="kv">惯用脚 <b>右</b></span>
+  </div>
+  <div class="tags"><span class="tag">顺足下底</span></div>
+  <div class="weak">弱点：终结效率低</div>
+  <div class="weaknote">弱点依据：TFA 2026：右脚边锋，爆发力和直接性是强项，但 final-third decisions 需要打磨（射门/最后一传选择）；不是防守/压迫短板。</div>
+  <div class="note">备注：新增 · FWD 配额：2026-06 从奥萨苏纳加盟（£34.5m，23号）；TM 主位置 LW、右脚；利物浦 4-2-3-1 实际打 RW，pos[0] 按球队用法放 RW；5/7 场 PL 首发。</div>
+  <div class="src"><a href="https://www.liverpoolfc.com/news/victor-munoz-set-sign-liverpool-ps35m-deal-after-stunning-new-transfer-hijack" target="_blank" rel="noopener">来源 1</a> · <a href="https://www.transfermarkt.com/victor-munoz/profil/spieler/935231" target="_blank" rel="noopener">来源 2</a> · <a href="https://tacticalfootballanalysis.com/victor-munoz-scout-report-liverpool-2026-2027-analysis-tactics/" target="_blank" rel="noopener">来源 3</a> · <a href="https://www.bbc.com/sport/football/articles/cdjkl44yrg3o" target="_blank" rel="noopener">来源 4</a></div>
+  <label class="check"><input type="checkbox" data-check="13"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="13" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="14">
+  <div class="top"><b>巴尔克拉</b><span class="badge ok">已核实</span></div>
+  <div class="en">Barcola / Bradley Barcola</div>
+  <div class="meta">
+    <span class="kv">位置 <b>LW / RW</b></span>
+    <span class="kv">惯用脚 <b>右</b></span>
+  </div>
+  <div class="tags"><span class="tag">逆足内切</span></div>
+  <div class="weak">弱点：终结效率低</div>
+  <div class="weaknote">弱点依据：The Athletic/Anfield Insights 2026：速度、盘带、跑位是强项，但门前终结效率是相对短板；TFA 球探报告同样把 finishing 列为需要提升项，不是创造机会能力问题。</div>
+  <div class="note">备注：现有球员 · FWD 配额：4/7 场 PL 首发；最常用 XI 的 LW（与 Gakpo 4-4，但 Barcola 最近 4 场首发且包含重复 exact XI）；补 weak。</div>
+  <div class="src"><a href="https://www.premierleague.com/en/clubs/14/liverpool/squad" target="_blank" rel="noopener">来源 1</a> · <a href="https://anfieldinsights.substack.com/p/bradley-barcola-and-finishing" target="_blank" rel="noopener">来源 2</a> · <a href="https://tacticalfootballanalysis.com/bradley-barcola-scout-report-psg-france-2026-2027-tactics-analysis/" target="_blank" rel="noopener">来源 3</a></div>
+  <label class="check"><input type="checkbox" data-check="14"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="14" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="15">
+  <div class="top"><b>加克波</b><span class="badge warn">待确认</span></div>
+  <div class="en">Gakpo / Cody Gakpo</div>
+  <div class="meta">
+    <span class="kv">位置 <b>LW / RW / ST</b></span>
+    <span class="kv">惯用脚 <b>右</b></span>
+  </div>
+  <div class="tags"><span class="tag">逆足内切</span></div>
+  <div class="weak">弱点：待确认</div>
+  <div class="weaknote">弱点依据：无可靠战术弱点：BBC 2026-06 指其与科尔克兹的左路配合需要打磨，但这是配合问题，未到“易失位/不参与防守”的程度；The Athletic 也更多讨论角色与状态而非固定短板。替代观察点：左路二人配合、无球跑位、终结稳定性。</div>
+  <div class="note">备注：现有球员 · FWD 配额：4/7 场 PL 首发；最常用 XI 的 LW 位置输给 Barcola（近期趋势 + 重复 exact XI），作为第 12 人/左路替补。</div>
+  <div class="src"><a href="https://www.premierleague.com/en/clubs/14/liverpool/squad" target="_blank" rel="noopener">来源 1</a> · <a href="https://www.bbc.com/sport/football/articles/cly71z73594o" target="_blank" rel="noopener">来源 2</a> · <a href="https://www.theanfieldwrap.com/2026/02/cody-gakpo-and-a-wasted-liverpool-opportunity/" target="_blank" rel="noopener">来源 3</a></div>
+  <label class="check"><input type="checkbox" data-check="15"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="15" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="16">
+  <div class="top"><b>伊萨克</b><span class="badge ok">已核实</span></div>
+  <div class="en">Isak / Alexander Isak</div>
+  <div class="meta">
+    <span class="kv">位置 <b>ST</b></span>
+    <span class="kv">惯用脚 <b>右</b></span>
+  </div>
+  <div class="tags"><span class="tag">全能9</span></div>
+  <div class="weak">弱点：伤病史</div>
+  <div class="weaknote">弱点依据：【可用性风险，非战术弱点】TM/Flashscore：2026-27 大腿伤缺 21 天，2025-26 肌肉/内收肌问题反复；2026-09-27 再次大腿伤，10 月已复出。健康时是全能 9，不是战术短板。替代观察点：连续首发能力、伤后爆发力。</div>
+  <div class="note">备注：现有球员 · FWD 配额：7/7 场 PL 首发；4-2-3-1 的 ST；补 weak。</div>
+  <div class="src"><a href="https://www.premierleague.com/en/clubs/14/liverpool/squad" target="_blank" rel="noopener">来源 1</a> · <a href="https://www.transfermarkt.com/alexander-isak/verletzungen/spieler/349066" target="_blank" rel="noopener">来源 2</a> · <a href="https://www.si.com/soccer/alexander-isak-injury-progress-potential-return-date-liverpool-record-signing-2026" target="_blank" rel="noopener">来源 3</a></div>
+  <label class="check"><input type="checkbox" data-check="16"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="16" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="17">
+  <div class="top"><b>埃基蒂克</b><span class="badge ok">已核实</span></div>
+  <div class="en">Ekitike / Hugo Ekitike</div>
+  <div class="meta">
+    <span class="kv">位置 <b>ST / LW</b></span>
+    <span class="kv">惯用脚 <b>右</b></span>
+  </div>
+  <div class="tags"><span class="tag">全能9</span></div>
+  <div class="weak">弱点：伤病史</div>
+  <div class="weaknote">弱点依据：【可用性风险，非战术弱点】2026-04 跟腱断裂，预计 2027 回归；2025-26 是队内头号射手（17 球）但赛季报销。健康时是回撤型 9 号，不是战术短板。替代观察点：复出后的爆发力、连续首发能力。</div>
+  <div class="note">备注：现有球员 · FWD 配额：0/7 场 PL 首发；跟腱断裂、预计 2027。保留在 18 人内并标 status，不删除。</div>
+  <div class="src"><a href="https://www.liverpoolfc.com/news/hugo-ekitike-injury-update-1" target="_blank" rel="noopener">来源 1</a> · <a href="https://www.skysports.com/football/news/13532449/hugo-ekitike-injury-liverpool-striker-suffers-serious-ruptured-achilles-and-will-miss-rest-of-season-and-world-cup" target="_blank" rel="noopener">来源 2</a> · <a href="https://www.theguardian.com/football/2026/apr/15/liverpools-hugo-ekitike-ruled-out-for-rest-of-season-and-world-cup-with-france" target="_blank" rel="noopener">来源 3</a></div>
+  <label class="check"><input type="checkbox" data-check="17"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="17" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<div id="fallback"><textarea id="copyBox" readonly></textarea></div>
+</main>
+<footer><div class="fbar">
+  <div class="count">已确认 <b id="cnt">0</b>/18</div>
+  <button class="primary" id="download">下载确认 JSON</button>
+  <button id="copy">复制</button>
+</div></footer>
+<div class="toast" id="toast">已复制</div>
+<script>
+const DATA = {"team":"利物浦","form":"4-2-3-1","rows":[{"n":"阿利松","en":["Alisson","Alisson Becker"],"club":"利物浦","nat":"巴西","pos":["GK"],"foot":"右","tags":["清球型"],"weak":"伤病史","weakNote":"【可用性风险，非战术弱点】2025-26 多次肌肉/腿筋伤：2025-10 腿筋伤缺至 11 月，2026-03 肌肉伤缺至 5 月（TM/官网伤情）。2026-10-18 已可出场；不是站位/出球短板。替代观察点：高位防线后的出击范围、连续一周双赛的轮换。","src":["https://www.premierleague.com/en/clubs/14/liverpool/squad","https://www.transfermarkt.com/alisson/verletzungen/spieler/105470","https://www.liverpoolfc.com/news/injury-updates-alisson-becker-and-milos-kerkez"],"conf":"已核实","note":"现有球员 · GK 配额 1/1：7/7 场 PL 首发；队籍/位置/脚核实；补 weak。"},{"n":"阿劳霍","en":["Ronald Araujo","Araujo","阿劳霍"],"club":"利物浦","nat":"乌拉圭","pos":["CB","RB"],"foot":"右","tags":["上抢型","多面手"],"weak":"易失位","weakNote":"TFA 2026：防守端容易做不必要的扑抢（can often lunge in when unnecessary），失误/吃牌风险来自这里；BBC 称他是补洞方案，右后卫不是本职，站位与 1v1 是代价。5/7 场 PL 首发打 RB；伤病史另记，不混写。","src":["https://www.liverpoolfc.com/news/liverpool-agree-deal-sign-ronald-araujo-loan","https://tacticalfootballanalysis.com/ronald-araujo-scout-report-liverpool-2026-2027-tactics-analysis/","https://www.bbc.com/sport/football/articles/ck8dz7pp4089o","https://www.transfermarkt.com/ronald-araujo/profil/spieler/480267"],"conf":"已核实","note":"现有球员 · DEF 配额：库内 club=巴萨；2026-27 租借利物浦，建议改 club=利物浦（租借）、pos 补 RB、tags 补多面手。最常用 XI 的 RB，5/7 场首发；未删除原条目。"},{"n":"杰雷米·雅凯","en":["Jérémy Jacquet","Jeremy Jacquet","Jacquet","雅凯","杰里米·雅凯","热雷米·雅凯"],"club":"利物浦","nat":"法国","pos":["CB"],"foot":"右","tags":["上抢型","出球型"],"weak":"怕一对一","weakNote":"TFA 2025-26 球探报告：速度型边锋在 pace 上占优，他会被“turned inside-out or wrong-footed”；前顶和争顶是强项，但被拉进边路 1v1 是明确针对点。EA FC 27 右脚、Pace 64/Sprint 70；FotMob 右脚、188cm。","src":["https://www.premierleague.com/en/clubs/14/liverpool/squad","https://www.liverpoolfc.com/news/liverpool-complete-signing-jeremy-jacquet","https://totalfootballanalysis.com/player-analysis/jeremy-jacquet-scout-report-rennes-2025-2026-analysis-tactics","https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/jeremy-jacquet/278903","https://www.fotmob.com/players/1473534/jeremy-jacquet"],"conf":"已核实","note":"新增 · DEF 配额：2026-07-01 官方签约雷恩（£60m）；7/7 场 PL 首发；右脚右中卫。","st":"右脚右中卫：前顶+出球","d":"2026 夏窗 £60m 从雷恩加盟；Iraola 体系里的右中卫首发，前顶积极、争顶和带球出球都在线；被速度型边锋拉进 1v1 时容易被晃开。","pair":["范戴克：一右一左中卫搭档"]},{"n":"范戴克","en":["van Dijk","Virgil van Dijk"],"club":"利物浦","nat":"荷兰","pos":["CB"],"foot":"右","tags":["拖后型","出球型"],"weak":"回追慢","weakNote":"2026-10 Anfield Agenda/ESPN 评述：35 岁后转身与长距离回追下降，靠预判和站位弥补；不是被速度型前锋一碰就穿，而是防线压高时身后空间需要保护。","src":["https://www.premierleague.com/en/clubs/14/liverpool/squad","https://anfieldagenda.com/2026/10/16/craigs-column-i-love-virgil-van-dijk-but-liverpool-may-have-to-make-a-painful-decision/","https://www.espn.co.uk/football/story/_/id/44508996/liverpool-show-grit-derby-win-virgil-van-dijk-decline","https://www.bbc.com/sport/football/articles/cr4kp6d1e5xo"],"conf":"已核实","note":"现有球员 · DEF 配额：7/7 场 PL 首发；队籍/位置/脚核实；补 weak。"},{"n":"科尔克兹","en":["Kerkez","Milos Kerkez"],"club":"利物浦","nat":"匈牙利","pos":["LB","LWB"],"foot":"左","tags":["套边型"],"weak":"待确认","weakNote":"无可靠公开战术弱点：PL 官方 2025 分析强调其前压是设计，不是防守缺陷；The Athletic 2025-12 的“inhibited/tactical tweak”更像角色适配（付费墙）。替代观察点：1v1 防守身体姿态、后点高球、前压后的回位。","src":["https://www.premierleague.com/en/clubs/14/liverpool/squad","https://www.premierleague.com/en/news/4266713"],"conf":"待确认","note":"现有球员 · DEF 配额：6/7 场 PL 首发；队籍/位置/脚核实；弱点待确认。"},{"n":"弗林蓬","en":["Frimpong","Jeremie Frimpong"],"club":"利物浦","nat":"荷兰","pos":["RB","RWB","RW"],"foot":"右","tags":["套边型","翼卫"],"weak":"防空弱","weakNote":"TFA 球探报告：空中对抗成功率 30.8%；Coaches' Voice 记其 5ft8 身高、面对高大边锋常避战。四后卫右路后点高球是明确针对点。当前腿筋伤（官方 10-19 伤停页，预计 11 月国际比赛日后），属可用性风险，另记。","src":["https://www.premierleague.com/en/clubs/14/liverpool/squad","https://totalfootballanalysis.com/player-analysis/jeremie-frimpong-at-bayer-leverkusen-202223-scout-report-tactical-analysis-tactics","https://learning.coachesvoice.com/cv/jeremie-frimpong-position-and-style-of-play/"],"conf":"已核实","note":"现有球员 · DEF 配额：2/7 场 PL 首发；RB/RWB 替补；当前腿筋伤，Araujo 打 RB。"},{"n":"布拉德利","en":["Bradley","Conor Bradley"],"club":"利物浦","nat":"北爱尔兰","pos":["RB","RWB"],"foot":"右","tags":["套边型"],"weak":"伤病史","weakNote":"【可用性风险，非战术弱点】2025-26 右膝手术缺阵 316 天，另有腿筋/肌肉伤；官方 2026-10-19 伤停页称其“离恢复训练还远”，预计 12 月/1 月回归。健康时是套边右后卫，防守站位不是主要问题。替代观察点：复出后的连续出场能力、对抗强度。","src":["https://www.premierleague.com/en/clubs/14/liverpool/squad","https://www.transfermarkt.com/conor-bradley/verletzungen/spieler/624258","https://www.liverpoolfc.com/news/liverpools-injury-list-suspensions-and-availability"],"conf":"已核实","note":"现有球员 · DEF 配额：0/7 场 PL 首发；长期膝伤。保留在 18 人内并标 status，不删除。"},{"n":"麦卡利斯特","en":["Mac Allister","Alexis Mac Allister"],"club":"利物浦","nat":"阿根廷","pos":["CM","DM"],"foot":"右","tags":["组织8"],"weak":"回追慢","weakNote":"Distance Covered/The Athletic 分析：缺乏顶级速度，一旦被过很难再追回（“once beaten, essentially out of the game”）；防守靠预判和站位，不是覆盖型 8 号。","src":["https://www.premierleague.com/en/clubs/14/liverpool/squad","https://distancecovered.substack.com/p/what-to-do-with-alexis-mac-allister"],"conf":"已核实","note":"现有球员 · MID 配额：5/7 场 PL 首发；4-2-3-1 双后腰之一；补 weak。"},{"n":"索博斯洛伊","en":["Szoboszlai","Dominik Szoboszlai"],"club":"利物浦","nat":"匈牙利","pos":["CM","DM","AM","RM"],"foot":"右","tags":["B2B"],"weak":"待确认","weakNote":"无可靠战术弱点：2025-26 英超 8 黄为队内最多（FotMob），但纪律属可用性风险、不足以定为战术短板；TFA 2026 反而称其为利物浦 MVP。当前腿筋伤需复核（10-17 首发，10-19 官方伤停页仍列）。替代观察点：双后腰站位、右肋接球第一脚、压迫后的回位。","src":["https://www.premierleague.com/en/clubs/14/liverpool/squad","https://www.fotmob.com/leagues/47/stats/season/27110/players/yellow_card/team/8650/liverpool","https://totalfootballanalysis.com/player-analysis/dominik-szoboszlai-scout-report-liverpool-2025-2026-analysis-tactics"],"conf":"待确认","note":"现有球员 · MID 配额：7/7 场 PL 首发；4-2-3-1 双后腰，pos 补 DM；当前腿筋伤需复核。"},{"n":"维尔茨","en":["Wirtz","Florian Wirtz"],"club":"利物浦","nat":"德国","pos":["AM","CM"],"foot":"右","tags":["自由10","组织8"],"weak":"压迫下失误","weakNote":"The Athletic 2025-10 与 Guardian 2026-10：初到英超时对抗下容易被挤开、丢球；TAW 2026-02 指其回撤过深、破坏阵型。取“压迫下失误”（受压护球/出球），不是态度问题。","src":["https://www.premierleague.com/en/clubs/14/liverpool/squad","https://www.theguardian.com/football/2026/oct/16/florian-wirtz-mystery-found-bayer-leverkusen-form-liverpool","https://www.theanfieldwrap.com/2026/02/liverpool-are-seeing-something-special-emerge-in-florian-wirtz/"],"conf":"已核实","note":"现有球员 · MID 配额：7/7 场 PL 首发；4-2-3-1 的 AM；补 weak。"},{"n":"格拉文贝赫","en":["Gravenberch","Ryan Gravenberch"],"club":"利物浦","nat":"荷兰","pos":["DM","CM"],"foot":"右","tags":["拖后组织"],"weak":"易失位","weakNote":"The Athletic 2025 与 Anfield Index/Stats Man 2026 分析：他是被改造的 6 号，单后腰位置感/站位纪律不是天然强项；被拉出位置后身后需要人补。带球推进和摆脱仍是强项。属分析观点，不是官方统计。","src":["https://www.premierleague.com/en/clubs/14/liverpool/squad","https://www.premierleague.com/en/news/4316446"],"conf":"待确认","note":"现有球员 · MID 配额：2/7 场 PL 首发；双后腰轮换/替补；弱点为分析候选。"},{"n":"远藤航","en":["Wataru Endo","Endo","远藤航"],"club":"利物浦","nat":"日本","pos":["DM","CM","CB"],"foot":"右","tags":["破坏型","多面手"],"weak":"回追慢","weakNote":"EA FC 27：Pace 56 / Acceleration 61；33 岁的纯破坏型 6 号，靠预判和对抗，不是覆盖型后腰。2026-02 左脚手术缺阵约 3 个月，属可用性风险另记。替代观察点：被拉出 6 号位后的回追、连续首发能力。","src":["https://www.premierleague.com/en/clubs/14/liverpool/squad","https://www.liverpoolfc.com/teams/mens-team/wataru-endo","https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/wataru-endo/232487"],"conf":"已核实","note":"新增 · MID 配额：官方 25 人名单在队；DM/CM/CB 多面手，按主位置 DM 计入 6 中场配额；主要作为双后腰替补。","st":"破坏型 6 号：对抗+预判","d":"2023 年加盟的日本队长：抢断、对抗和位置预判是立足点，能客串中卫/右后卫；33 岁后覆盖范围下降，适合低位块/守领先。","pair":["麦卡利斯特/格拉文贝赫：后腰轮换"]},{"n":"詹姆斯·麦康奈尔","en":["James McConnell","McConnell","麦康奈尔"],"club":"利物浦","nat":"英格兰","pos":["CM","DM"],"foot":"右","tags":["拖后组织"],"weak":"待确认","weakNote":"无可靠战术弱点（2026-27 英超出场 3）：22 岁青训中场，样本不足；替代观察点：对抗强度、受压出球、双后腰站位。","src":["https://www.premierleague.com/en/clubs/14/liverpool/squad","https://www.liverpoolfc.com/teams/mens-team/james-mcconnell","https://www.premierleague.com/en/players/491501/james-mcconnell/overview","https://www.ea.com/games/ea-sports-fc/ratings/player-ratings/james-mc-connell/278292"],"conf":"待确认","note":"新增 · MID 配额：官方 25 人名单在队；TM 主位置 CM、右脚；按主位置 CM 计入 6 中场配额，作为双后腰/中场深度。","st":"青训 CM：传球范围+防守意识","d":"利物浦青训出品：中场中路，传球范围和防守意识是卖点；英超样本少，主要作为杯赛/轮换深度。","pair":["远藤航：双后腰轮换"]},{"n":"维克托·穆尼奥斯","en":["Víctor Muñoz","Victor Munoz","Munoz","穆尼奥斯"],"club":"利物浦","nat":"西班牙","pos":["RW","LW"],"foot":"右","tags":["顺足下底"],"weak":"终结效率低","weakNote":"TFA 2026：右脚边锋，爆发力和直接性是强项，但 final-third decisions 需要打磨（射门/最后一传选择）；不是防守/压迫短板。","src":["https://www.liverpoolfc.com/news/victor-munoz-set-sign-liverpool-ps35m-deal-after-stunning-new-transfer-hijack","https://www.transfermarkt.com/victor-munoz/profil/spieler/935231","https://tacticalfootballanalysis.com/victor-munoz-scout-report-liverpool-2026-2027-analysis-tactics/","https://www.bbc.com/sport/football/articles/cdjkl44yrg3o"],"conf":"已核实","note":"新增 · FWD 配额：2026-06 从奥萨苏纳加盟（£34.5m，23号）；TM 主位置 LW、右脚；利物浦 4-2-3-1 实际打 RW，pos[0] 按球队用法放 RW；5/7 场 PL 首发。","st":"右脚边锋：爆发力+直接性","d":"2026 夏窗从奥萨苏纳加盟：右脚，左右两翼都能踢；利物浦主要用他打右路，靠爆发力和直接冲击拉开宽度，最后一传/射门选择还在打磨。","pair":["伊萨克：右路传中/倒三角","阿劳霍：右路套边"]},{"n":"巴尔克拉","en":["Barcola","Bradley Barcola"],"club":"利物浦","nat":"法国","pos":["LW","RW"],"foot":"右","tags":["逆足内切"],"weak":"终结效率低","weakNote":"The Athletic/Anfield Insights 2026：速度、盘带、跑位是强项，但门前终结效率是相对短板；TFA 球探报告同样把 finishing 列为需要提升项，不是创造机会能力问题。","src":["https://www.premierleague.com/en/clubs/14/liverpool/squad","https://anfieldinsights.substack.com/p/bradley-barcola-and-finishing","https://tacticalfootballanalysis.com/bradley-barcola-scout-report-psg-france-2026-2027-tactics-analysis/"],"conf":"已核实","note":"现有球员 · FWD 配额：4/7 场 PL 首发；最常用 XI 的 LW（与 Gakpo 4-4，但 Barcola 最近 4 场首发且包含重复 exact XI）；补 weak。"},{"n":"加克波","en":["Gakpo","Cody Gakpo"],"club":"利物浦","nat":"荷兰","pos":["LW","RW","ST"],"foot":"右","tags":["逆足内切"],"weak":"待确认","weakNote":"无可靠战术弱点：BBC 2026-06 指其与科尔克兹的左路配合需要打磨，但这是配合问题，未到“易失位/不参与防守”的程度；The Athletic 也更多讨论角色与状态而非固定短板。替代观察点：左路二人配合、无球跑位、终结稳定性。","src":["https://www.premierleague.com/en/clubs/14/liverpool/squad","https://www.bbc.com/sport/football/articles/cly71z73594o","https://www.theanfieldwrap.com/2026/02/cody-gakpo-and-a-wasted-liverpool-opportunity/"],"conf":"待确认","note":"现有球员 · FWD 配额：4/7 场 PL 首发；最常用 XI 的 LW 位置输给 Barcola（近期趋势 + 重复 exact XI），作为第 12 人/左路替补。"},{"n":"伊萨克","en":["Isak","Alexander Isak"],"club":"利物浦","nat":"瑞典","pos":["ST"],"foot":"右","tags":["全能9"],"weak":"伤病史","weakNote":"【可用性风险，非战术弱点】TM/Flashscore：2026-27 大腿伤缺 21 天，2025-26 肌肉/内收肌问题反复；2026-09-27 再次大腿伤，10 月已复出。健康时是全能 9，不是战术短板。替代观察点：连续首发能力、伤后爆发力。","src":["https://www.premierleague.com/en/clubs/14/liverpool/squad","https://www.transfermarkt.com/alexander-isak/verletzungen/spieler/349066","https://www.si.com/soccer/alexander-isak-injury-progress-potential-return-date-liverpool-record-signing-2026"],"conf":"已核实","note":"现有球员 · FWD 配额：7/7 场 PL 首发；4-2-3-1 的 ST；补 weak。"},{"n":"埃基蒂克","en":["Ekitike","Hugo Ekitike"],"club":"利物浦","nat":"法国","pos":["ST","LW"],"foot":"右","tags":["全能9"],"weak":"伤病史","weakNote":"【可用性风险，非战术弱点】2026-04 跟腱断裂，预计 2027 回归；2025-26 是队内头号射手（17 球）但赛季报销。健康时是回撤型 9 号，不是战术短板。替代观察点：复出后的爆发力、连续首发能力。","src":["https://www.liverpoolfc.com/news/hugo-ekitike-injury-update-1","https://www.skysports.com/football/news/13532449/hugo-ekitike-injury-liverpool-striker-suffers-serious-ruptured-achilles-and-will-miss-rest-of-season-and-world-cup","https://www.theguardian.com/football/2026/apr/15/liverpools-hugo-ekitike-ruled-out-for-rest-of-season-and-world-cup-with-france"],"conf":"已核实","note":"现有球员 · FWD 配额：0/7 场 PL 首发；跟腱断裂、预计 2027。保留在 18 人内并标 status，不删除。"}],"preferred":{"form":"4-2-3-1","xi":["阿利松","阿劳霍","杰雷米·雅凯","范戴克","科尔克兹","麦卡利斯特","索博斯洛伊","维克托·穆尼奥斯","维尔茨","巴尔克拉","伊萨克"],"bench":["加克波","格拉文贝赫","弗林蓬"],"note":"2026-27 PL 7/7 场使用 4-2-3-1；最常用 exact XI 是曼城 10-11 与布伦特福德 10-17 连续两场完全相同的这套。4-2-3-1 槽位：GK/RB/CB/CB/LB/DM/DM/RW/AM/LW/ST；两名纯 CB = 雅凯 + 范戴克。左边锋 Barcola 与 Gakpo 都是 4 场首发，Barcola 最近 4 场且包含重复 exact XI，故选 Barcola，Gakpo 第 12 人。"},"audit":{"existingCount":14,"finalActiveCount":18,"quota":{"target":18,"slots":{"GK":1,"DEF":6,"MID":6,"FWD":5},"existing14ByPrimary":{"GK":1,"DEF":4,"MID":4,"FWD":5},"existingNote":"现有 14 按 pos[0] 统计：GK1/DEF4/MID4/FWD5。但萨拉赫实际 2026-08 已去 Trabzonspor，不应计入利物浦配额；剔除后为 GK1/DEF4/MID4/FWD4。","gapAfterSalah":{"GK":0,"DEF":2,"MID":2,"FWD":1},"additions":[{"n":"阿劳霍","group":"DEF","reason":"CB/RB，5/7 场首发，租借改队籍"},{"n":"杰雷米·雅凯","group":"DEF","reason":"CB，7/7 场首发"},{"n":"远藤航","group":"MID","reason":"DM/CM/CB，双后腰替补"},{"n":"詹姆斯·麦康奈尔","group":"MID","reason":"CM，青训中场深度"},{"n":"维克托·穆尼奥斯","group":"FWD","reason":"RW，5/7 场首发，接替萨拉赫的右路"}],"finalByPrimary":{"GK":1,"DEF":6,"MID":6,"FWD":5},"finalTotal":18,"note":"现有 14 人未删除：萨拉赫只改队籍为 Trabzonspor；布拉德利、埃基蒂克保留在 18 人内但标伤停。若你坚持把萨拉赫算作利物浦，FWD 已满，穆尼奥斯不能加，18 人会变 19。"},"mostUsed":{"competition":"2026-27 Premier League","matches":7,"formations":{"4-2-3-1":7},"formationConclusion":"7/7 场 PL 都是 4-2-3-1；项目 build.py 的 FORM_OVERRIDE['利物浦'] 当前是 4-3-3，必须一起改成 4-2-3-1，否则默认阵型不对，新 PREFERRED 不会自动生效。","exactXI":["阿利松","阿劳霍","杰雷米·雅凯","范戴克","科尔克兹","麦卡利斯特","索博斯洛伊","维克托·穆尼奥斯","维尔茨","巴尔克拉","伊萨克"],"exactXIEvidence":"曼城 2026-10-11 与布伦特福德 2026-10-17 连续两场首发完全相同；这是本季重复次数最多的 exact XI（2 次）。","starts":{"阿利松":"7/7","范戴克":"7/7","杰雷米·雅凯":"7/7","索博斯洛伊":"7/7","维尔茨":"7/7","伊萨克":"7/7","科尔克兹":"6/7","阿劳霍":"5/7","麦卡利斯特":"5/7","维克托·穆尼奥斯":"5/7","巴尔克拉":"4/7","加克波":"4/7","弗林蓬":"2/7","格拉文贝赫":"2/7","齐米卡斯":"1/7","恩古莫哈":"1/7"},"leftWingTie":"Barcola 4 场 vs Gakpo 4 场；Barcola 是最近 4 场首发，且包含在曼城/布伦特福德重复 exact XI 中；Gakpo 是前 4 场首发。故最常用 XI 选 Barcola。","sources":["https://www.liverpoolfc.com/news/confirmed-liverpool-line-v-newcastle-united-9","https://www.liverpoolfc.com/news/confirmed-liverpool-line-v-nottingham-forest-8","https://www.liverpoolfc.com/news/confirmed-liverpool-line-v-ipswich-town-1","https://www.liverpoolfc.com/news/confirmed-liverpool-line-v-fulham-9","https://www.liverpoolfc.com/news/confirmed-liverpool-line-v-afc-bournemouth-6","https://worldsoccertalk.com/news/liverpool-vs-manchester-city-confirmed-lineups-for-the-2026-27-premier-league-match/","https://sports.yahoo.com/articles/liverpool-v-brentford-confirmed-lineups-125513550.html"]},"notInLiverpool":[{"n":"萨拉赫","action":"保留库内，club 改为 Trabzonspor（2026-08 自由转会，2 年）；不计入利物浦 18 人。未删除。","src":["https://www.aljazeera.com/sports/2026/8/6/mohamed-salah-signs-two-year-deal-with-trabzonspor-after-liverpool-exit","https://www.bbc.com/sport/football/articles/cn8negllz1ko"]}],"preferredIssues":[{"issue":"旧 PREFERRED 是 4-3-3，含科纳特（库内皇马）、罗伯逊（库内热刺）、萨拉赫（已去 Trabzonspor），autoLineup 必回退或首发事实错误。","src":["https://www.espn.com/soccer/story/_/id/48956684/ibrahima-konate-completes-switch-real-madrid-liverpool","https://www.tottenhamhotspur.com/news/1071931/robertson-signing-secured","https://www.aljazeera.com/sports/2026/8/6/mohamed-salah-signs-two-year-deal-with-trabzonspor-after-liverpool-exit"]},{"issue":"旧 PREFERRED 用布拉德利（0/7 首发、长期膝伤），且没有阿劳霍、雅凯、穆尼奥斯——与实际最常用 XI 不符。"},{"issue":"build.py 的 FORM_OVERRIDE['利物浦']='4-3-3' 与 7/7 场实际 4-2-3-1 不符；只改 PREFERRED 不改 FORM_OVERRIDE，默认阵型仍是 4-3-3，PREFERRED 不会自动生效。"}],"dataJsStale":["CARD['利物浦'].bullets 仍写“萨拉赫+伊萨克+维尔茨+巴尔克拉的攻击群”","PL20['利物浦'].key 仍含萨拉赫","data.js 第 9 行 who 写“利物浦（斯洛特奠基）”，当前主帅为伊劳拉"],"currentAvailability":{"asOf":"2026-10-19 官方伤停页","injured":["弗林蓬（腿筋，预计 11 月国际比赛日后）","索博斯洛伊（腿筋，10-17 首发但 10-19 仍列伤停，需复核）","布拉德利（膝伤，长期）","埃基蒂克（跟腱，预计 2027）"],"risk":"18 人里有 4 名伤停；若 Szoboszlai 不能踢，双后腰用 Mac Allister + Gravenberch，替补有 Endo/McConnell/Gakpo。Gakpo/Isak 赛前也有过缺阵报道，需复核。"},"alternatives":[{"n":"乔·戈麦斯","reason":"CB/RB，健康；若要健康 DEF 替补，可用他换布拉德利（长期膝伤），仍保持 6 DEF。","src":["https://www.premierleague.com/en/clubs/14/liverpool/squad","https://www.transfermarkt.com/joe-gomez/verletzungen/spieler/256178"]},{"n":"基耶萨","reason":"RW，健康；若要健康 FWD 替补，可用他换埃基蒂克（跟腱伤），仍保持 5 FWD。","src":["https://www.premierleague.com/en/clubs/14/liverpool/squad","https://www.transfermarkt.com/federico-chiesa/profil/spieler/341092"]},{"n":"尼奥尼","reason":"AM/CM 青训；若想要更偏进攻的 6 中场，可用他换麦康奈尔。","src":["https://www.premierleague.com/en/clubs/14/liverpool/squad"]}]}};
+const rows = Array.isArray(DATA.rows) ? DATA.rows : [];
+const boxes = Array.prototype.slice.call(document.querySelectorAll('[data-check]'));
+const memos = Array.prototype.slice.call(document.querySelectorAll('[data-memo]'));
+const cards = Array.prototype.slice.call(document.querySelectorAll('[data-card]'));
+const cnt = document.getElementById('cnt');
+function selected() {
+  return rows.map(function(r, i) {
+    if (!boxes[i] || !boxes[i].checked) return null;
+    const out = Object.assign({}, r);
+    const memo = (memos[i] && memos[i].value || '').trim();
+    if (memo) out.reviewNote = memo;
+    out.confirmed = true;
+    return out;
+  }).filter(Boolean);
+}
+function update() {
+  let n = 0;
+  boxes.forEach(function(b, i) {
+    if (b.checked) n++;
+    cards[i].classList.toggle('done', b.checked);
+  });
+  cnt.textContent = String(n);
+}
+boxes.forEach(function(b) { b.addEventListener('change', update); });
+update();
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('on');
+  setTimeout(function() { t.classList.remove('on'); }, 1400);
+}
+document.getElementById('download').addEventListener('click', function() {
+  const payload = { team: DATA.team || '', form: DATA.form || '', rows: selected() };
+  if (!payload.rows.length) { toast('先勾选至少一行'); return; }
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (DATA.team || 'team') + '-confirmed.json';
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(function() { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+  toast('已下载 ' + payload.rows.length + ' 行');
+});
+document.getElementById('copy').addEventListener('click', function() {
+  const payload = { team: DATA.team || '', form: DATA.form || '', rows: selected() };
+  if (!payload.rows.length) { toast('先勾选至少一行'); return; }
+  const text = JSON.stringify(payload, null, 2);
+  const fallback = document.getElementById('fallback');
+  const box = document.getElementById('copyBox');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function() { toast('已复制'); }).catch(function() {
+      box.value = text; fallback.style.display = 'block'; box.focus(); box.select(); toast('请手动复制');
+    });
+  } else {
+    box.value = text; fallback.style.display = 'block'; box.focus(); box.select(); toast('请手动复制');
+  }
+});
+</script>
+</body></html>

@@ -24,7 +24,7 @@ var CARD={}; PL20.forEach(function(t){CARD[t.name]=t;});
 
 /* ---------------- L2 体系层：换帅只改这里 ---------------- */
 var FORM_SEL={};
-var FORM_OVERRIDE={'曼联':'4-2-3-1','曼城':'4-3-3','阿森纳':'4-3-3','利物浦':'4-3-3','热刺':'3-4-2-1'};
+var FORM_OVERRIDE={'曼联':'4-2-3-1','曼城':'4-2-3-1','阿森纳':'4-2-3-1','利物浦':'4-2-3-1','热刺':'4-2-3-1','切尔西':'3-4-2-1'};
 var STYLE_FIX={
  '曼联':{press:2,control:3,direct:2,low:1},
  '曼城':{press:2,control:4,direct:1,low:0},
@@ -33,12 +33,15 @@ var STYLE_FIX={
  '热刺':{press:2,control:4,direct:1,low:1}
 };
 var PREFERRED={
- '曼联':{form:'4-2-3-1',xi:['拉门斯','达洛特','德利赫特','L.马丁内斯','多古','巴莱巴','蒂勒曼斯','姆贝乌莫','B费','库尼亚','谢什科']},
- '曼城':{form:'4-3-3',xi:['多纳鲁马','里科·刘易斯','斯通斯','鲁本·迪亚斯','格瓦迪奥尔','恩佐','埃利奥特·安德森','科瓦契奇','恩迪亚耶','哈兰德','多库']},
- '阿森纳':{form:'4-3-3',xi:['拉亚','廷贝尔','萨利巴','加布里埃尔','卡拉菲奥里','苏比门迪','赖斯','厄德高','萨卡','约克雷斯','埃泽']},
- '利物浦':{form:'4-3-3',xi:['阿利松','布拉德利','科纳特','范戴克','罗伯逊','格拉文贝赫','麦卡利斯特','维尔茨','萨拉赫','伊萨克','巴尔克拉']}
+ '曼联':{form:'4-2-3-1',xi:['拉门斯','达洛特','马奎尔','L.马丁内斯','多古','巴莱巴','蒂勒曼斯','姆贝乌莫','B费','库尼亚','谢什科']},
+ '曼城':{form:'4-2-3-1',xi:['多纳鲁马','努内斯','鲁本·迪亚斯','格伊','格瓦迪奥尔','埃利奥特·安德森','恩佐','塞门约','谢尔基','恩迪亚耶','哈兰德']},
+ '阿森纳':{form:'4-2-3-1',xi:['拉亚','本·怀特','孔萨','加布里埃尔','卡拉菲奥里','赖斯','刘易斯·斯凯利','萨卡','厄德高','措利斯','哈弗茨']},
+ '利物浦':{form:'4-2-3-1',xi:['阿利松','阿劳霍','杰雷米·雅凯','范戴克','科尔克兹','麦卡利斯特','索博斯洛伊','维克托·穆尼奥斯','维尔茨','巴尔克拉','伊萨克']},
+ '热刺':{form:'4-2-3-1',xi:['金斯基','范赫克','托辛·阿达拉比奥尤','范德文','罗伯逊','托纳利','阿奇·格雷','库杜斯','马特乌斯·费尔南德斯','马尔穆什','索兰克']},
+ '切尔西':{form:'3-4-2-1',xi:['埃米·马丁内斯','阿奇姆蓬','马克桑斯·拉克鲁瓦','科尔威尔','内托','凯塞多','乔丹·亨德森','佩普·查瓦里亚','帕尔默','摩根·罗杰斯','若昂·佩德罗']}
 };
 
+var BASE_FORMS=['4-2-3-1','4-3-3','3-4-2-1','4-4-2','4-1-4-1','3-1-6'];
 var FORMS={
  '4-2-3-1':[['GK',50,90],['RB',84,72],['CB',62,77],['CB',38,77],['LB',16,72],
             ['DM',62,55],['DM',38,55],['RW',84,34],['AM',50,38],['LW',16,34],['ST',50,14]],
@@ -52,7 +55,11 @@ var FORMS={
  '4-1-4-1':[['GK',50,90],['RB',84,74],['CB',62,78],['CB',38,78],['LB',16,74],
             ['DM',50,60],['RM',84,42],['CM',62,44],['CM',38,44],['LM',16,42],['ST',50,16]],
  '3-1-6':[['GK',50,90],['CB',70,78],['CB',50,81],['CB',30,78],['DM',50,60],
-          ['LW',10,30],['AM',68,32],['AM',32,32],['RW',90,30],['ST',44,14],['ST',58,14]]
+          ['LW',10,30],['AM',68,32],['AM',32,32],['RW',90,30],['ST',44,14],['ST',58,14]],
+ '5-4-1':[['GK',50,91],['CB',70,75],['CB',50,75],['CB',30,75],
+          ['RWB',88,72],['LWB',12,72],
+          ['RM',80,54],['CM',60,55],['CM',40,55],['LM',20,54],
+          ['ST',50,24]]
 };
 var POSS_FORMS={
  '3-1-6':[['GK',50,92],['CB',72,80],['CB',50,82],['CB',28,80],['DM',50,56],
@@ -67,7 +74,11 @@ var POSS_FORMS={
  '4-4-2':[['GK',50,92],['RB',86,50],['CB',62,80],['CB',38,80],['LB',14,50],
           ['RM',84,44],['CM',60,54],['CM',40,54],['LM',16,44],['ST',60,20],['ST',40,20]],
  '4-1-4-1':[['GK',50,92],['RB',88,44],['CB',62,80],['CB',38,80],['LB',12,44],
-            ['DM',50,62],['RM',84,40],['CM',62,48],['CM',38,48],['LM',16,40],['ST',50,16]]
+            ['DM',50,62],['RM',84,40],['CM',62,48],['CM',38,48],['LM',16,40],['ST',50,16]],
+ '5-4-1':[['GK',50,92],['CB',70,76],['CB',50,76],['CB',30,76],
+          ['RWB',88,50],['LWB',12,50],
+          ['RM',80,30],['CM',60,54],['CM',40,54],['LM',20,30],
+          ['ST',50,16]]
 };
 var ADJ={RB:['RWB','CB','RM','LB'],LB:['LWB','CB','LM','RB'],RWB:['RB','RM','RW'],LWB:['LB','LM','LW'],
   CB:['DM','RB','LB'],DM:['CM','CB'],CM:['DM','AM'],AM:['CM','RW','LW','ST'],
@@ -77,24 +88,41 @@ var GRP={GK:'门',RB:'卫',CB:'卫',LB:'卫',RWB:'卫',LWB:'卫',DM:'中',CM:'�
 /* ---------------- L3 比赛态 ---------------- */
 var S={home:'曼联',away:'曼城',minute:0,hs:0,as:0,
        lineup:{},status:{},events:[],lastDiff:null,snap:null,
-       tactic:{},poss:{},subMark:{}};
+       tactic:{},poss:{},subMark:{},weather:'dry'};
 function taxOf(t){ return S.tactic[t]||'bal'; }
 function possOn(t){ return !!S.poss[t]; }
 function setTax(team,v){ S.tactic[team]=v; renderAll(); }
+function setWeather(w){ S.weather=(w==='rain'?'rain':'dry'); renderAll(); renderSetup(); }
 var KEEP={};
-function toggleDesperate(team){
-  if(formOf(team)==='3-1-6'){
-    var k=KEEP[team];
-    FORM_SEL[team]=k&&k.form?k.form:(PREFERRED[team]?PREFERRED[team].form:'4-2-3-1');
+var SHAPES={'3-1-6':'atk','5-4-1':'def'};
+function toggleShape(team,shape){
+  var cur=formOf(team);
+  if(cur===shape){
+    var k=KEEP[team]||{};
+    FORM_SEL[team]=k.form||(PREFERRED[team]?PREFERRED[team].form:'4-2-3-1');
     changeForm(team,FORM_SEL[team]);
-    if(k&&k.lineup) S.lineup[team]=k.lineup.slice();
+    if(k.lineup) S.lineup[team]=k.lineup.slice();
+    if(k.tactic) S.tactic[team]=k.tactic;
+    delete KEEP[team];
     renderAll();
-  }else{
-    KEEP[team]={form:formOf(team),lineup:(S.lineup[team]||[]).slice()};
-    changeForm(team,'3-1-6');
-    S.tactic[team]='atk'; renderAll();
+    return;
   }
+  var base=KEEP[team];
+  if(cur==='3-1-6'||cur==='5-4-1'){
+    if(!base) base={form:(PREFERRED[team]?PREFERRED[team].form:'4-2-3-1')};
+    FORM_SEL[team]=base.form;
+    if(base.lineup) S.lineup[team]=base.lineup.slice();
+    if(base.tactic) S.tactic[team]=base.tactic;
+  }else{
+    KEEP[team]={form:cur,lineup:(S.lineup[team]||[]).slice(),tactic:taxOf(team)};
+  }
+  changeForm(team,shape);
+  if(shape==='5-4-1') S.poss[team]=false;
+  if(SHAPES[shape]) S.tactic[team]=SHAPES[shape];
+  renderAll();
 }
+function toggleDesperate(team){ toggleShape(team,'3-1-6'); }
+function toggleLead(team){ toggleShape(team,'5-4-1'); }
 function togglePoss(team){ S.poss[team]=!S.poss[team]; renderAll(); }
 
 function formOf(name){
@@ -261,6 +289,12 @@ function analyze(){
   var hLow=Math.max(0,(hs.low||0)-1), hPress=Math.min(5,(hs.press||2)+1);
   var th=taxOf(H), ta=taxOf(A);
   var msgs=[];
+  var wet=S.weather==='rain';
+  msgs.push({area:'环境',lvl:wet?1:0,c:'infer',
+    txt: wet?'雨战：湿滑、球速快，停球/传中容错下降；远射脱手、定位球第二点、长传冲吊的收益上升。':'晴：天气不额外修正，按当前阵型与对位判断。',
+    p: wet?'雨天更容易出现脱手、二点和乱战，别只迷信地面配合。':'天气不是这场的主要变量。',
+    ev: wet?'当前天气：雨。湿滑场地影响停球、传中、门将脱手和定位球第二点。':'当前天气：晴。'
+  });
 
   /* 0 战术姿态 */
   var taxTxt=[],taxLvl=0;
@@ -277,6 +311,7 @@ function analyze(){
     ev:'姿态是「当时的战术选择」，不是能力值：同一套首发，压出去和收回来是两种风险。'});
 
   /* 0.5 搏命 */
+  var hm=metrics(hl), am=metrics(al);
   var despH=formOf(H)==='3-1-6', despA=formOf(A)==='3-1-6';
   if(despH||despA){
     var who=despH?H:A;
@@ -336,7 +371,6 @@ function analyze(){
   msgs=msgs.concat(flank(H,hl,hf,A,al,af));
 
   /* 3 中场 */
-  var hm=metrics(hl), am=metrics(al);
   var d=hm.mid-am.mid+(th==='atk'?1:th==='def'?-1:0)-(ta==='atk'?1:ta==='def'?-1:0);
   var mids=function(a){ return a.filter(function(n){ var p=n&&byName[n];
     return p&&(p.pos||[]).some(function(x){return x==='DM'||x==='CM'||x==='AM';}); }).join(' / '); };
@@ -396,7 +430,7 @@ function analyze(){
   msgs.forEach(function(m){
     if(!m.p) m.p=PLAIN[m.area]||'';
     if(!m.c) m.c='infer';
-    if(oppFull<11 && m.c==='infer') m.c='guess';
+    if(oppFull<11 && m.c==='infer' && m.area!=='环境') m.c='guess';
   });
   return {msgs:msgs,hm:hm,am:am,hl:hl,al:al};
 }
@@ -407,11 +441,12 @@ function confTag(c){ var d=CONF[c]||CONF.infer;
   return '<span class="cf" style="color:'+d[1]+';border-color:'+d[1]+'55;background:'+d[1]+'1a">'+d[0]+'</span>'; }
 
 /* ---------------- 术语 ---------------- */
-function midCnt(t){ return (S.lineup[t]||[]).filter(function(n){var p=byName[n];
-  return p&&(p.pos||[]).some(function(x){return x==='DM'||x==='CM'||x==='AM';});}).length; }
+var MIDSLOTS=['DM','CM','AM','RM','LM'];
+function midCnt(t){ var m=slotMap(S.lineup[t]||[],formOf(t));
+  return MIDSLOTS.reduce(function(n,k){return n+(m[k]||[]).length;},0); }
 function midsOf(t){
   var f=formOf(t), m=slotMap(S.lineup[t]||[],f), out=[];
-  ['DM','CM','AM','RM','LM'].forEach(function(k){ if(m[k]) out=out.concat(m[k]); });
+  MIDSLOTS.forEach(function(k){ if(m[k]) out=out.concat(m[k]); });
   return out.length?out.join('、'):'—';
 }
 function rbOf(t){ var m=slotMap(S.lineup[t]||[],formOf(t)); return (m.RB||m.RWB||[])[0]; }
@@ -489,7 +524,7 @@ function phaseCard(r){
   var rows=keys.map(function(k){ return [k[1], r.hm[k[0]]-S.snap.h[k[0]], r.am[k[0]]-S.snap.a[k[0]] ]; })
     .filter(function(x){ return Math.abs(x[1])>=1||Math.abs(x[2])>=1; })
     .sort(function(a,b){ return Math.abs(b[1])+Math.abs(b[2])-(Math.abs(a[1])+Math.abs(a[2])); }).slice(0,3);
-  var subs=S.events.filter(function(e){return e.type==='sub';}).length;
+  var subs=S.events.filter(function(e){return e.type==='sub'&&e.min>0;}).length;
   var body=rows.length? rows.map(function(x){
         var hc=x[1]>0?'#23c55e':(x[1]<0?'#e2383f':'#93a0af');
       var ac=x[2]>0?'#23c55e':(x[2]<0?'#e2383f':'#93a0af');
@@ -583,13 +618,40 @@ function $(s){return document.querySelector(s);}
 function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(m){
   return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m];}); }
 
+function postureSlots(slots,tax){
+  if(tax!=='atk'&&tax!=='def') return slots;
+  return slots.map(function(sl){
+    if(sl[0]==='GK') return sl;
+    var g=(sl[0]==='RWB'||sl[0]==='LWB')?'中':GRP[sl[0]];
+    var dy=0;
+    if(g==='卫') dy=(tax==='atk'?-7:0);
+    else if(g==='中') dy=(tax==='atk'?-6:6);
+    else if(g==='锋') dy=(tax==='atk'?-3:4);
+    return [sl[0],sl[1],Math.max(8,Math.min(86,sl[2]+dy))];
+  });
+}
+function fixGKSlot(team){
+  var lu=S.lineup[team]; if(!lu||!lu.length) return;
+  var p0=lu[0]?byName[lu[0]]:null;
+  if(p0 && (p0.pos||[]).indexOf('GK')>=0) return;
+  for(var i=1;i<lu.length;i++){
+    var p=lu[i]?byName[lu[i]]:null;
+    if(p && (p.pos||[]).indexOf('GK')>=0){
+      lu[0]=p.n; lu[i]=p0?p0.n:null; return;
+    }
+  }
+}
 function renderPitch(which){
   var team=which==='h'?S.home:S.away;
   var form=formOf(team);
   var base=FORMS[form]||FORMS['4-2-3-1'];
-  var slots=possOn(team)?(POSS_FORMS[form]||base):base;
+  var slots=postureSlots(possOn(team)?(POSS_FORMS[form]||base):base,taxOf(team));
+  if(which==='h') slots=slots.map(function(sl){return [sl[0],sl[1],100-sl[2]];});
   var lu=S.lineup[team]||autoLineup(team); S.lineup[team]=lu;
+  fixGKSlot(team);
   var full=(POOL[team]||[]).length;
+  var starters=lu.filter(Boolean).length;
+  var subs=Math.max(0,full-starters);
   var tok='';
   slots.forEach(function(sl,i){
     var n=lu[i],p=n?byName[n]:null,st=n?stOf(n):'ok';
@@ -598,7 +660,7 @@ function renderPitch(which){
     tok+=`<div class="tk ${p?'':'empty'}" data-w="${which}" data-i="${i}" style="left:${sl[1]}%;top:${sl[2]}%">
       <b>${p?esc(p.n):sl[0]}</b><i>${sl[0]}</i>${emo?'<em>'+emo+'</em>':''}${sub}</div>`;
   });
-  var chips=Object.keys(FORMS).map(function(f){
+  var chips=BASE_FORMS.map(function(f){
     return `<button class="fchip ${f===form?'on':''}" data-team="${esc(team)}" data-form="${f}">${f}</button>`;}).join('');
   var tx=taxOf(team);
   var taxRow=`<div class="frow tax">
@@ -608,15 +670,18 @@ function renderPitch(which){
     <button class="fchip ${tx==='def'?'on':''}" data-tax="${esc(team)}" data-v="def">收回来</button>
     <span class="sep2"></span>
     <button class="fchip ${possOn(team)?'on':''}" data-poss="${esc(team)}">${possOn(team)?'有球形态':'无球形态'}</button>
+    <span class="fbrk"></span>
+    <button class="fchip lead ${form==='5-4-1'?'on':''}" data-lead="${esc(team)}">守领先 5-4-1</button>
     <button class="fchip desperate ${form==='3-1-6'?'on':''}" data-desp="${esc(team)}">搏命 3-1-6</button>
   </div>`;
   return `<div class="pitchwrap">
     <div class="phead"><span class="dot" style="background:${which==='h'?'#e2383f':'#4ea1ff'}"></span>
       <b>${esc(team)}</b>
-      <span class="mut">${esc(coachOf(team))} · ${full} 人库${full<11?' <b style="color:#f0b429">数据不足</b>':''}</span>
+      <span class="mut">${esc(coachOf(team))} · ${full} 人库 · 首发 ${starters} · 替补 ${subs}${full<11?' <b style="color:#f0b429">数据不足</b>':''}</span>
       <button class="hbtn" style="margin-left:auto" data-coach="${esc(team)}">改教练</button></div>
     <div class="frow">${chips}</div>
     ${taxRow}
+    ${which==='h'?'<div class="postureHint">姿态=整条线前压/回收；有球形态=出球结构</div>':''}
     <div class="pitch">${tok}</div>
     <div class="hint">点球员 → 换人 / 标状态</div></div>`;
 }
@@ -626,6 +691,105 @@ function legendCard(){
    '<div class="at">每张卡右上角有个标记：'+confTag('fact')+' 来自球员库或官网；'+
    confTag('infer')+' 引擎按规则算的结论；'+confTag('guess')+' 数据不全或凭外部信息，我在猜。</div>'+
    '<div class="ae">先看标记再看结论。确定 ≠ 结论一定对，只是依据硬；推断 ≠ 结论一定错，只是没实证。</div></div>';
+}
+var HUDKEY='tb_hud_pref';
+var HUD={size:(window.matchMedia&&window.matchMedia('(max-width:480px)').matches?'compact':'standard'),mode:'always'};
+var HUD_TIMER=null;
+function loadHudPref(){
+  try{
+    var d=JSON.parse(localStorage.getItem(HUDKEY)||'{}');
+    if(d.size==='compact'||d.size==='standard'||d.size==='large') HUD.size=d.size;
+    if(d.mode==='always'||d.mode==='semi'||d.mode==='auto') HUD.mode=d.mode;
+  }catch(e){}
+}
+function saveHudPref(){
+  try{ localStorage.setItem(HUDKEY,JSON.stringify({size:HUD.size,mode:HUD.mode})); }catch(e){}
+}
+function syncHudSpace(){
+  var h=document.getElementById('hud'); if(!h) return;
+  document.documentElement.style.setProperty('--hud-h',h.offsetHeight+'px');
+}
+function scheduleHudHide(){
+  clearTimeout(HUD_TIMER);
+  if(HUD.mode!=='auto') return;
+  if(TAB!=='lineup'&&TAB!=='analysis') return;
+  var p=document.getElementById('hudCfg'); if(p&&p.classList.contains('on')) return;
+  HUD_TIMER=setTimeout(hideHud,5000);
+}
+function hideHud(){
+  if(HUD.mode!=='auto'||(TAB!=='lineup'&&TAB!=='analysis')) return;
+  var p=document.getElementById('hudCfg'); if(p&&p.classList.contains('on')) return;
+  var h=document.getElementById('hud'); if(!h) return;
+  h.classList.add('hud-hidden');
+  var s=document.getElementById('hudShow'); if(s) s.classList.add('on');
+  clearTimeout(HUD_TIMER);
+}
+function showHud(){
+  var h=document.getElementById('hud'); if(h) h.classList.remove('hud-hidden');
+  var s=document.getElementById('hudShow'); if(s) s.classList.remove('on');
+  if(HUD.mode==='auto') scheduleHudHide();
+}
+function syncHudForTab(t){
+  var h=document.getElementById('hud'), s=document.getElementById('hudShow'), p=document.getElementById('hudCfg');
+  if(!h) return;
+  if(t!=='lineup'&&t!=='analysis'){
+    clearTimeout(HUD_TIMER);
+    if(s) s.classList.remove('on');
+    if(p) p.classList.remove('on');
+    return;
+  }
+  if(HUD.mode==='auto'&&h.classList.contains('hud-hidden')){
+    if(s) s.classList.add('on');
+  }else{
+    if(s) s.classList.remove('on');
+    scheduleHudHide();
+  }
+}
+function renderHudCfg(){
+  var el=document.getElementById('hudCfg'); if(!el) return;
+  var sizes=[['compact','紧凑'],['standard','标准'],['large','大']];
+  var modes=[['always','常驻'],['semi','半透明'],['auto','自动收起']];
+  el.innerHTML='<div class="hudcfg-h"><b>比分牌</b><button class="x" onclick="toggleHudCfg()">✕</button></div>'+
+    '<div class="hudcfg-row"><span class="mut">大小</span>'+sizes.map(function(s){
+      return '<button class="fchip '+(HUD.size===s[0]?'on':'')+'" onclick="setHudSize(\''+s[0]+'\')">'+s[1]+'</button>';
+    }).join('')+'</div>'+
+    '<div class="hudcfg-row"><span class="mut">出现</span>'+modes.map(function(m){
+      return '<button class="fchip '+(HUD.mode===m[0]?'on':'')+'" onclick="setHudMode(\''+m[0]+'\')">'+m[1]+'</button>';
+    }).join('')+'</div>'+
+    (HUD.mode==='auto'?'<button class="tb" style="width:100%;margin-top:8px;padding:9px" onclick="collapseHudNow()">立即收起</button>':'')+
+    '<div class="hudcfg-tip">偏好只存在本机；自动收起后点底部「比分」展开。</div>';
+}
+function applyHudPref(){
+  var h=document.getElementById('hud'); if(!h) return;
+  h.classList.remove('hud-compact','hud-standard','hud-large','hud-semi','hud-auto','hud-hidden');
+  h.classList.add('hud-'+HUD.size);
+  if(HUD.mode==='semi') h.classList.add('hud-semi');
+  if(HUD.mode==='auto') h.classList.add('hud-auto');
+  if(HUD.mode!=='auto'){
+    clearTimeout(HUD_TIMER);
+    var s=document.getElementById('hudShow'); if(s) s.classList.remove('on');
+  }
+  syncHudSpace();
+  var p=document.getElementById('hudCfg'); if(p&&p.classList.contains('on')) renderHudCfg();
+  if(HUD.mode==='auto') scheduleHudHide();
+}
+function toggleHudCfg(){
+  var p=document.getElementById('hudCfg'); if(!p) return;
+  var open=!p.classList.contains('on');
+  if(open){ renderHudCfg(); p.classList.add('on'); clearTimeout(HUD_TIMER); showHud(); }
+  else { p.classList.remove('on'); if(HUD.mode==='auto') scheduleHudHide(); }
+}
+function setHudSize(s){
+  if(s!=='compact'&&s!=='standard'&&s!=='large') return;
+  HUD.size=s; saveHudPref(); applyHudPref();
+}
+function setHudMode(m){
+  if(m!=='always'&&m!=='semi'&&m!=='auto') return;
+  HUD.mode=m; saveHudPref(); applyHudPref();
+}
+function collapseHudNow(){
+  var p=document.getElementById('hudCfg'); if(p) p.classList.remove('on');
+  hideHud();
 }
 function renderHUD(){
   $('#hud').innerHTML=`
@@ -651,7 +815,9 @@ function renderHUD(){
       <button class="mini" onclick="setMin(75)">75'</button>
       <button class="mini" onclick="setMin(90)">90'</button>
       <button class="mini warnb" onclick="resetMatch()">重置</button>
-    </div>`;
+    </div>
+    <button class="hcfg" onclick="toggleHudCfg()" aria-label="比分牌设置">⚙</button>`;
+  syncHudSpace();
 }
 
 function renderAll(){
@@ -697,6 +863,9 @@ function renderSetup(){
   $('#setup').innerHTML=`<div class="row"><span class="mut">对手</span>
       <div class="fml">${esc(opp)} · ${esc(coachOf(opp))} · ${formOf(opp)} · ${(POOL[opp]||[]).length} 人库</div></div>
     ${groups}
+    <div class="row"><span class="mut">比赛条件 · 天气</span>
+      <button class="fchip wxchip ${S.weather==='dry'?'on':''}" onclick="setWeather('dry')">晴</button>
+      <button class="fchip wxchip ${S.weather==='rain'?'on':''}" onclick="setWeather('rain')">雨</button></div>
     <div class="row" style="justify-content:space-between">
       <div><span class="mut">主场</span> <span class="fml">${esc(S.home)}</span>
         <span class="mut">（曼联${S.home==='曼联'?'主':'客'}场）</span></div>
@@ -715,13 +884,24 @@ function openSheet(wi,idx){
     <button class="x" onclick="closeSheet()">✕</button></div>`;
   if(cur) h+=`<div class="strow"><span class="mut">状态</span>${sts.map(function(s){
       return `<button class="st ${stOf(cur)===s[0]?'on':''}" data-st="${s[0]}" data-n="${esc(cur)}">${s[1]}</button>`;}).join('')}</div>`;
-  h+=`<div class="lov">选择球员（按适配度排序）</div><div class="plist">
+  h+=`<div class="lov">选择球员（按位置分组，组内按适配度排序）</div><div class="plist">
       <button class="pr ${!cur?'on':''}" data-slotnull="1"><span>— 留空 —</span></button>`;
+  var buckets={};
   cands.forEach(function(p){
-    var used=lu.filter(function(n,i){return n===p.n&&i!==idx;}).length>0;
-    h+=`<button class="pr ${cur===p.n?'on':''} ${used?'used':''}" data-pick="${esc(p.n)}">
-      <span><b>${esc(p.n)}</b> <i class="mut">${(p.pos||[]).join('/')} · ${esc(p.st||'')}</i></span>
-      <em>${scoreFor(p,slot)>9?'✔':''}${used?' · 已在场(互换)':''}${hurt(p)?' ⛔':''}</em></button>`;
+    var g=GRP[(p.pos||[])[0]]||'';
+    (buckets[g]=buckets[g]||[]).push(p);
+  });
+  [['门','门将'],['卫','后卫'],['中','中场'],['锋','前锋'],['','其他']].forEach(function(g){
+    var arr=buckets[g[0]]||[];
+    if(!arr.length) return;
+    arr.sort(function(a,b){return scoreFor(b,slot)-scoreFor(a,slot);});
+    h+=`<div class="lgrp">${g[1]} <em>${arr.length}</em></div>`;
+    arr.forEach(function(p){
+      var used=lu.filter(function(n,i){return n===p.n&&i!==idx;}).length>0;
+      h+=`<button class="pr ${cur===p.n?'on':''} ${used?'used':''}" data-pick="${esc(p.n)}">
+        <span><b>${esc(p.n)}</b> <i class="mut">${(p.pos||[]).join('/')} · ${esc(p.st||'')}</i></span>
+        <em>${scoreFor(p,slot)>9?'✔':''}${used?' · 已在场(互换)':''}${hurt(p)?' ⛔':''}</em></button>`;
+    });
   });
   h+=`</div></div>`;
   $('#sheet').innerHTML=h; $('#sheet').classList.add('on');
@@ -733,18 +913,28 @@ function setSlot(wi,idx,name){
   var lu=S.lineup[team]||autoLineup(team);
   var before=metrics(lu);
   var prev=lu[idx];
+  var j=(name?lu.indexOf(name):-1);
+  var isSwap=j>=0&&j!==idx;
   if(name){
-    var j=lu.indexOf(name);
-    if(j>=0&&j!==idx) lu[j]=prev;
+    if(isSwap) lu[j]=prev;
     lu[idx]=name;
   } else lu[idx]=null;
   S.lineup[team]=lu;
-  S.lastDiff={team:team,m:before,out:(prev&&prev!==name?prev:null),in:(name&&prev!==name?name:null)};
-  if(name&&prev&&prev!==name){
+  if(isSwap){
+    S.lastDiff=null;
+  }else if(S.minute===0){
+    // 赛前调整：只改首发，不写换人事件、不生成换人诊断、不打 ↑0' 徽标
+    S.lastDiff=null;
+    log('edit',team,name||'空');
+  }else if(name&&prev&&prev!==name){
+    S.lastDiff={team:team,m:before,out:prev,in:name};
     log('sub',team,name,prev);
-    if(S.minute>0) S.subMark[name]=S.minute;
+    S.subMark[name]=S.minute;
     if(prev&&S.subMark) delete S.subMark[prev];
-  } else log('edit',team,name||'空');
+  }else{
+    S.lastDiff={team:team,m:before,out:(prev&&prev!==name?prev:null),in:(name&&prev!==name?name:null)};
+    log('edit',team,name||'空');
+  }
   closeSheet(); renderAll();
 }
 function setSt(name,k){
@@ -778,10 +968,10 @@ function setMin(m){
   var el=document.querySelector('#hud .mn'); if(el){ el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop'); }
 }
 function resetMatch(){
-  S.hs=0;S.as=0;S.minute=0;S.status={};S.events=[];S.lastDiff=null;
+  S.hs=0;S.as=0;S.minute=0;S.status={};S.events=[];S.lastDiff=null;S.weather='dry';
   S.lineup[S.home]=autoLineup(S.home); S.lineup[S.away]=autoLineup(S.away);
   S.snap={h:metrics(S.lineup[S.home]),a:metrics(S.lineup[S.away])};
-  renderAll();
+  renderAll(); renderSetup();
 }
 function log(type,team,a,b){
   if(type!=='sub'&&type!=='status') return;
@@ -790,13 +980,21 @@ function log(type,team,a,b){
     mark:(type==='status'?b:'')});
   if(S.events.length>60) S.events.shift();
 }
+function cleanPreSubs(events){
+  return (events||[]).filter(function(e){ return !(e.type==='sub' && (!e.min || e.min<=0)); });
+}
+function cleanSubMark(mark){
+  var out={};
+  Object.keys(mark||{}).forEach(function(n){ if(mark[n]>0) out[n]=mark[n]; });
+  return out;
+}
 
 /* ---------------- 存储 ---------------- */
 var KEY='tb_v41_state';
 function save(){
   try{ localStorage.setItem(KEY,JSON.stringify({
     home:S.home,away:S.away,form:FORM_SEL,lineup:S.lineup,status:S.status,minute:S.minute,hs:S.hs,as:S.as,
-    tactic:S.tactic,poss:S.poss,keep:KEEP,events:S.events,subMark:S.subMark
+    tactic:S.tactic,poss:S.poss,keep:KEEP,events:S.events,subMark:S.subMark,weather:S.weather
   })); }catch(e){}
 }
 function load(){
@@ -807,7 +1005,8 @@ function load(){
     S.home=d.home;S.away=d.away;S.minute=d.minute||0;S.hs=d.hs||0;S.as=d.as||0;
     FORM_SEL=d.form||{}; S.status=d.status||{};
     S.tactic=d.tactic||{}; S.poss=d.poss||{};
-    S.events=d.events||[]; S.subMark=d.subMark||{};
+    S.weather=d.weather==='rain'?'rain':'dry';
+    S.events=cleanPreSubs(d.events||[]); S.subMark=cleanSubMark(d.subMark||{});
     if(d.keep){ for(var k in d.keep){ KEEP[k]=d.keep[k]; } }
     S.lineup=d.lineup||{};
     return true;
@@ -826,100 +1025,615 @@ function switchTab(t){
     b.classList.toggle('on',b.getAttribute('data-tab')===t);
   });
   document.getElementById('hud').style.display=(t==='lineup'||t==='analysis')?'':'none';
+  syncHudForTab(t);
   if(t==='learn') renderLearn();
   if(t==='log') renderLog();
   window.scrollTo(0,0);
 }
 
-/* ---------------- 学习：6 节课 ---------------- */
-var QDONE={};
-var LESSONS=[
-{t:'1 · 一场球只看三件事',b:[
- '别被解说带跑。任何一场球，你只需要看三件事，剩下的都是细节。',
- '<b>第一件：谁有球。</b>有球的一方在控球，没球的一方要么抢、要么退。退到自家半场排两条线，叫<b>低位块</b>（俗称摆大巴）。这一件事定了整场球的基调。',
- '<b>第二件：中场谁人多。</b>中圈附近是球场最值钱的位置。多一个人就能随便传，少一个人只能往回传。',
- '<b>第三件：哪条边有人在冲。</b>边路空当最大，因为边后卫要同时管防守和助攻，管不过来。',
- '看懂了这三件，你比 90% 的球迷看得清。'
- ],eg:function(){var h=midCnt(S.home),a=midCnt(S.away);return [[ '现在这场：'+S.home+' '+formOf(S.home)+' vs '+S.away+' '+formOf(S.away)+'，中场 '+h+' 人 vs '+a+' 人。','fact'],[ '按这个人数差，'+(a>h?S.away:S.home)+'更容易控住中场。','infer'] ];},
- q:[{q:'一支球队退到自家半场、排成两条线让对手控球，这叫什么？',o:['高位压迫','低位块（摆大巴）','转换'],a:1,why:'低位块=把中路堵死，逼对手在外围倒脚。代价是把球权全让出去。'},
-    {q:'中场 3 打 2 意味着什么？',o:['人数多的一方更容易控住球','人数少的一方更容易进球','没区别'],a:0,why:'多一个人就多一个接应点，传球线路翻倍。少人一方只能被动退。'}]},
-{t:'2 · 阵型是起步姿势，不是站位',b:[
- '4-2-3-1 这串数字，是从后往前数的人数：4 后卫、2 后腰、3 中场、1 前锋。',
- '但它只是<b>开球时的站法</b>。球一动，位置就散了——所以同一个 4-2-3-1，有球时可能变成 3-2-5，没球时可能变成 4-4-2。',
- '这就是为什么这个工具让你在「无球形态 / 有球形态 / 搏命 3-1-6」之间切。',
- '记住一句话：<b>阵型决定的是开局，跑位决定的是比赛。</b>'
- ],eg:function(){return [[ formOf(S.home)+' 只是开球站法。','fact'],[ '点「有球形态」会看到边后卫压到中场线，那就是 3-2-5 出球。','infer'] ];},
- q:[{q:'4-2-3-1 里的「2」指的是？',o:['两个中卫','两个后腰','两个边锋'],a:1,why:'从后往前：4 后卫 · 2 后腰 · 3 中场 · 1 前锋。'},
-    {q:'同一套阵型，有球和没球时站位一样吗？',o:['一样','不一样，通常会变','只有强队会变'],a:1,why:'有球时要有出球结构，没球时要排防守线，所以一定不一样。'}]},
-{t:'3 · 中场就是战场',b:[
- '6 号位=后腰，站在后卫线前面，负责拦截和出球。<b>8 号位</b>=中场，能跑能传能插上。<b>10 号位</b>=前腰，负责最后一传。',
- '为什么「中场少一个人」这么致命？因为对面多一个人，就多一条传球线路，你永远差半步。',
- '所以换人最常见的操作是：<b>撤一个前锋，上一个中场</b>。这不是保守，是把球权抢回来。',
- '反过来，落后时撤中场上前锋，就是赌——这就是「搏命 3-1-6」。'
- ],eg:function(){return [[ '双方中场：'+midsOf(S.home)+' vs '+midsOf(S.away)+'。','fact'],[ '谁的类型更全（破坏型+组织型都有），谁就能控住节奏。','infer'] ];},
- q:[{q:'落后一球，撤下一个中场换上一个前锋，最可能的后果是？',o:['控球变好','中场更空，容易被反击','防守变好'],a:1,why:'少一个中场=少一层屏障，压上去之后身后就是单刀。'},
-    {q:'6 号位球员的主要工作是什么？',o:['进球','拦截和出球','传中'],a:1,why:'6 号位站在后卫线前，是第一道闸和第一个出球点。'}]},
-{t:'4 · 边路是空当的来源',b:[
- '边后卫最难的处境：<b>压上去助攻，身后就空；不压，进攻就少一个人。</b>全世界所有战术都在利用这个矛盾。',
- '三个词要分清：<b>套边</b>（边后卫从外侧插上）、<b>内收</b>（边后卫往中路站，变成中场）、<b>逆足内切</b>（左脚球员在右路往中间切）。',
- '所以你会看到「右路是主战场」这种判断——意思就是这一侧两边的人都在往前跑，谁丢球谁被打身后。'
- ],eg:function(){return [[ '右路对位：'+S.home+' 的 '+(rbOf(S.home)||'—')+' vs '+S.away+' 的 '+(lwOf(S.away)||'—')+'。','fact'],[ '谁先压上，谁身后的空当就更大。','infer'] ];},
- q:[{q:'边后卫压上助攻，最大的风险是什么？',o:['体力不够','身后空当被打反击','越位'],a:1,why:'他一走，那条边就只剩中卫补，对方一脚直塞就是单刀。'},
-    {q:'「逆足内切」是什么意思？',o:['用不擅长的脚传中','逆足球员带球往中路切寻找射门','边后卫内收'],a:1,why:'右脚踢左边、左脚踢右边，往中间切射门更顺脚。'}]},
-{t:'5 · 看懂换人',b:[
- '换人只有三种：<b>换体能</b>（跑不动了）、<b>换类型</b>（加高度/加速度/加防守）、<b>换结构</b>（改阵型）。',
- '为什么总是 60-70 分钟？因为那时体能开始掉、比分已经明朗、教练能看清对方弱点在哪。',
- '判断一次换人好不好，只看一件事：<b>它解决了当时的哪个问题</b>。领先还换前锋=没解决问题；落后换后腰=自相矛盾。',
- '这个工具里的「换人诊断」就是在替你回答这个问题。'
- ],eg:function(){return [[ '现在 '+S.minute+' 分钟，'+S.home+' '+S.hs+':'+S.as+' '+S.away+'。','fact'],[ '领先时换防守型中场，是为了守住弧顶，不是加强进攻。','infer'] ];},
- q:[{q:'领先 1 球、第 80 分钟，最合理的换人是？',o:['换上一个前锋','换上一个防守型中场','同时换三个人进攻'],a:1,why:'这时候要保住的是弧顶和第二落点，不是控球率。'},
-    {q:'60-70 分钟换人最集中的原因是？',o:['规则要求','体能下降+比分明朗','球员自己想下'],a:1,why:'体能拐点+战术意图清晰，是换人的黄金窗口。'}]},
-{t:'6 · 自己复盘一场球',b:[
- '看三个时间点就够了：<b>开场 15 分钟</b>（谁控球）、<b>60 分钟</b>（哪条边被打穿）、<b>85 分钟</b>（换人改了什么）。',
- '每场记三个问题：谁在控球？对方往哪条边打？换人之后结构变了没？',
- '写下来，赛后对照。三个月你就有自己的判断了——这比看一百篇战术分析有用。',
- '「复盘」页就是干这个的：写一句判断，赛完回来看对不对。'
- ],eg:function(){return [[ '这场 '+S.home+' vs '+S.away+'，当前 '+S.hs+':'+S.as+'。','fact'],[ '把判断写下来，赛后才知道自己错在哪。','infer'] ];},
- q:[{q:'复盘一场球，最该记录的是什么？',o:['比分','你赛前的判断和依据','球员评分'],a:1,why:'判断对了要知道为什么对，错了要知道错在哪，这才能涨球商。'},
-    {q:'哪三个时间点最值得看？',o:['开场/中场/结束','15 分钟 / 60 分钟 / 85 分钟','每次换人时'],a:1,why:'开局定基调、60 分钟见真章、85 分钟看调整。'}]}
-];
+/* ---------------- 训练：3 题情境推演 ---------------- */
+var DRILL={sig:'',round:0,idx:0,qs:[],picked:[]};
+function drillLu(t){ return S.lineup[t]||autoLineup(t); }
+function drillFull(t){
+  var lu=drillLu(t)||[];
+  return (POOL[t]||[]).length>=11 && lu.filter(Boolean).length>=11;
+}
+function drillPlayer(n){ return n?byName[n]:null; }
+function drillSlot(t,slot,alt){
+  var m=slotMap(drillLu(t),formOf(t));
+  var a=m[slot]||[];
+  if(a.length) return a[0];
+  if(alt){ for(var i=0;i<alt.length;i++){ var b=m[alt[i]]||[]; if(b.length) return b[0]; } }
+  return null;
+}
+function drillTags(n){
+  var p=drillPlayer(n); return p?(p.tags||[]).join('/'):'—';
+}
+function drillFoot(n){
+  var p=drillPlayer(n); return p&&p.foot?p.foot:'?';
+}
+function drillMidNames(t){
+  var m=slotMap(drillLu(t),formOf(t)), out=[];
+  ['DM','CM','AM'].forEach(function(k){ if(m[k]) out=out.concat(m[k]); });
+  return out.filter(Boolean);
+}
+function drillOrgNames(names){
+  return names.filter(function(n){
+    var p=drillPlayer(n);
+    return p&&hasT(p,['组织8','拖后组织','节拍器','现代10','自由10','伪10']);
+  });
+}
+function drillRotate(q,seed){
+  var r=((seed%3)+3)%3;
+  if(!r) return q;
+  q.opts=q.opts.slice(r).concat(q.opts.slice(0,r));
+  q.ans=(q.ans-r+3)%3;
+  return q;
+}
+function drillSig(){
+  return JSON.stringify({h:S.home,a:S.away,hf:formOf(S.home),af:formOf(S.away),
+    lu:S.lineup,tax:S.tactic,poss:S.poss,min:S.minute,hs:S.hs,as:S.as});
+}
+function drillFlankQs(){
+  var out=[];
+  function one(atk,def,side){
+    var w=side==='R'?drillSlot(atk,'RW',['RM']):drillSlot(atk,'LW',['LM']);
+    var fb=side==='R'?drillSlot(def,'LB',['LWB']):drillSlot(def,'RB',['RWB']);
+    if(!w||!fb) return;
+    var P=drillPlayer(w), F=drillPlayer(fb); if(!P||!F) return;
+    var wIn=hasT(P,['逆足内切']), wWd=hasT(P,['顺足下底']);
+    var fbUp=hasT(F,['套边型','攻击型'])&&!hasT(P,['翼卫']);
+    if(!(wIn||wWd||fbUp)) return;
+    var label=atk+(side==='R'?'右路':'左路');
+    var q={kind:'flank',id:'flank-'+atk+'-'+side,type:'对位',conf:'infer'};
+    if(fbUp&&(wIn||wWd)){
+      q.scenario=label+'：'+w+'（'+drillTags(w)+'）对'+def+'的'+fb+'（'+drillTags(fb)+'）。';
+      q.q='这条边最可能怎么发展？';
+      q.opts=[
+        '谁先压上谁吃亏，所以两人都会收着踢',
+        w+'和'+fb+'都往前，来回拉扯，谁丢球谁身后空',
+        '这条边只影响进攻，不会影响防守'
+      ];
+      q.ans=1;
+      q.why='按引擎的边路规则：'+fb+'是套边型/翼卫，会压上；'+w+'是'+(wIn?'逆足内切':'顺足下底')+'。两个人都往前，身后就互相空——谁丢球谁被打身后。';
+      q.ev=w+' tags='+drillTags(w)+' · '+drillFoot(w)+'脚 ｜ '+fb+' tags='+drillTags(fb)+' · '+drillFoot(fb)+'脚';
+    } else if(wIn){
+      q.scenario=label+'：'+w+'（'+drillTags(w)+'，'+drillFoot(w)+'脚）对'+fb+'（'+drillTags(fb)+'，'+drillFoot(fb)+'脚）。';
+      q.q=w+'最舒服的进攻方式是什么？';
+      q.opts=[
+        '下底用非惯用脚传中',
+        '往肋部内切，吃'+fb+'的内线',
+        '回撤到后腰位置组织'
+      ];
+      q.ans=1;
+      q.why=w+'是逆足内切：'+drillFoot(w)+'脚踢'+(side==='R'?'右路':'左路')+'，内切射门才是顺脚。'+fb+'是'+drillFoot(fb)+'脚，内线不是他的顺足侧——这是规则推断，不是说他一定防不住。';
+      q.ev=w+' tags='+drillTags(w)+' · '+drillFoot(w)+'脚 ｜ '+fb+' tags='+drillTags(fb)+' · '+drillFoot(fb)+'脚';
+    } else if(fbUp){
+      q.scenario=label+'：'+fb+'（'+drillTags(fb)+'）会压上；'+w+'（'+drillTags(w)+'）就在这一侧。';
+      q.q=fb+'压上后，最危险的空当在哪？';
+      q.opts=['他身后的边路空当','对方中卫身后','本方禁区弧顶'];
+      q.ans=0;
+      q.why=fb+'是套边型/翼卫，压上后那条边只剩中卫补；对手抢下球第一脚就会找这里。';
+      q.ev=fb+' tags='+drillTags(fb)+' ｜ '+w+' tags='+drillTags(w);
+    } else if(wWd){
+      q.scenario=label+'：'+w+'（'+drillTags(w)+'）对'+fb+'（'+drillTags(fb)+'）。';
+      q.q=w+'下底传中时，禁区里最该抢什么？';
+      q.opts=['第一点','第二落点','第一点顶到就行，第二点不重要'];
+      q.ans=1;
+      q.why=w+'顺足下底会把防线拉到外线，传中后的第二落点往往比第一点更决定比赛。';
+      q.ev=w+' tags='+drillTags(w)+' ｜ '+fb+' tags='+drillTags(fb);
+    }
+    out.push(q);
+  }
+  one(S.home,S.away,'R');
+  one(S.home,S.away,'L');
+  one(S.away,S.home,'R');
+  one(S.away,S.home,'L');
+  return out;
+}
+function drillLineQs(){
+  var out=[];
+  function one(atk,def){
+    var stN=drillSlot(atk,'ST'); if(!stN) return;
+    var st=drillPlayer(stN); if(!st) return;
+    var cbs=(slotMap(drillLu(def),formOf(def)).CB||[]).map(drillPlayer).filter(Boolean);
+    if(!cbs.length) return;
+    var pusher=cbs.filter(function(c){return hasT(c,['上抢型']);})[0];
+    var deep=cbs.filter(function(c){return hasT(c,['拖后型','回追型']);})[0];
+    var cbFull=cbs.map(function(c){return c.n+'（'+drillTags(c.n)+'）';}).join('+');
+    var cbEv=cbs.map(function(c){return c.n+' tags='+drillTags(c.n);}).join(' ｜ ');
+    var q={kind:'line',id:'line-'+atk+'-'+stN,type:'锋线',conf:'infer'};
+    if(hasT(st,['支点'])&&pusher){
+      q.scenario=atk+'锋线：'+stN+'（'+drillTags(stN)+'）对'+def+'中卫 '+cbFull+'。';
+      q.q=def+'最怕哪一幕？';
+      q.opts=[
+        pusher.n+'被'+stN+'背身做墙拉出来，第二落点没人抢',
+        stN+'回撤到后腰位置组织',
+        stN+'拉到边路传中'
+      ];
+      q.ans=0;
+      q.why='按引擎的锋线规则：支点型 9 遇到上抢中卫，会背身做墙把人拉出来，第二落点难抢。'+
+        pusher.n+'是上抢型，身后需要有人兜底。';
+      q.ev=stN+' tags='+drillTags(stN)+' ｜ '+cbEv;
+    } else if(hasT(st,['支点'])&&deep){
+      q.scenario=atk+'锋线：'+stN+'（'+drillTags(stN)+'）对'+def+'中卫 '+cbFull+'。';
+      q.q='按引擎规则，'+atk+'更该往哪打？';
+      q.opts=[
+        '继续高球硬砸第一点',
+        '外围远射 + 肋部后插上',
+        '让'+stN+'拉到边路传中'
+      ];
+      q.ans=1;
+      q.why='支点遇到拖后中卫，做墙压不进去；'+deep.n+'是拖后型，禁区里人多，破局点在外围远射和肋部后插上。';
+      q.ev=stN+' tags='+drillTags(stN)+' ｜ '+cbEv;
+    } else if(hasT(st,['抢点型','逼抢9'])){
+      q.scenario=atk+'锋线：'+stN+'（'+drillTags(stN)+'）对'+def+'中卫 '+cbFull+'。';
+      q.q=stN+'的价值最可能在哪个区域？';
+      q.opts=['六码区/小禁区前沿','中场弧顶','边线附近'];
+      q.ans=0;
+      q.why=stN+'是抢点/逼抢型 9，价值在六码区和小禁区前沿；中卫必须贴身，别让他抢前点。';
+      q.ev=stN+' tags='+drillTags(stN)+' ｜ '+def+' 中卫 '+cbEv;
+    } else if(/速度|爆点|冲击|身后/.test(st.st||'')){
+      q.scenario=atk+'锋线：'+stN+'（'+drillTags(stN)+'）打'+def+'中卫 '+cbFull+' 的身后。';
+      q.q=def+'防线最怕什么？';
+      q.opts=['防线压太高，身后被单刀','中锋回撤到后腰位置组织','中锋去边路传中'];
+      q.ans=0;
+      q.why=stN+'的特点是'+st.st+'；防线压太高，身后就是单刀。';
+      q.ev=stN+' st:'+st.st+' ｜ '+def+' 中卫 '+cbEv;
+    } else return;
+    out.push(q);
+  }
+  one(S.home,S.away);
+  one(S.away,S.home);
+  return out;
+}
+function drillMidQ(){
+  var hn=drillMidNames(S.home), an=drillMidNames(S.away);
+  if(hn.length<2||an.length<2) return null;
+  var hnOrg=drillOrgNames(hn), anOrg=drillOrgNames(an);
+  var ho=hnOrg.length, ao=anOrg.length;
+  var q={kind:'mid',id:'mid',type:'中场',conf:'infer'};
+  q.scenario='中场中路槽位（DM/CM/AM）：'+S.home+' '+hn.length+' 人（'+hn.map(function(n){return n+'：'+drillTags(n);}).join('；')+'）；'+
+    S.away+' '+an.length+' 人（'+an.map(function(n){return n+'：'+drillTags(n);}).join('；')+'）。';
+  q.ev=S.home+'：'+hn.map(function(n){return n+'('+drillTags(n)+')';}).join(' / ')+'\n'+
+       S.away+'：'+an.map(function(n){return n+'('+drillTags(n)+')';}).join(' / ');
+  if(hn.length!==an.length){
+    q.q='中场中路 '+hn.length+' vs '+an.length+'，人数多的一方最直接的好处是什么？';
+    q.opts=['多一个接应点，传球线路更多','多一个人就一定控住，不用看类型','人数优势只影响防守，不影响出球'];
+    q.ans=0;
+    q.why='中场多一个人，就多一条接应线路；少人一方只能被动退。但人数多不等于一定控住——还要看类型和站位。';
+  } else if(ao>ho){
+    q.q='双方中场都是 '+hn.length+' 人。哪句话更准确？';
+    q.opts=[
+      S.home+'人数多，能稳控',
+      '人数打平；'+S.away+'有 '+ao+' 人带组织标签，'+S.home+'只有 '+ho+' 人',
+      '人数打平，所以两队中场完全一样'
+    ];
+    q.ans=1;
+    q.why='人数打平，差别在类型：'+S.away+'的组织点是'+anOrg.join('、')+'，'+S.home+'是'+(hnOrg.length?hnOrg.join('、'):'没有明显的组织标签')+'。人数是事实，类型优势是推断。';
+  } else if(ho>ao){
+    q.q='双方中场都是 '+hn.length+' 人。哪句话更准确？';
+    q.opts=[
+      '人数打平；'+S.home+'有 '+ho+' 人带组织标签，'+S.away+'只有 '+ao+' 人',
+      S.away+'人数多，能稳控',
+      '人数打平，所以两队中场完全一样'
+    ];
+    q.ans=0;
+    q.why='人数打平，差别在类型：'+S.home+'的组织点是'+hnOrg.join('、')+'，'+S.away+'是'+(anOrg.length?anOrg.join('、'):'没有明显的组织标签')+'。人数是事实，类型优势是推断。';
+  } else {
+    return null;
+  }
+  return q;
+}
+function drillPairQ(){
+  var t=S.home, m=slotMap(drillLu(t),formOf(t));
+  var names=(m.DM||[]).slice(0,2);
+  if(names.length<2){
+    var all=[];
+    ['DM','CM'].forEach(function(k){ if(m[k]) all=all.concat(m[k]); });
+    names=all.slice(0,2);
+  }
+  if(names.length<2) return null;
+  var a=drillPlayer(names[0]), b=drillPlayer(names[1]); if(!a||!b) return null;
+  function dest(p){ return hasT(p,['破坏型','B2B']); }
+  function org(p){ return hasT(p,['组织8','拖后组织','节拍器','现代10']); }
+  var ad=dest(a)&&!org(a), bd=dest(b)&&!org(b);
+  var ao=org(a)&&!dest(a), bo=org(b)&&!dest(b);
+  var destroyer=ad?a.n:(bd?b.n:null);
+  var passer=ao?a.n:(bo?b.n:null);
+  if(!destroyer||!passer) return null;
+  var q={kind:'mid',id:'pair-'+t,type:'中场',conf:'fact'};
+  q.scenario=t+' 的中场保护层：'+destroyer+'（'+drillTags(destroyer)+'）+ '+passer+'（'+drillTags(passer)+'）。';
+  q.q='这对组合的分工更接近哪种？';
+  q.opts=[
+    destroyer+'负责扫荡，'+passer+'负责调度',
+    '两人都只负责防守',
+    '两人都只负责组织'
+  ];
+  q.ans=0;
+  q.why=destroyer+'带破坏型/B2B标签，是扫荡和推进点；'+passer+'带组织标签，是出球和节奏点。一个抢、一个传，才是保护层的互补。';
+  q.ev=destroyer+' tags='+drillTags(destroyer)+' ｜ '+passer+' tags='+drillTags(passer);
+  return q;
+}
+function drillShapeQ(){
+  var teams=[S.home,S.away];
+  for(var ti=0;ti<teams.length;ti++){
+    var t=teams[ti], f=formOf(t), base=FORMS[f], poss=POSS_FORMS[f];
+    if(!base||!poss||possOn(t)) continue;
+    var lu=drillLu(t), best=-1, idxs=[];
+    for(var i=0;i<Math.min(base.length,poss.length);i++){
+      var d=base[i][2]-poss[i][2];
+      if(d>best){best=d;idxs=[i];}
+      else if(d===best&&d>0){idxs.push(i);}
+    }
+    if(best<6||!idxs.length) continue;
+    var names=idxs.map(function(i){return lu[i];});
+    if(names.filter(Boolean).length!==idxs.length) continue;
+    var slots=idxs.map(function(i){return base[i][0];});
+    var line=slots.every(function(s){return s==='RB'||s==='LB'||s==='RWB'||s==='LWB';})?'边后卫/翼卫':
+             slots.every(function(s){return s==='CB';})?'中卫':
+             slots.every(function(s){return s==='DM'||s==='CM'||s==='AM'||s==='RM'||s==='LM';})?'中场':'前场';
+    var wrong1=line==='中卫'?'两名边后卫压到中场线':'两名中卫压到中场线';
+    var q={kind:'shape',id:'shape-'+t,type:'结构',conf:'fact'};
+    q.scenario=t+' 当前是 '+f+'，姿态'+({atk:'压出去',bal:'平衡',def:'收回来'}[taxOf(t)]||'平衡')+'。点「有球形态」后：';
+    q.q='谁的位置变化最大？';
+    q.opts=[names.join('、')+'（'+line+'）位置明显前压',wrong1,'全队都压到对方禁区，不留后卫'];
+    q.ans=0;
+    q.why='按阵型坐标，'+f+' 切到有球形态时，'+line+'的纵向位移最大（'+best+' 个单位，向上）。'+
+      (line==='边后卫/翼卫'?'边后卫压到中场线，和后腰并排，形成更稳的出球结构。':'这一线整体前压，给后场出球多一个接应点。')+
+      '不同阵型的具体形状不完全一样。';
+    q.ev='阵型坐标：'+slots.join('+')+' 的 y 从 '+base[idxs[0]][2]+' 到 '+poss[idxs[0]][2]+'（'+best+'）';
+    return q;
+  }
+  return null;
+}
+function drillFormQ(){
+  var t=S.home, f=formOf(t);
+  if(!FORMS[f]) return null;
+  var target=f==='3-1-6'?'4-2-3-1':'3-1-6';
+  var base=FORMS[f], tg=FORMS[target];
+  if(!base||!tg) return null;
+  function holdSlots(slots){ return slots.filter(function(s){return s[0]==='DM'||s[0]==='CM';}); }
+  function cbSlots(slots){ return slots.filter(function(s){return s[0]==='CB';}); }
+  var bhs=holdSlots(base), ths=holdSlots(tg), bcs=cbSlots(base), tcs=cbSlots(tg);
+  var bm=bhs.length, tm=ths.length, bc=bcs.length, tc=tcs.length;
+  if(bm===tm) return null;
+  var q={kind:'form',id:'form-'+t+'-'+target,type:'变阵',conf:'fact'};
+  q.scenario=t+' 当前是 '+f+'。如果切到 '+(target==='3-1-6'?'搏命 3-1-6':target)+'：';
+  q.q='中场保护层（DM/CM）会怎么变？';
+  q.opts=[
+    '从 '+bm+' 人变 '+tm+' 人'+(tm<bm?'，保护层变薄':'，保护层加厚'),
+    '从 '+bm+' 人变 '+bm+' 人，完全不变',
+    '从 '+bm+' 人变 0 人，中场彻底没人'
+  ];
+  q.ans=0;
+  q.why='按阵型槽位：'+f+' 的保护层是 '+bm+' 人（'+bhs.map(function(s){return s[0];}).join('/')+'），'+
+    target+' 是 '+tm+' 人（'+ths.map(function(s){return s[0];}).join('/')+'）；中卫从 '+bc+' 人变 '+tc+' 人。'+
+    (tm<bm?'这就是搏命形态的代价：前场人数多了，保护层变薄，丢球后弧顶和身后更容易暴露。':'切回更稳的形态，保护层多一层。');
+  q.ev='阵型槽位：'+f+' 保护层 '+bm+'（'+bhs.map(function(s){return s[0];}).join('/')+'）→ '+
+    target+' 保护层 '+tm+'（'+ths.map(function(s){return s[0];}).join('/')+'）；中卫 '+bc+'→'+tc;
+  return q;
+}
+function drillSubQs(){
+  var out=[];
+  var bench=benchOf(S.home)||[];
+  if(bench.length<3) return out;
+  var speed=bench.filter(function(p){return hasT(p,['逆足内切'])||/爆点|速度|冲击|身后|突/.test(p.st||'');});
+  var control=bench.filter(function(p){return hasT(p,['组织8','拖后组织','节拍器','现代10']);});
+  var height=bench.filter(function(p){return hasT(p,['支点','抢点型','争顶型']);});
+  var defense=bench.filter(function(p){return hasT(p,['争顶型'])||(p.a&&p.a.air>=75);});
+  speed.sort(function(a,b){
+    function sc(p){ return (/速度|身后|爆点|冲击|快马/.test(p.st||'')?2:0)+(hasT(p,['逆足内切'])?1:0); }
+    return sc(b)-sc(a);
+  });
+  height.sort(function(a,b){
+    function sc(p){ return (p.pos.indexOf('ST')>=0?2:0)+(hasT(p,['支点'])?1:0); }
+    return sc(b)-sc(a);
+  });
+  if(speed.length&&control.length&&height.length){
+    var sp=speed[0], ct=control[0], ht=height[0];
+    var q={kind:'sub',id:'sub-behind-'+S.home,type:'换人',conf:'infer'};
+    q.scenario='赛前预案：如果'+S.home+'落后一球，替补席上有 '+sp.n+'、'+ct.n+'、'+ht.n+'。';
+    q.q='谁最直接增加身后威胁？';
+    q.opts=[
+      sp.n+'（'+drillTags(sp.n)+'）',
+      ct.n+'（'+drillTags(ct.n)+'）',
+      ht.n+'（'+drillTags(ht.n)+'）'
+    ];
+    q.ans=0;
+    q.why=sp.n+'有'+drillTags(sp.n)+'，更直接打身后；'+ct.n+'是加控球，'+ht.n+'是加高点——不是错，只是目标不同。落后时最值钱的是身后威胁。';
+    q.ev=sp.n+' tags='+drillTags(sp.n)+' · st:'+(sp.st||'')+' ｜ '+ct.n+' tags='+drillTags(ct.n)+' ｜ '+ht.n+' tags='+drillTags(ht.n);
+    out.push(q);
+  }
+  if(defense.length&&control.length&&speed.length){
+    var df=defense[0], ct2=control[0], sp2=speed[0];
+    var q2={kind:'sub',id:'sub-lead-'+S.home,type:'换人',conf:'infer'};
+    q2.scenario='赛前预案：如果'+S.home+'领先一球，替补席上有 '+df.n+'、'+ct2.n+'、'+sp2.n+'。';
+    q2.q='谁更直接补禁区高点和第二落点？';
+    q2.opts=[
+      df.n+'（'+drillTags(df.n)+'）',
+      ct2.n+'（'+drillTags(ct2.n)+'）',
+      sp2.n+'（'+drillTags(sp2.n)+'）'
+    ];
+    q2.ans=0;
+    q2.why=df.n+'有'+drillTags(df.n)+'，更直接补高点和第二落点；'+ct2.n+'是控球，'+sp2.n+'是进攻——领先时先保住弧顶和第二落点。';
+    q2.ev=df.n+' tags='+drillTags(df.n)+' ｜ '+ct2.n+' tags='+drillTags(ct2.n)+' ｜ '+sp2.n+' tags='+drillTags(sp2.n);
+    out.push(q2);
+  }
+  return out;
+}
+function drillScoreQ(){
+  if(S.minute<1) return null;
+  var d=S.hs-S.as;
+  var q={kind:'score',id:'score',type:'形势',conf:'infer'};
+  q.scenario='现在 '+S.minute+'′，'+S.home+' '+S.hs+':'+S.as+' '+S.away+'。';
+  if(d===0){
+    q.q='最符合形势卡的做法是什么？';
+    if(S.minute<45){
+      q.opts=['先别变阵，谁先动结构谁先露空当','立刻改三中卫搏命','同时换三个前锋'];
+      q.why='上半场僵局最忌讳先变阵；先看清对方从哪条边打，再动。';
+    } else if(S.minute<75){
+      q.opts=['换类型，先修被打穿的那条边，别动中场配比','先改三中卫','同时换三个前锋'];
+      q.why='这个时间段换人要换「类型」而不是换「人」：先解决被打穿的那条边；别急着动中场配比。';
+    } else {
+      q.opts=['想要 3 分就冒险压上，想稳 1 分就守住弧顶，二选一','继续控球等点球','同时换三个进攻手'];
+      q.why='时间不多了，不能夹在中间：要么压上赌 3 分，要么守住弧顶保 1 分。';
+    }
+  } else if(d>0){
+    q.q='领先时最该保住什么？';
+    q.opts=['弧顶和第二落点','控球率','再堆一个组织手'];
+    q.why='领先时要保住的是弧顶和第二落点，不是控球率；适当收结构，换防守型。';
+  } else {
+    q.q='落后时最值钱的是什么？';
+    q.opts=['身后威胁','再堆一个组织手','稳住平局'];
+    q.why='落后时最值钱的是身后威胁，不是再堆一个组织手；把进攻变直。';
+  }
+  q.ans=0;
+  q.ev='比赛形势卡规则：'+S.minute+'′ · '+S.hs+':'+S.as+'（比分 × 时间）';
+  return q;
+}
+function drillSetQs(){
+  var out=[];
+  if(S.home!=='曼联') return out;
+  var oppSt=drillSlot(S.away,'ST'), st=drillPlayer(oppSt);
+  var hCBs=(slotMap(drillLu(S.home),formOf(S.home)).CB||[]).map(drillPlayer).filter(Boolean);
+  if(st&&hasT(st,['支点','抢点型','争顶型'])&&hCBs.length>=2){
+    var airs=hCBs.filter(function(p){return p.a&&p.a.air;}).sort(function(a,b){return (b.a.air||0)-(a.a.air||0);});
+    if(airs.length>=2){
+      var best=airs[0], weak=airs[airs.length-1];
+      var fb=drillSlot(S.home,'RB',['RWB'])||drillSlot(S.home,'LB',['LWB']);
+      if(fb&&best.n!==weak.n){
+        var q={kind:'set',id:'set-def-'+S.away,type:'定位球',conf:'infer'};
+        q.scenario='定位球预案：'+S.away+'角球，'+st.n+'（'+drillTags(st.n)+'）在禁区；'+S.home+'中卫 '+best.n+'（air '+best.a.air+'）+ '+weak.n+'（air '+weak.a.air+'）。边后卫 '+fb+' 守近门柱。';
+        q.q=S.home+'最该让谁盯'+st.n+'？';
+        q.opts=[best.n,weak.n,fb];
+        q.ans=0;
+        q.why=st.n+'是支点/抢点型，第一点必须有人顶；'+best.n+'的 air 示意值 '+best.a.air+' 高于 '+weak.n+' 的 '+weak.a.air+'，最该承担第一点。示意值不是真实数据，别当绝对。';
+        q.ev='球员库示意值：'+best.n+' air '+best.a.air+' / '+weak.n+' air '+weak.a.air+'；'+st.n+' tags='+drillTags(st.n);
+        out.push(q);
+      }
+    }
+  }
+  var mids=drillMidNames(S.home);
+  var destroyer=mids.filter(function(n){var p=drillPlayer(n);return p&&hasT(p,['破坏型','B2B']);})[0];
+  var passer=mids.filter(function(n){var p=drillPlayer(n);return p&&hasT(p,['组织8','拖后组织','节拍器','现代10']);})[0];
+  var fwd=drillSlot(S.home,'ST');
+  if(destroyer&&passer&&fwd){
+    var q2={kind:'set',id:'set-second-'+S.home,type:'定位球',conf:'infer'};
+    q2.scenario='定位球预案：'+S.home+'角球被解围，球落到禁区外。中场有 '+destroyer+'（'+drillTags(destroyer)+'）和 '+passer+'（'+drillTags(passer)+'）；前锋 '+fwd+' 还在禁区。';
+    q2.q='第二落点最该谁抢？';
+    q2.opts=[destroyer,passer,fwd];
+    q2.ans=0;
+    q2.why='第二落点更看谁更凶、谁站位更靠外；'+destroyer+'是破坏型/B2B，最适合扫第二点。'+passer+'更偏组织，不是第一选择。';
+    q2.ev=destroyer+' tags='+drillTags(destroyer)+' ｜ '+passer+' tags='+drillTags(passer);
+    out.push(q2);
+  }
+  return out;
+}
+function drillBuildQs(){
+  var out=[];
+  var t=S.home, m=slotMap(drillLu(t),formOf(t));
+  var mids=[];
+  ['DM','CM'].forEach(function(k){ if(m[k]) mids=mids.concat(m[k]); });
+  mids=mids.filter(Boolean);
+  var cbs=(m.CB||[]).filter(Boolean);
+  var fbs=[];
+  ['RB','LB','RWB','LWB'].forEach(function(k){ if(m[k]) fbs=fbs.concat(m[k]); });
+  fbs=fbs.filter(Boolean);
+  var am=(m.AM||[])[0], st=(m.ST||[])[0], rw=(m.RW||m.RM||[])[0], lw=(m.LW||m.LM||[])[0];
+  if(mids.length>=1&&am&&st){
+    var q={kind:'build',id:'build-first-'+t,type:'出球',conf:'infer'};
+    q.scenario=t+' 有球形态：中卫拉开，边路球员压上。';
+    q.q='谁站在中卫身前接第一脚？';
+    q.opts=[
+      mids.slice(0,2).join('/')+'（中场）',
+      am+'（前腰）',
+      st+'（中锋）'
+    ];
+    q.ans=0;
+    q.why='有球形态下，中卫拉开、边路球员压上，后腰回撤到中卫身前接第一脚；前腰和中锋位置更高，不是第一接应点。';
+    q.ev='阵型位置：'+mids.slice(0,2).join('/')+' 在 DM/CM；'+am+' 在 AM；'+st+' 在 ST';
+    out.push(q);
+  }
+  if(cbs.length>=1&&mids.length>=1&&fbs.length>=1){
+    var q2={kind:'build',id:'build-cover-'+t,type:'出球',conf:'infer'};
+    q2.scenario=t+' 有球形态：'+fbs.slice(0,2).join('/')+' 压到中场线，身后留空。';
+    q2.q='谁给他们身后兜底？';
+    q2.opts=[
+      cbs.slice(0,2).join('/')+'（中卫）',
+      mids.slice(0,2).join('/')+'（中场）',
+      (rw||lw)+'（边路）'
+    ];
+    q2.ans=0;
+    q2.why='边后卫/翼卫压上后，身后只剩中卫补；后腰保护的是弧顶，边路球员在更前面，回追距离最长。';
+    q2.ev='阵型位置：'+cbs.slice(0,2).join('/')+' 在 CB；'+mids.slice(0,2).join('/')+' 在 DM/CM；'+fbs.slice(0,2).join('/')+' 在边路';
+    out.push(q2);
+  }
+  return out;
+}
+function buildDrills(){
+  if(!drillFull(S.home)||!drillFull(S.away)) return [];
+  var byKind={};
+  function add(k,arr){ if(arr&&arr.length) byKind[k]=(byKind[k]||[]).concat(arr); }
+  add('flank',drillFlankQs());
+  add('line',drillLineQs());
+  add('sub',drillSubQs());
+  var pq=drillPairQ(); if(pq) add('mid',[pq]);
+  var mq=drillMidQ(); if(mq) add('mid',[mq]);
+  add('set',drillSetQs());
+  var sq=drillShapeQ(); if(sq) add('shape',[sq]);
+  add('build',drillBuildQs());
+  var fq=drillFormQ(); if(fq) add('form',[fq]);
+  var scq=drillScoreQ(); if(scq) add('score',[scq]);
+  var kinds=['flank','line','sub','mid','set','shape','build','form','score'];
+  var order=[];
+  for(var i=0;i<kinds.length;i++){
+    var k=kinds[(i+DRILL.round)%kinds.length];
+    if(byKind[k]&&byKind[k].length) order.push(k);
+  }
+  if(DRILL.round===0&&byKind.score&&byKind.score.length){
+    order=['score'].concat(order.filter(function(k){return k!=='score';}));
+  }
+  var out=[];
+  for(var j=0;j<order.length&&out.length<3;j++){
+    var arr=byKind[order[j]];
+    var q=arr[(DRILL.round*2+j)%arr.length];
+    if(out.indexOf(q)<0) out.push(q);
+  }
+  if(out.length<3){
+    var all=[];
+    kinds.forEach(function(k){ if(byKind[k]) all=all.concat(byKind[k]); });
+    for(var t=0;t<all.length&&out.length<3;t++){
+      var q2=all[(DRILL.round*2+t)%all.length];
+      if(out.indexOf(q2)<0) out.push(q2);
+    }
+  }
+  out=out.slice(0,3);
+  for(var r=0;r<out.length;r++) drillRotate(out[r],DRILL.round+r*2+out[r].kind.length);
+  return out;
+}
+function ensureDrills(){
+  var sig=drillSig();
+  if(sig!==DRILL.sig){
+    DRILL.sig=sig; DRILL.round=0; DRILL.idx=0; DRILL.picked=[]; DRILL.qs=buildDrills();
+  }
+}
+function drillAnswer(oi){
+  if(DRILL.idx>=DRILL.qs.length) return;
+  if(DRILL.picked[DRILL.idx]!==undefined) return;
+  DRILL.picked[DRILL.idx]=oi;
+  renderLearn();
+  setTimeout(function(){
+    var w=document.getElementById('drillWhy');
+    if(w&&w.scrollIntoView) w.scrollIntoView({block:'nearest'});
+  },0);
+}
+function drillNext(){
+  if(DRILL.picked[DRILL.idx]===undefined) return;
+  DRILL.idx++;
+  renderLearn();
+  window.scrollTo(0,0);
+}
+function drillRegroup(){
+  DRILL.round++;
+  DRILL.sig=drillSig();
+  DRILL.idx=0; DRILL.picked=[]; DRILL.qs=buildDrills();
+  renderLearn();
+  window.scrollTo(0,0);
+}
+function quickRef(){
+  return '<details class="dquick"><summary>速查 · 4 条</summary>'+
+    '<div class="dqrow"><b>看球三件事</b><p>谁有球；中场谁人多；哪条边在冲。剩下的都是细节。</p></div>'+
+    '<div class="dqrow"><b>阵型是起步姿势</b><p>4-2-3-1 只是开球站法。球一动，有球可能变 <button class="tchip" data-term="3-2-5">3-2-5</button>，无球可能变 4-4-2。</p></div>'+
+    '<div class="dqrow"><b>6/8/10 + 肋部</b><p>6 后腰、8 能跑能传、10 最后一传；<button class="tchip" data-term="肋部">肋部</button>是中卫和边后卫之间的缝。</p></div>'+
+    '<div class="dqrow"><b>换人三问</b><p>换体能、换类型、换结构——只看它解决了当时的哪个问题。</p></div>'+
+    '<button class="dbtn" style="margin-top:9px" onclick="openTermsAll()">打开完整术语表</button>'+
+    '</details>';
+}
 function renderLearn(){
-  var html='<div class="sec">学习模式 · 6 节课 · 每节 3 分钟</div>'+
-    '<div class="ac l0 legend"><div class="at" style="font-size:12.5px">举例里的每句话也标了等级：'+
-    confTag('fact')+' 能查到的；'+confTag('infer')+' 由规则推出来的。看球时同样要分清这两类。</div></div>';
-  html+=LESSONS.map(function(L,li){
-    var body=L.b.map(function(x){return '<p>'+x+'</p>';}).join('');
-    var qs=L.q.map(function(q,qi){
-      var key=li+'-'+qi, chosen=QDONE[key];
-      var opts=q.o.map(function(o,oi){
-        var cls='';
-        if(chosen!==undefined){ if(oi===q.a) cls='ok'; else if(oi===chosen) cls='no'; }
-        return '<button class="opt '+cls+'" data-l="'+li+'" data-q="'+qi+'" data-o="'+oi+'">'+o+'</button>';
-      }).join('');
-      var why=chosen!==undefined?'<div class="why">'+(chosen===q.a?'✔ 对了。':'✘ 正确答案是「'+q.o[q.a]+'」。')+q.why+'</div>':'';
-      return '<div class="qz"><div class="qq">小测 '+(qi+1)+'：'+q.q+'</div>'+opts+why+'</div>';
+  ensureDrills();
+  var el=document.getElementById('learn'); if(!el) return;
+  var total=DRILL.qs.length;
+  var wx=S.weather==='rain'?'雨':'晴';
+  var html='<div class="dhead"><div class="dstate">'+esc(S.home)+' <b>'+esc(formOf(S.home))+'</b> vs '+esc(S.away)+' <b>'+esc(formOf(S.away))+'</b></div>'+
+    '<div class="dmeta">'+S.minute+'′ '+S.hs+':'+S.as+' · '+wx+' · '+(total?('本组 '+total+' 题'):'本场暂无题')+' · 题目随当前排阵/阵型/比分/时间变化</div>'+
+    '<div class="dlegend">每题答完标可信度：'+confTag('fact')+' 直接来自库内字段；'+confTag('infer')+' 按规则推断。</div></div>';
+  if(!total){
+    html+='<div class="dempty">这场暂时出不了情境题：'+esc(S.home)+' '+(POOL[S.home]||[]).length+' 人 / '+esc(S.away)+' '+(POOL[S.away]||[]).length+' 人，至少一队名单不足 11 人或首发有缺位。先去「排阵」补人/换阵，或看下面的速查。</div>';
+  } else if(DRILL.idx>=total){
+    var ok=0; DRILL.picked.forEach(function(v,i){ if(v===DRILL.qs[i].ans) ok++; });
+    html+='<div class="dsum"><div class="dsumh">本组完成</div><div class="dscore">'+total+' 题 · 对 '+ok+' · 错 '+(total-ok)+'</div>'+
+      '<div class="dsub">答错不用背答案，重点看每题的「依据」。同场会轮换题型；改比分/时间/阵型/换人后会重新生成。</div>'+
+      '<div class="dacts"><button class="dbtn primary" data-drill-regroup>再练一组</button><button class="dbtn" data-drill-goto>去排阵改情境</button></div></div>';
+  } else {
+    var q=DRILL.qs[DRILL.idx], chosen=DRILL.picked[DRILL.idx];
+    var dots='';
+    for(var i=0;i<total;i++){ dots+='<span class="'+(i<DRILL.idx?'done':i===DRILL.idx?'now':'')+'"></span>'; }
+    html+='<div class="dprog"><span>第 '+(DRILL.idx+1)+'/'+total+' 题</span><span class="ldots">'+dots+'</span></div>';
+    html+='<div class="dcard" id="drillCard"><div class="dtop"><span class="dtype">'+esc(q.type||'训练')+'</span></div><div class="dscenario">'+esc(q.scenario)+'</div><div class="dq">'+esc(q.q)+'</div>';
+    html+=q.opts.map(function(o,oi){
+      var cls='';
+      if(chosen!==undefined){ if(oi===q.ans) cls=' ok'; else if(oi===chosen) cls=' no'; }
+      return '<button class="dopt'+cls+'" data-drill-opt="'+oi+'"'+(chosen!==undefined?' aria-pressed="'+(oi===chosen)+'"':'')+'><b>'+String.fromCharCode(65+oi)+'</b><span>'+esc(o)+'</span></button>';
     }).join('');
-    var eg=L.eg().map(function(x){
-      return '<div class="egline">'+x[0]+confTag(x[1])+'</div>';}).join('');
-    return '<div class="lesson"><h3>'+L.t+'</h3>'+body+'<div class="eg"><b>用现在这场举例</b>'+eg+'</div>'+qs+'</div>';
-  }).join('');
-  document.getElementById('learn').innerHTML=html;
+    if(chosen!==undefined){
+      var right=chosen===q.ans;
+      html+='<div class="dwhy" id="drillWhy"><div class="dres '+(right?'ok':'no')+'">'+(right?'✔ 对了':'✘ 正确答案是 '+String.fromCharCode(65+q.ans))+'</div>'+
+        '<div class="dwhytxt">'+esc(q.why)+'</div>'+
+        '<div class="dev"><b>依据：</b>'+esc(q.ev).replace(/\n/g,'<br>')+'</div>'+
+        '<div class="dcf">'+confTag(q.conf)+'</div></div>';
+      html+='<button class="dbtn primary dnext" data-drill-next>'+(DRILL.idx+1<total?'下一题 →':'看结果 →')+'</button>';
+    }
+    html+='</div>';
+  }
+  html+=quickRef();
+  el.innerHTML=html;
 }
 
 /* ---------------- 复盘日志 ---------------- */
 var LOGKEY='tb_v4_logs';
+var LOG_EDIT=-1;
 function logs(){ try{ return JSON.parse(localStorage.getItem(LOGKEY)||'[]'); }catch(e){ return []; } }
+function logTime(ts){
+  var d=new Date(ts);
+  return (d.getMonth()+1)+'/'+d.getDate()+' '+('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2);
+}
+function wxLabel(w){ return w==='rain'?'雨':w==='dry'?'晴':''; }
 function saveLog(){
   var t=document.getElementById('logtxt');
   var v=(t&&t.value||'').trim(); if(!v) return;
   var arr=logs();
+  if(LOG_EDIT>=0){
+    if(!arr[LOG_EDIT]){ LOG_EDIT=-1; renderLog(); return; }
+    arr[LOG_EDIT].txt=v;
+    arr[LOG_EDIT].edited=Date.now();
+    try{ localStorage.setItem(LOGKEY,JSON.stringify(arr)); }catch(e){}
+    LOG_EDIT=-1;
+    renderLog();
+    return;
+  }
   arr.unshift({ts:Date.now(),txt:v,home:S.home,away:S.away,hs:S.hs,as:S.as,min:S.minute,
-    form:formOf(S.home),tax:taxOf(S.home)});
+    form:formOf(S.home),tax:taxOf(S.home),wx:S.weather});
   try{ localStorage.setItem(LOGKEY,JSON.stringify(arr.slice(0,60))); }catch(e){}
   renderLog();
 }
+function editLog(i){
+  var arr=logs(); if(!arr[i]) return;
+  LOG_EDIT=i;
+  var t=document.getElementById('logtxt');
+  if(t) t.value=arr[i].txt;
+  renderLog();
+  var t2=document.getElementById('logtxt');
+  if(t2){ t2.value=arr[i].txt; t2.focus(); try{ t2.setSelectionRange(t2.value.length,t2.value.length); }catch(e){} }
+}
+function cancelEdit(){ LOG_EDIT=-1; renderLog(); }
 function delLog(i){
-  var arr=logs(); arr.splice(i,1);
+  var arr=logs(); if(!arr[i]) return;
+  if(LOG_EDIT>=0){
+    if(i===LOG_EDIT) LOG_EDIT=-1;
+    else if(i<LOG_EDIT) LOG_EDIT--;
+  }
+  arr.splice(i,1);
   try{ localStorage.setItem(LOGKEY,JSON.stringify(arr)); }catch(e){}
   renderLog();
 }
@@ -942,16 +1656,142 @@ function showBackup(txt){
   try{ document.execCommand('copy'); }catch(e){}
   alert('已选中全部文本。长按选择「拷贝」，或直接按 Ctrl/⌘+C。');
 }
+function isObj(x){ return !!x && typeof x==='object' && Object.prototype.toString.call(x)==='[object Object]'; }
+function isNum(x){ return typeof x==='number' && isFinite(x); }
+function isInt(x){ return isNum(x) && Math.floor(x)===x; }
+function isName(x){ return typeof x==='string' && x.length>0; }
+function badBackup(msg){ throw new Error(msg); }
+var STATUS_OK={hot:1,ok:1,low:1,inj:1,yellow:1,out:1};
+var TAX_OK={atk:1,bal:1,def:1};
+function validateBackupState(st){
+  if(!isObj(st)) badBackup('state 不是对象');
+  if(!isName(st.home)||!isName(st.away)) badBackup('state 缺少有效的 home/away');
+  if(TEAMS.indexOf(st.home)<0||TEAMS.indexOf(st.away)<0) badBackup('state.home/away 不是已支持的球队');
+  if(st.home===st.away) badBackup('state.home/away 不能是同一支球队');
+  if(!isInt(st.minute)||st.minute<0||st.minute>95) badBackup('state.minute 必须是 0–95 的整数');
+  if(!isInt(st.hs)||st.hs<0||!isInt(st.as)||st.as<0) badBackup('state.hs/as 必须是非负整数');
+  if(st.weather!=null&&st.weather!=='dry'&&st.weather!=='rain') badBackup('state.weather 必须是 dry/rain');
+  if(!isObj(st.form)) badBackup('state.form 必须是对象');
+  Object.keys(st.form).forEach(function(t){
+    if(typeof st.form[t]!=='string'||!FORMS[st.form[t]]) badBackup('state.form 里有未知阵型：'+st.form[t]);
+  });
+  if(!isObj(st.lineup)) badBackup('state.lineup 必须是对象');
+  Object.keys(st.lineup).forEach(function(t){
+    var lu=st.lineup[t];
+    if(!Array.isArray(lu)||lu.length!==11) badBackup('state.lineup.'+t+' 必须是 11 人数组');
+    lu.forEach(function(n){ if(n!==null&&!isName(n)) badBackup('state.lineup.'+t+' 有非法球员值'); });
+  });
+  if(!st.lineup[st.home]||!st.lineup[st.away]) badBackup('state.lineup 缺少主队或客队阵容');
+  if(!isObj(st.status)) badBackup('state.status 必须是对象');
+  Object.keys(st.status).forEach(function(n){
+    if(!STATUS_OK[st.status[n]]) badBackup('state.status 有未知状态：'+st.status[n]);
+  });
+  if(!isObj(st.tactic)) badBackup('state.tactic 必须是对象');
+  Object.keys(st.tactic).forEach(function(t){
+    if(!TAX_OK[st.tactic[t]]) badBackup('state.tactic 有未知姿态：'+st.tactic[t]);
+  });
+  if(!isObj(st.poss)) badBackup('state.poss 必须是对象');
+  Object.keys(st.poss).forEach(function(t){
+    if(typeof st.poss[t]!=='boolean') badBackup('state.poss 必须是布尔值');
+  });
+  if(!Array.isArray(st.events)) badBackup('state.events 必须是数组');
+  st.events.forEach(function(e){
+    if(!isObj(e)) badBackup('state.events 里有非法记录');
+    if(!isInt(e.min)||e.min<0||e.min>95) badBackup('state.events 的分钟不合法');
+    if(e.type==='sub'){
+      if(!isName(e.team)||!isName(e.out)||!isName(e.in)) badBackup('state.events 的换人记录不完整');
+    }else if(e.type==='status'){
+      if(!isName(e.team)||!isName(e.who)||typeof e.mark!=='string') badBackup('state.events 的状态记录不完整');
+    }else badBackup('state.events 有未知类型：'+e.type);
+  });
+  if(!isObj(st.subMark)) badBackup('state.subMark 必须是对象');
+  Object.keys(st.subMark).forEach(function(n){
+    if(!isInt(st.subMark[n])||st.subMark[n]<0||st.subMark[n]>95) badBackup('state.subMark 的分钟不合法');
+  });
+  if(st.keep!=null){
+    if(!isObj(st.keep)) badBackup('state.keep 必须是对象');
+    Object.keys(st.keep).forEach(function(t){
+      var k=st.keep[t];
+      if(!isObj(k)) badBackup('state.keep.'+t+' 必须是对象');
+      if(k.form!=null&&(typeof k.form!=='string'||!FORMS[k.form])) badBackup('state.keep.'+t+'.form 有未知阵型');
+      if(k.lineup!=null){
+        if(!Array.isArray(k.lineup)||k.lineup.length!==11) badBackup('state.keep.'+t+'.lineup 必须是 11 人数组');
+        k.lineup.forEach(function(n){ if(n!==null&&!isName(n)) badBackup('state.keep.'+t+'.lineup 有非法球员值'); });
+      }
+      if(k.tactic!=null&&!TAX_OK[k.tactic]) badBackup('state.keep.'+t+'.tactic 有未知姿态');
+    });
+  }
+}
+function validateBackupLogs(arr){
+  if(!Array.isArray(arr)) badBackup('logs 必须是数组');
+  arr.forEach(function(x){
+    if(!isObj(x)) badBackup('logs 里有非法记录');
+    if(typeof x.txt!=='string') badBackup('logs 记录缺少文本');
+    if(!isNum(x.ts)) badBackup('logs 记录缺少时间戳');
+    if(x.wx!=null&&x.wx!=='dry'&&x.wx!=='rain') badBackup('logs.wx 类型不对');
+    if(x.edited!=null&&!isNum(x.edited)) badBackup('logs.edited 类型不对');
+    ['home','away','form'].forEach(function(k){
+      if(x[k]!=null&&typeof x[k]!=='string') badBackup('logs.'+k+' 类型不对');
+    });
+    ['hs','as','min'].forEach(function(k){
+      if(x[k]!=null&&!isNum(x[k])) badBackup('logs.'+k+' 类型不对');
+    });
+  });
+}
+function parseBackup(d){
+  if(!isObj(d)) badBackup('备份最外层必须是 JSON 对象');
+  var hasState=Object.prototype.hasOwnProperty.call(d,'state')&&d.state!=null&&d.state!=='';
+  var hasLogs=Object.prototype.hasOwnProperty.call(d,'logs')&&d.logs!=null&&d.logs!=='';
+  if(!hasState&&!hasLogs) badBackup('备份里没有可导入的 state 或 logs');
+  var plan={state:null,stateText:null,logsText:null};
+  if(hasState){
+    if(typeof d.state!=='string') badBackup('state 必须是 JSON 字符串（现有备份格式）');
+    var st;
+    try{ st=JSON.parse(d.state); }catch(e){ badBackup('state 不是有效 JSON'); }
+    validateBackupState(st);
+    plan.state=st; plan.stateText=d.state;
+  }
+  if(hasLogs){
+    if(typeof d.logs!=='string') badBackup('logs 必须是 JSON 字符串（现有备份格式）');
+    var lg;
+    try{ lg=JSON.parse(d.logs); }catch(e){ badBackup('logs 不是有效 JSON'); }
+    validateBackupLogs(lg);
+    plan.logsText=d.logs;
+  }
+  return plan;
+}
+function applyBackupState(st){
+  S.home=st.home; S.away=st.away; S.minute=st.minute; S.hs=st.hs; S.as=st.as;
+  FORM_SEL=st.form; S.status=st.status; S.tactic=st.tactic; S.poss=st.poss;
+  S.weather=st.weather==='rain'?'rain':'dry';
+  S.events=cleanPreSubs(st.events); S.subMark=cleanSubMark(st.subMark); S.lineup=st.lineup;
+  Object.keys(KEEP).forEach(function(k){ delete KEEP[k]; });
+  if(st.keep) Object.keys(st.keep).forEach(function(k){ KEEP[k]=st.keep[k]; });
+  S.lastDiff=null;
+  S.snap={h:metrics(S.lineup[S.home]||[]),a:metrics(S.lineup[S.away]||[])};
+}
+function applyBackup(d){
+  var plan=parseBackup(d);
+  var oldState=localStorage.getItem(KEY);
+  var oldLogs=localStorage.getItem(LOGKEY);
+  try{
+    if(plan.stateText!=null) localStorage.setItem(KEY,plan.stateText);
+    if(plan.logsText!=null) localStorage.setItem(LOGKEY,plan.logsText);
+  }catch(e){
+    try{ if(oldState===null) localStorage.removeItem(KEY); else localStorage.setItem(KEY,oldState); }catch(e2){}
+    try{ if(oldLogs===null) localStorage.removeItem(LOGKEY); else localStorage.setItem(LOGKEY,oldLogs); }catch(e3){}
+    badBackup('浏览器存储写入失败，已保持原数据');
+  }
+  if(plan.state) applyBackupState(plan.state);
+}
 function importFromText(){
   var ta=document.getElementById('bktext');
   var v=(ta&&ta.value||'').trim();
   if(!v){ alert('先把备份内容粘进下面那个框'); return; }
-  try{
-    var d=JSON.parse(v);
-    if(d.state) localStorage.setItem('tb_v41_state',d.state);
-    if(d.logs) localStorage.setItem('tb_v4_logs',d.logs);
-    alert('导入成功，刷新后生效'); location.reload();
-  }catch(e){ alert('这段内容不是有效的备份'); }
+  var d;
+  try{ d=JSON.parse(v); }catch(e){ alert('导入失败：这段内容不是有效的 JSON'); return; }
+  try{ applyBackup(d); }catch(e){ alert('导入失败：'+e.message); return; }
+  alert('导入成功，刷新后生效'); location.reload();
 }
 function exportData(){
   var data={at:Date.now(),origin:location.origin,
@@ -967,24 +1807,35 @@ function importData(f){
   if(!f) return;
   var r=new FileReader();
   r.onload=function(){
-    try{
-      var d=JSON.parse(r.result);
-      if(d.logs) localStorage.setItem('tb_v4_logs',d.logs);
-      if(d.state) localStorage.setItem('tb_v41_state',d.state);
-      alert('导入成功，刷新后生效'); location.reload();
-    }catch(e){ alert('文件读不出来，可能不是备份文件'); }
+    var d;
+    try{ d=JSON.parse(r.result); }catch(e){ alert('导入失败：文件不是有效的 JSON'); return; }
+    try{ applyBackup(d); }catch(e){ alert('导入失败：'+e.message); return; }
+    alert('导入成功，刷新后生效'); location.reload();
   };
+  r.onerror=function(){ alert('文件读不出来，可能不是备份文件'); };
   r.readAsText(f);
 }
 function renderLog(){
   var arr=logs();
+  var editing=(LOG_EDIT>=0&&arr[LOG_EDIT])?arr[LOG_EDIT]:null;
+  if(!editing&&LOG_EDIT>=0) LOG_EDIT=-1;
+  var old=document.getElementById('logtxt');
+  var draft=old?old.value:null;
+  var selStart=old?old.selectionStart:null;
+  var selEnd=old?old.selectionEnd:null;
+  var editVal=editing?(draft!=null?draft:editing.txt):'';
   var list=arr.length?arr.map(function(x,i){
-    var d=new Date(x.ts);
-    var tm=(d.getMonth()+1)+'/'+d.getDate()+' '+('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2);
-    return '<div class="lg"><button class="x" data-del="'+i+'">✕</button>'+
-      '<div class="m">'+tm+' · '+x.home+' '+x.hs+':'+x.as+' '+x.away+' · '+x.min+"' · "+x.form+'</div>'+
+    var tm=logTime(x.ts);
+    var wx=wxLabel(x.wx);
+    var ed=x.edited?'<span class="edtag">已编辑</span>':'';
+    return '<div class="lg"><div class="lgx">'+
+      '<button class="x edit" data-edit="'+i+'" aria-label="编辑">✎</button>'+
+      '<button class="x del" data-del="'+i+'" aria-label="删除">✕</button></div>'+
+      '<div class="m">'+tm+' · '+esc(x.home)+' '+esc(x.hs)+':'+esc(x.as)+' '+esc(x.away)+' · '+esc(x.min)+"' · "+esc(x.form)+(wx?' · '+wx:'')+(ed?' '+ed:'')+'</div>'+
       '<div class="c">'+esc(x.txt)+'</div></div>';
   }).join(''):'<div class="lesson"><p>还没有记录。看完一场球写一句判断，赛后回来对照——这是涨球商最快的办法。</p></div>';
+  var editBar=editing?'<div class="editbar">正在编辑 '+logTime(editing.ts)+' 的记录；保存会覆盖文字，比分/时间/阵型不变</div>':'';
+  var cancelBtn=editing?'<button class="tb" style="width:100%;margin-top:8px;padding:10px" onclick="cancelEdit()">取消编辑</button>':'';
   document.getElementById('log').innerHTML=
     '<div class="sec">复盘日志</div>'+
     '<div class="lesson"><h3>数据存在哪 · 会不会丢</h3>'+
@@ -1002,10 +1853,21 @@ function renderLog(){
     '</div>'+
     '<div class="lesson"><h3>记一条判断</h3>'+
     '<p>不用写得好，写下来就行。会自动记录当前的对阵、比分、时间、阵型。</p>'+
-    '<textarea id="logtxt" placeholder="例：我觉得曼联这场右路会被打穿，因为达洛特压上后身后没人补。"></textarea>'+
-    '<button class="hbtn2" onclick="saveLog()">保存这条判断</button>'+
+    editBar+
+    '<textarea id="logtxt" placeholder="例：我觉得曼联这场右路会被打穿，因为达洛特压上后身后没人补。">'+esc(editVal)+'</textarea>'+
+    '<button class="hbtn2" onclick="saveLog()">'+(editing?'保存修改':'保存这条判断')+'</button>'+
+    cancelBtn+
     '<div class="eg">'+S.home+' vs '+S.away+' · '+S.hs+':'+S.as+' · '+S.minute+"' · "+formOf(S.home)+'</div></div>'+
     '<div class="sec">历史（'+arr.length+'）</div>'+list;
+  if(editing){
+    var t2=document.getElementById('logtxt');
+    if(t2){
+      t2.focus();
+      if(selStart!=null&&selEnd!=null){
+        try{ t2.setSelectionRange(Math.min(selStart,t2.value.length),Math.min(selEnd,t2.value.length)); }catch(e){}
+      }
+    }
+  }
 }
 
 /* ---------------- 教练卡（换帅） ---------------- */
@@ -1033,7 +1895,7 @@ function drawCoach(){
       '<div style="font-size:13px">'+label+' <span class="mut">'+sub+'</span></div></div>'+
       '<div style="display:flex;gap:4px">'+btns+'</div></div>';
   }).join('');
-  var forms=Object.keys(FORMS).map(function(f){
+  var forms=BASE_FORMS.map(function(f){
     return '<button class="fchip '+(CE.form===f?'on':'')+'" data-cf="'+f+'">'+f+'</button>';
   }).join('');
   var flags=CFLAGS.map(function(f){
@@ -1106,9 +1968,16 @@ document.addEventListener('click',function(e){
   var t=e.target;
   var tb=t.closest?t.closest('#tabs button'):null;
   if(tb){ switchTab(tb.getAttribute('data-tab')); return; }
-  var op=t.closest?t.closest('.qz .opt'):null;
-  if(op){ QDONE[op.getAttribute('data-l')+'-'+op.getAttribute('data-q')]=Number(op.getAttribute('data-o'));
-    renderLearn(); return; }
+  var dop=t.closest?t.closest('[data-drill-opt]'):null;
+  if(dop){ drillAnswer(Number(dop.getAttribute('data-drill-opt'))); return; }
+  var dnx=t.closest?t.closest('[data-drill-next]'):null;
+  if(dnx){ drillNext(); return; }
+  var drg=t.closest?t.closest('[data-drill-regroup]'):null;
+  if(drg){ drillRegroup(); return; }
+  var dgo=t.closest?t.closest('[data-drill-goto]'):null;
+  if(dgo){ switchTab('lineup'); return; }
+  var ed=t.closest?t.closest('[data-edit]'):null;
+  if(ed){ editLog(Number(ed.getAttribute('data-edit'))); return; }
   var dl=t.closest?t.closest('[data-del]'):null;
   if(dl){ delLog(Number(dl.getAttribute('data-del'))); return; }
   var tx=t.closest?t.closest('[data-tax]'):null;
@@ -1123,6 +1992,8 @@ document.addEventListener('click',function(e){
   if(cf){ setCF(cf.getAttribute('data-cf')); return; }
   var tm=t.closest?t.closest('[data-term]'):null;
   if(tm){ openTerm(tm.getAttribute('data-term')); return; }
+  var ld=t.closest?t.closest('[data-lead]'):null;
+  if(ld){ toggleLead(ld.getAttribute('data-lead')); return; }
   var dp=t.closest?t.closest('[data-desp]'):null;
   if(dp){ toggleDesperate(dp.getAttribute('data-desp')); return; }
   var ps=t.closest?t.closest('[data-poss]'):null;
@@ -1143,6 +2014,7 @@ document.addEventListener('click',function(e){
 });
 
 /* ---------------- 启动 ---------------- */
+loadHudPref();
 if(!load()){
   S.lineup[S.home]=autoLineup(S.home);
   S.lineup[S.away]=autoLineup(S.away);
@@ -1151,14 +2023,22 @@ if(!S.lineup[S.home]) S.lineup[S.home]=autoLineup(S.home);
 if(!S.lineup[S.away]) S.lineup[S.away]=autoLineup(S.away);
 S.snap={h:metrics(S.lineup[S.home]),a:metrics(S.lineup[S.away])};
 renderSetup(); renderAll(); switchTab('lineup');
+applyHudPref();
+var _hudEl=document.getElementById('hud');
+if(_hudEl){ _hudEl.addEventListener('pointerdown',function(){ if(HUD.mode==='auto') showHud(); }); }
+window.addEventListener('resize',syncHudSpace);
 window.setTeam=setTeam; window.swapSides=swapSides; window.setSlot=setSlot;
 window.setSt=setSt; window.closeSheet=closeSheet; window.openSheet=openSheet;
 window.changeForm=changeForm; window.addGoal=addGoal; window.addMin=addMin;
 window.setMin=setMin; window.resetMatch=resetMatch;
 window.setTax=setTax; window.togglePoss=togglePoss; window.toggleDesperate=toggleDesperate;
+window.toggleLead=toggleLead;
 window.openTerm=openTerm; window.openTermsAll=openTermsAll;
 window.switchTab=switchTab; window.openCoach=openCoach; window.applyCoach=applyCoach;
 window.setCE=setCE; window.setCF=setCF; window.saveLog=saveLog; window.delLog=delLog; window.renderLearn=renderLearn;
+window.setWeather=setWeather; window.editLog=editLog; window.cancelEdit=cancelEdit;
+window.toggleHudCfg=toggleHudCfg; window.setHudSize=setHudSize; window.setHudMode=setHudMode;
+window.showHud=showHud; window.hideHud=hideHud; window.collapseHudNow=collapseHudNow;
 """
 
 HTML = r"""<!DOCTYPE html>
@@ -1176,7 +2056,7 @@ body{margin:0;background:var(--bg);color:var(--txt);font:14px/1.5 -apple-system,
 header{position:sticky;top:0;z-index:50;background:rgba(12,16,21,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:10px 14px 8px}
 h1{margin:0;font-size:16px;font-weight:800}h1 b{color:var(--red)}
 .sub{font-size:11px;color:var(--mut);margin-top:2px}
-main{max-width:760px;margin:0 auto;padding:10px 12px 130px}
+main{max-width:760px;margin:0 auto;padding:10px 12px calc(var(--hud-h,104px) + 18px)}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:10px}
 .row{display:flex;align-items:center;gap:8px;margin:4px 0}
 .mut{color:var(--mut);font-size:12px}
@@ -1189,12 +2069,17 @@ summary{padding:9px 12px;font-size:13px;cursor:pointer;color:var(--mut)}
 .pitchwrap{margin-bottom:10px}
 .phead{display:flex;align-items:center;gap:6px;font-size:13px;margin:2px 0 6px}
 .phead .dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.postureHint{font-size:11px;color:#93a0af;text-align:left;margin:0 0 5px;padding:0 2px;line-height:1.4}
 .frow{display:flex;gap:5px;overflow-x:auto;padding:2px 0 6px;max-width:420px;margin:0 auto;scrollbar-width:none}
 .fchip{flex:0 0 auto;background:var(--card2);border:1px solid var(--line);color:var(--mut);border-radius:99px;padding:5px 9px;font-size:11px;font-family:inherit}
 .fchip.on{border-color:var(--red);color:#fff;background:rgba(226,56,63,.16);font-weight:700}
+.wxchip{padding:7px 12px;font-size:12px}
 .frow.tax{justify-content:center;gap:4px;flex-wrap:wrap}
+.fbrk{flex-basis:100%;height:0}
 .fchip.desperate{border-color:rgba(226,56,63,.45);color:#ffb4b7}
 .fchip.desperate.on{background:rgba(226,56,63,.28);border-color:var(--red);color:#fff}
+.fchip.lead{border-color:rgba(78,161,255,.45);color:#a8d2ff}
+.fchip.lead.on{background:rgba(78,161,255,.22);border-color:var(--blue);color:#fff}
 .sep2{width:1px;height:14px;background:var(--line);margin:0 2px}
 .cf{display:inline-block;font-size:10px;border:1px solid;border-radius:99px;padding:0 7px;margin-left:6px;vertical-align:1px}
 .legend .at{font-size:12.5px}
@@ -1258,21 +2143,109 @@ color:var(--txt);border-radius:8px;padding:8px 10px;font-size:12.5px;font-family
 .qz .opt.ok{border-color:var(--green);background:rgba(35,197,94,.12)}
 .qz .opt.no{border-color:var(--red);background:rgba(226,56,63,.12)}
 .qz .why{font-size:12px;color:var(--mut);margin-top:6px;line-height:1.6}
-.lg{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px;margin-bottom:8px}
-.lg .m{font-size:11px;color:var(--mut);margin-bottom:4px}
-.lg .c{font-size:13.5px;line-height:1.6}
+.dhead{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:10px}
+.dstate{font-size:14px;line-height:1.5;overflow-wrap:anywhere}
+.dstate b{color:#fff}
+.dmeta{font-size:11px;color:var(--mut);margin-top:4px;line-height:1.55;overflow-wrap:anywhere}
+.dlegend{font-size:11.5px;color:#8b98a7;line-height:1.6;margin-top:8px;border-top:1px dashed #ffffff14;padding-top:7px}
+.dprog{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--mut);margin:10px 2px 6px}
+.ldots{display:flex;gap:5px;align-items:center}
+.ldots span{width:7px;height:7px;border-radius:99px;background:#ffffff1f;display:block;transition:width .15s}
+.ldots span.now{background:var(--red);width:18px}
+.ldots span.done{background:var(--green)}
+.dcard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px;margin-bottom:10px}
+.dtop{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.dtype{font-size:10px;letter-spacing:1.2px;color:#a8d2ff;background:rgba(78,161,255,.12);
+border:1px solid rgba(78,161,255,.35);border-radius:99px;padding:2px 8px}
+.dscenario{background:rgba(78,161,255,.08);border-left:2px solid rgba(78,161,255,.5);
+border-radius:0 8px 8px 0;padding:8px 10px;font-size:12.5px;line-height:1.6;color:#bcd8ff;overflow-wrap:anywhere}
+.dq{font-size:14px;line-height:1.6;margin:11px 0 8px;font-weight:700;overflow-wrap:anywhere}
+.dopt{display:flex;gap:8px;align-items:flex-start;width:100%;text-align:left;background:var(--card2);
+border:1px solid var(--line);color:var(--txt);border-radius:9px;padding:10px 11px;font-size:12.5px;
+line-height:1.55;font-family:inherit;margin:6px 0;min-height:42px;overflow-wrap:anywhere}
+.dopt b{color:var(--mut);font-size:11px;flex:0 0 14px;padding-top:2px}
+.dopt span{flex:1}
+.dopt.ok{border-color:var(--green);background:rgba(35,197,94,.12)}
+.dopt.no{border-color:var(--red);background:rgba(226,56,63,.12)}
+.dwhy{margin-top:10px;border-top:1px dashed #ffffff14;padding-top:9px}
+.dres{font-size:12.5px;font-weight:700;margin-bottom:5px}
+.dres.ok{color:#8ef0b3}
+.dres.no{color:#ffb4b7}
+.dwhytxt{font-size:12.5px;line-height:1.65;color:#d3dce6;overflow-wrap:anywhere}
+.dev{font-size:11px;color:#7d8a99;line-height:1.55;margin-top:7px;overflow-wrap:anywhere}
+.dev b{color:#9fb0c1}
+.dcf{margin-top:6px;text-align:right}
+.dbtn{background:var(--card2);border:1px solid var(--line);color:var(--txt);border-radius:9px;
+padding:10px 12px;font-size:13px;font-family:inherit;min-height:42px}
+.dbtn:active{transform:scale(.97)}
+.dbtn.primary{background:rgba(226,56,63,.18);border-color:var(--red);color:#fff;font-weight:700}
+.dnext{width:100%;margin-top:10px}
+.dsum{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:10px;text-align:center}
+.dsumh{font-size:12px;letter-spacing:1.4px;color:var(--mut);font-weight:700}
+.dscore{font-size:22px;font-weight:800;margin:8px 0 4px}
+.dsub{font-size:12px;color:var(--mut);line-height:1.6}
+.dacts{display:flex;gap:8px;margin-top:12px}
+.dacts .dbtn{flex:1}
+.dempty{background:rgba(240,180,41,.08);border:1px solid rgba(240,180,41,.3);border-radius:12px;
+padding:12px;font-size:12.5px;line-height:1.65;color:#e8cf9b;margin-bottom:10px}
+.dquick{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:12px 0 20px}
+.dquick summary{font-size:12.5px;color:#a8d2ff;font-weight:700;cursor:pointer}
+.dqrow{margin-top:10px;border-top:1px dashed #ffffff10;padding-top:8px}
+.dqrow b{font-size:12.5px}
+.dqrow p{font-size:12px;line-height:1.65;color:#b9c6d3;margin:4px 0 0}
+.dqrow .tchip{padding:2px 7px;font-size:11px;vertical-align:1px}
+.lg{position:relative;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px;margin-bottom:8px}
+.lg .m{font-size:11px;color:var(--mut);margin-bottom:4px;padding-right:62px}
+.lg .c{font-size:13.5px;line-height:1.6;overflow-wrap:anywhere;word-break:break-word}
 .lg .x{float:right;background:none;border:0;color:#6b7887;font-size:14px}
+.lgx{position:absolute;top:6px;right:6px;display:flex;align-items:center;gap:6px}
+.lgx .x{float:none;font-size:15px;line-height:1;padding:4px 5px;min-width:24px;min-height:24px;border-radius:5px}
+.lgx .x.edit{color:#a8d2ff}
+.lgx .x.del{color:#ffb4b7}
+.edtag{display:inline-block;font-size:10px;border:1px solid rgba(78,161,255,.45);color:#a8d2ff;border-radius:99px;padding:0 6px;margin-left:4px;vertical-align:1px}
+.editbar{background:rgba(78,161,255,.1);border:1px solid rgba(78,161,255,.35);border-left:3px solid var(--blue);border-radius:8px;padding:8px 10px;margin:8px 0;font-size:12px;line-height:1.5;color:#bcd8ff;overflow-wrap:anywhere}
 textarea{width:100%;min-height:74px;background:var(--card2);border:1px solid var(--line);
 border-radius:10px;color:var(--txt);padding:10px;font-size:13.5px;font-family:inherit;resize:vertical}
 .hbtn2{background:linear-gradient(180deg,#e2383f,#a32228);border:0;color:#fff;border-radius:10px;
 padding:10px 14px;font-size:13.5px;font-family:inherit;width:100%;margin-top:8px}
-#hud{position:fixed;bottom:0;left:0;right:0;z-index:60;background:rgba(16,20,26,.97);border-top:1px solid var(--line);padding:4px 8px calc(5px + env(safe-area-inset-bottom))}
+#hud{position:fixed;bottom:0;left:0;right:0;z-index:60;background:rgba(16,20,26,.97);border-top:1px solid var(--line);padding:4px 36px calc(5px + env(safe-area-inset-bottom)) 8px;transition:transform .22s ease,background .2s ease}
 .hRow{display:flex;align-items:center;gap:5px;justify-content:center;margin:1px 0}
 .hTeam{font-size:12px;color:var(--mut);max-width:22vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .sc{font-size:17px;min-width:18px;text-align:center;cursor:pointer}
 .goal{font-size:14px;padding:5px 9px;border-color:#3a4552}
 .mn{font-size:13px;min-width:34px;text-align:center;color:var(--amber)}
 .mini{background:var(--card2);border:1px solid var(--line);color:var(--txt);border-radius:6px;padding:4px 7px;font-size:11.5px;font-family:inherit;line-height:1}
+.hcfg{position:absolute;right:6px;top:4px;z-index:2;width:30px;height:30px;padding:0;border-radius:8px;background:var(--card2);border:1px solid var(--line);color:var(--mut);font-size:16px;line-height:1;font-family:inherit}
+.hcfg:active{transform:scale(.92)}
+#hud.hud-compact{padding-top:2px;padding-bottom:calc(3px + env(safe-area-inset-bottom))}
+.hud-compact .hRow{gap:3px;margin:0}
+.hud-compact .mini{padding:2px 4px;font-size:10px}
+.hud-compact .goal{font-size:12px;padding:3px 6px}
+.hud-compact .sc{font-size:15px;min-width:16px}
+.hud-compact .mn{font-size:12px;min-width:28px}
+.hud-compact .hTeam{font-size:11px;max-width:20vw}
+.hud-compact .hcfg{width:30px;height:30px;font-size:16px;top:2px}
+#hud.hud-large{padding-top:6px;padding-bottom:calc(7px + env(safe-area-inset-bottom))}
+.hud-large .hRow{gap:6px;margin:2px 0;flex-wrap:wrap}
+.hud-large .mini{padding:6px 9px;font-size:13px}
+.hud-large .goal{font-size:16px;padding:7px 10px}
+.hud-large .sc{font-size:20px;min-width:20px}
+.hud-large .mn{font-size:15px;min-width:38px}
+.hud-large .hTeam{font-size:13px;max-width:22vw}
+.hud-large .hcfg{width:32px;height:32px;font-size:17px;top:6px}
+#hud.hud-semi{background:rgba(16,20,26,.72);backdrop-filter:blur(4px)}
+#hud.hud-hidden{transform:translateY(110%)}
+#hudShow{position:fixed;left:50%;bottom:calc(8px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:61;display:none;background:var(--card);border:1px solid var(--line);color:var(--txt);border-radius:99px;padding:9px 16px;font-size:12px;font-family:inherit;box-shadow:0 4px 12px #0006}
+#hudShow.on{display:block}
+#hudCfg{position:fixed;left:12px;right:12px;max-width:380px;margin:0 auto;bottom:calc(var(--hud-h,104px) + 10px);z-index:70;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;box-shadow:0 10px 28px #0009;display:none}
+#hudCfg.on{display:block}
+.hudcfg-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.hudcfg-h b{font-size:13px}
+.hudcfg-h .x{background:none;border:0;color:var(--mut);font-size:20px;line-height:1;padding:6px 8px;min-width:34px;min-height:34px}
+.hudcfg-row{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin:7px 0}
+.hudcfg-row .mut{min-width:34px;font-size:11px}
+.hudcfg .fchip{padding:7px 12px;font-size:12px}
+.hudcfg-tip{font-size:10.5px;color:var(--mut);line-height:1.45;margin-top:8px}
 .warnb{border-color:rgba(226,56,63,.5);color:#ffb4b7}
 .sep{width:1px;height:16px;background:var(--line);margin:0 3px}
 #sheet{position:fixed;inset:0;z-index:100;background:#0009;display:none;align-items:flex-end}
@@ -1284,6 +2257,8 @@ padding:10px 14px;font-size:13.5px;font-family:inherit;width:100%;margin-top:8px
 .st{background:var(--card2);border:1px solid var(--line);border-radius:8px;font-size:16px;width:42px;height:36px}
 .st.on{border-color:var(--red);background:rgba(226,56,63,.15)}
 .lov{font-size:11px;color:var(--mut);margin:8px 0 4px}
+.lgrp{font-size:11px;font-weight:700;color:#c9d4df;padding:7px 2px 3px;margin-top:2px;border-bottom:1px dashed #ffffff10}
+.lgrp em{font-style:normal;font-weight:400;color:var(--mut);font-size:10.5px;margin-left:2px}
 .plist{display:flex;flex-direction:column;gap:5px}
 .pr{display:flex;justify-content:space-between;align-items:center;gap:8px;background:var(--card2);border:1px solid var(--line);border-radius:9px;padding:9px 11px;color:var(--txt);font-family:inherit;text-align:left;font-size:13px}
 .pr.on{border-color:var(--green)}
@@ -1303,7 +2278,7 @@ if(location.search.indexOf('embed=1')>=0){document.documentElement.className='em
 <nav id="tabs">
   <button data-tab="lineup" class="on">排阵</button>
   <button data-tab="analysis">分析</button>
-  <button data-tab="learn">学习</button>
+  <button data-tab="learn">训练</button>
   <button data-tab="log">复盘</button>
 </nav>
 <main>
@@ -1323,6 +2298,8 @@ if(location.search.indexOf('embed=1')>=0){document.documentElement.className='em
   </section>
 </main>
 <div id="hud"></div>
+<div id="hudCfg"></div>
+<div id="hudShow" class="hudshow" onclick="showHud()">比分 ▲</div>
 <div id="sheet"></div>
 <script>
 /*__PLAYERS__*/

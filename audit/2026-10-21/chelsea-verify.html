@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>切尔西 · 球员审核</title>
+<style>
+:root{--bg:#0c1015;--card:#151a21;--card2:#1b222c;--line:#2a323d;--txt:#e8eef5;--mut:#93a0af;
+--green:#23c55e;--red:#e2383f;--amber:#f0b429;--blue:#4ea1ff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);font:14px/1.55 -apple-system,BlinkMacSystemFont,"PingFang SC",Roboto,"Microsoft YaHei",sans-serif}
+main{max-width:520px;margin:0 auto;padding:14px 12px 96px}
+header{padding:4px 2px 10px}
+h1{font-size:19px;margin:0 0 4px}
+.sub{font-size:12px;color:var(--mut);line-height:1.6}
+.legend{font-size:11px;color:var(--mut);margin-top:8px}
+.badge{display:inline-block;font-size:10px;border:1px solid;border-radius:99px;padding:1px 7px;margin-left:6px;white-space:nowrap}
+.badge.ok{color:#8ef0b3;border-color:rgba(35,197,94,.5);background:rgba(35,197,94,.1)}
+.badge.warn{color:#f5d28a;border-color:rgba(240,180,41,.5);background:rgba(240,180,41,.1)}
+.badge.bad{color:#ffb4b7;border-color:rgba(226,56,63,.5);background:rgba(226,56,63,.1)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px;margin:0 0 10px}
+.card.done{border-color:rgba(35,197,94,.55)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:15px}
+.en{font-size:11px;color:var(--mut);margin-top:2px;overflow-wrap:anywhere}
+.meta{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;margin-top:8px}
+.kv{color:var(--mut)}
+.kv b{color:var(--txt);font-weight:700}
+.tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
+.tag{font-size:10.5px;color:#a8d2ff;background:rgba(78,161,255,.12);border:1px solid rgba(78,161,255,.35);border-radius:99px;padding:2px 7px}
+.weak{font-size:12px;color:#d3dce6;margin-top:8px}
+.weaknote{font-size:11px;color:#8fa3b8;margin-top:4px;line-height:1.55}
+.note{font-size:11.5px;color:#b9c6d3;margin-top:6px;background:rgba(255,255,255,.03);border-radius:6px;padding:6px 8px}
+.src{font-size:11px;color:var(--mut);margin-top:8px;overflow-wrap:anywhere}
+.src a{color:#a8d2ff;text-decoration:none;margin-right:4px}
+.muted{color:#6b7887}
+.check{display:flex;align-items:center;gap:9px;margin-top:11px;border-top:1px dashed #ffffff14;padding-top:10px;font-size:12.5px;min-height:42px}
+.check input{width:22px;height:22px;accent-color:var(--green);flex:0 0 22px}
+.memo{display:block;width:100%;margin-top:8px;background:var(--card2);border:1px solid var(--line);color:var(--txt);
+border-radius:8px;padding:10px;font:12px/1.5 inherit;min-height:40px}
+.memo::placeholder{color:#6b7887}
+footer{position:fixed;left:0;right:0;bottom:0;background:rgba(12,16,21,.97);border-top:1px solid var(--line);
+padding:10px 12px calc(10px + env(safe-area-inset-bottom));z-index:9}
+.fbar{max-width:520px;margin:0 auto;display:flex;gap:8px;align-items:center}
+.count{font-size:12px;color:var(--mut);flex:0 0 auto;min-width:80px}
+.count b{color:#fff}
+button{font:13px/1.2 inherit;border-radius:9px;min-height:42px;padding:10px 12px;border:1px solid var(--line);
+background:var(--card2);color:var(--txt)}
+button.primary{background:rgba(35,197,94,.16);border-color:rgba(35,197,94,.55);color:#dfffe9;font-weight:700}
+button:active{transform:scale(.98)}
+#fallback{display:none;margin-top:8px}
+#fallback textarea{width:100%;height:90px;background:var(--card2);border:1px solid var(--line);color:var(--txt);
+border-radius:8px;padding:8px;font:11px/1.5 ui-monospace,Menlo,monospace}
+.toast{position:fixed;left:50%;bottom:70px;transform:translateX(-50%);background:#1f2a35;border:1px solid #3a4a5a;
+color:#fff;border-radius:99px;padding:7px 13px;font-size:12px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:20}
+.toast.on{opacity:1}
+@media(min-width:521px){main{padding-top:20px}}
+</style></head>
+<body>
+<main>
+<header>
+  <h1>切尔西 · 球员审核</h1>
+  <div class="sub">3-4-2-1 · 13 行候选 · 勾选=同意写入；不勾=不写。<br>
+  要改的写在备注里。底栏下载的 JSON 只包含已勾选行。</div>
+  <div class="legend"><span class="badge ok">已核实</span> 来源较硬 · <span class="badge warn">待确认</span> 需你判断 · <span class="badge bad">冲突</span> 来源互相矛盾</div>
+</header>
+
+<section class="card" data-card="0">
+  <div class="top"><b>福法纳</b><span class="badge ok">已核实</span></div>
+  <div class="en">Wesley Fofana / 福法纳</div>
+  <div class="meta">
+    <span class="kv">位置 <b>CB</b></span>
+    <span class="kv">惯用脚 <b>右</b></span>
+  </div>
+  <div class="tags"><span class="tag">回追型</span></div>
+  <div class="weak">弱点：伤病史</div>
+  <div class="weaknote">弱点依据：2023-24 十字韧带撕裂、2024-25 腿筋手术赛季报销；2026-27 仍在轮换管理负荷（Transfermarkt 伤病史 + The Athletic 2025-04 报道）。</div>
+  <div class="note">备注：现有库 8 人之一；只补 weak，不改位置/脚/标签。</div>
+  <div class="src"><a href="https://www.chelseafc.com/en/teams/profile/wesley-fofana" target="_blank" rel="noopener">来源 1</a> · <a href="https://www.transfermarkt.com/wesley-fofana/verletzungen/spieler/475411" target="_blank" rel="noopener">来源 2</a> · <a href="https://www.nytimes.com/athletic/6257377/2025/04/05/wesley-fofana-injury-update-surgery-chelsea/" target="_blank" rel="noopener">来源 3</a> · <a href="https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/wesley-fofana/248695" target="_blank" rel="noopener">来源 4</a></div>
+  <label class="check"><input type="checkbox" data-check="0"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="0" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="1">
+  <div class="top"><b>科尔威尔</b><span class="badge warn">待确认</span></div>
+  <div class="en">Levi Colwill / 科尔威尔</div>
+  <div class="meta">
+    <span class="kv">位置 <b>CB</b></span>
+    <span class="kv">惯用脚 <b>左</b></span>
+  </div>
+  <div class="tags"><span class="tag">左脚中卫</span><span class="tag">出球型</span></div>
+  <div class="weak">弱点：逆足限制</div>
+  <div class="weaknote">弱点依据：左脚中卫，Total Football Analysis 指其『actively avoids using his right』，逼他用右脚出球或逆足侧受压时线路降档；2025-26 另有膝伤，属独立出勤风险。</div>
+  <div class="note">备注：现有库；只补 weak。若更看重出勤，可改用『伤病史』（2025-26 膝伤）。</div>
+  <div class="src"><a href="https://www.chelseafc.com/en/teams/profile/levi-colwill" target="_blank" rel="noopener">来源 1</a> · <a href="https://totalfootballanalysis.com/article/levi-colwill-202223-scout-report-tactical-analysis-tactics" target="_blank" rel="noopener">来源 2</a> · <a href="https://www.greenball360.com/news/squad-analysis/chelsea-squad-depth-202627-strengths-weaknesses-and-season-outlook" target="_blank" rel="noopener">来源 3</a> · <a href="https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/levi-colwill/262859" target="_blank" rel="noopener">来源 4</a></div>
+  <label class="check"><input type="checkbox" data-check="1"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="1" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="2">
+  <div class="top"><b>里斯·詹姆斯</b><span class="badge ok">已核实</span></div>
+  <div class="en">Reece James / 里斯·詹姆斯</div>
+  <div class="meta">
+    <span class="kv">位置 <b>RB / RWB / DM</b></span>
+    <span class="kv">惯用脚 <b>右</b></span>
+  </div>
+  <div class="tags"><span class="tag">套边型</span><span class="tag">出球型</span></div>
+  <div class="weak">弱点：伤病史</div>
+  <div class="weaknote">弱点依据：生涯多次腿筋伤，2026-03→05 又缺阵；Sky Sports 称其第 10 次腿筋伤，出勤稳定性是长期风险。</div>
+  <div class="note">备注：现有库；只补 weak。</div>
+  <div class="src"><a href="https://www.chelseafc.com/en/teams/profile/reece-james" target="_blank" rel="noopener">来源 1</a> · <a href="https://www.transfermarkt.com/reece-james/verletzungen/spieler/472423" target="_blank" rel="noopener">来源 2</a> · <a href="https://www.skysports.com/football/news/13520551/reece-james-injury-chelsea-captain-suffers-another-hamstring-injury-just-a-week-after-signing-new-contract" target="_blank" rel="noopener">来源 3</a> · <a href="https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/reece-james/238074" target="_blank" rel="noopener">来源 4</a></div>
+  <label class="check"><input type="checkbox" data-check="2"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="2" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="3">
+  <div class="top"><b>古斯托</b><span class="badge warn">待确认</span></div>
+  <div class="en">Malo Gusto / 古斯托</div>
+  <div class="meta">
+    <span class="kv">位置 <b>RB / RWB</b></span>
+    <span class="kv">惯用脚 <b>右</b></span>
+  </div>
+  <div class="tags"><span class="tag">套边型</span></div>
+  <div class="weak">弱点：防空弱</div>
+  <div class="weaknote">弱点依据：WhoScored 将其弱项列为 Aerial Duels；178cm 右后卫，后点高球是可直接攻击点。The Athletic 2026-09 也写其对抗偏被动。备选观察点：压上后的右路身后（怕一对一/易失位）。</div>
+  <div class="note">备注：现有库；只补 weak，不改位置/脚/标签。</div>
+  <div class="src"><a href="https://www.chelseafc.com/en/teams/profile/malo-gusto" target="_blank" rel="noopener">来源 1</a> · <a href="https://www.whoscored.com/players/403850/show/malo-gusto" target="_blank" rel="noopener">来源 2</a> · <a href="https://www.nytimes.com/athletic/7594276/2026/09/16/chelsea-malo-gusto-hull-performances-analysis/" target="_blank" rel="noopener">来源 3</a> · <a href="https://www.futbin.com/27/player/1217/malo-gusto" target="_blank" rel="noopener">来源 4</a></div>
+  <label class="check"><input type="checkbox" data-check="3"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="3" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="4">
+  <div class="top"><b>凯塞多</b><span class="badge ok">已核实</span></div>
+  <div class="en">Moises Caicedo / Moisés Caicedo / 凯塞多</div>
+  <div class="meta">
+    <span class="kv">位置 <b>DM</b></span>
+    <span class="kv">惯用脚 <b>右</b></span>
+  </div>
+  <div class="tags"><span class="tag">破坏型</span></div>
+  <div class="weak">弱点：纪律差</div>
+  <div class="weaknote">弱点依据：2025-12 踩踏梅里诺直红停 3 场（央视/英超官网）；2025-26 俱乐部+国家队 12 黄 2 红，因停赛缺 5 场（The Athletic）；连续第三季接近停赛线。不是技术短板，是可用性/纪律风险。</div>
+  <div class="note">备注：现有库；只补 weak。保持 DM 主位置，EA 副位置 CM 不写入，避免擅自改位置。</div>
+  <div class="src"><a href="https://www.chelseafc.com/en/teams/profile/moises-caicedo" target="_blank" rel="noopener">来源 1</a> · <a href="https://www.nytimes.com/athletic/7065711/2026/02/24/chelsea-premier-league-caicedo-yellow-cards-suspension/" target="_blank" rel="noopener">来源 2</a> · <a href="https://sports.cctv.com/2025/12/02/ARTIasCGYHjPoJZdn1xvfIo9251202.shtml" target="_blank" rel="noopener">来源 3</a> · <a href="https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/moises-caicedo/256079" target="_blank" rel="noopener">来源 4</a></div>
+  <label class="check"><input type="checkbox" data-check="4"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="4" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="5">
+  <div class="top"><b>帕尔默</b><span class="badge ok">已核实</span></div>
+  <div class="en">Cole Palmer / 帕尔默</div>
+  <div class="meta">
+    <span class="kv">位置 <b>AM / RW</b></span>
+    <span class="kv">惯用脚 <b>左</b></span>
+  </div>
+  <div class="tags"><span class="tag">现代10</span></div>
+  <div class="weak">弱点：伤病史</div>
+  <div class="weaknote">弱点依据：2025-26 腹股沟伤缺阵约 6 周，自述长期带伤；2026-27 已恢复并续约至 2034（ESPN/The Athletic）。</div>
+  <div class="note">备注：现有库；只补 weak。foot 已是左，与 EA/资料一致，保持不变。</div>
+  <div class="src"><a href="https://www.chelseafc.com/en/teams/profile/cole-palmer" target="_blank" rel="noopener">来源 1</a> · <a href="https://www.espn.com/soccer/story/_/id/46623456/chelsea-cole-palmer-groin-injury-six-more-weeks" target="_blank" rel="noopener">来源 2</a> · <a href="https://www.nytimes.com/athletic/6664770/2025/09/26/cole-palmer-injury-chelsea-tosin-fofana/" target="_blank" rel="noopener">来源 3</a> · <a href="https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/cole-palmer/257534" target="_blank" rel="noopener">来源 4</a></div>
+  <label class="check"><input type="checkbox" data-check="5"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="5" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="6">
+  <div class="top"><b>内托</b><span class="badge bad">冲突</span></div>
+  <div class="en">Pedro Neto / Pedro Lomba Neto / 内托</div>
+  <div class="meta">
+    <span class="kv">位置 <b>RW / LW</b></span>
+    <span class="kv">惯用脚 <b>左</b></span>
+  </div>
+  <div class="tags"><span class="tag">逆足内切</span></div>
+  <div class="weak">弱点：伤病史</div>
+  <div class="weaknote">弱点依据：左脚将（Transfermarkt/EA FC 27）；2023-24 腿筋伤、2025-26 肌肉伤多次缺阵（TM/Flashscore）。库内 foot=右、tags=顺足下底与来源冲突。</div>
+  <div class="note">备注：现有库；建议 foot 右→左、tags 顺足下底→逆足内切，并补 weak。左脚踢右路主位置，内切比下底更贴切；踢 LW 时仍可顺足下底。</div>
+  <div class="src"><a href="https://www.chelseafc.com/en/teams/profile/pedro-neto" target="_blank" rel="noopener">来源 1</a> · <a href="https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/pedro-neto/238616" target="_blank" rel="noopener">来源 2</a> · <a href="https://www.transfermarkt.us/pedro-neto/profil/spieler/487465" target="_blank" rel="noopener">来源 3</a> · <a href="https://www.transfermarkt.com/pedro-neto/verletzungen/spieler/487465/plus/1" target="_blank" rel="noopener">来源 4</a></div>
+  <label class="check"><input type="checkbox" data-check="6"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="6" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="7">
+  <div class="top"><b>若昂·佩德罗</b><span class="badge ok">已核实</span></div>
+  <div class="en">Joao Pedro / João Pedro / 若昂·佩德罗</div>
+  <div class="meta">
+    <span class="kv">位置 <b>ST / AM</b></span>
+    <span class="kv">惯用脚 <b>右</b></span>
+  </div>
+  <div class="tags"><span class="tag">伪9</span><span class="tag">自由10</span></div>
+  <div class="weak">弱点：纪律差</div>
+  <div class="weaknote">弱点依据：2025-26 对本菲卡两黄变红（ESPN/懂球帝），切尔西该季共 10 红；但只有一次红牌样本，证据弱于凯塞多。没有可靠战术弱点；若你要纯战术标签，建议 weak=待确认，不要硬写防空/逆足。</div>
+  <div class="note">备注：现有库；只补 weak。</div>
+  <div class="src"><a href="https://www.chelseafc.com/en/teams/profile/joao-pedro" target="_blank" rel="noopener">来源 1</a> · <a href="https://www.espn.co.uk/football/story/_/id/46441441/chelsea-enzo-maresca-red-card-joao-pedro-benfica" target="_blank" rel="noopener">来源 2</a> · <a href="https://m.dongqiudi.com/zhanbao/54252847" target="_blank" rel="noopener">来源 3</a> · <a href="https://www.goal.com/en/lists/red-cards-chelsea-most-stupid-dismissals-2025-26-ranked/blt0af3a1a204fbd3b3" target="_blank" rel="noopener">来源 4</a> · <a href="https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/joao-pedro/252042" target="_blank" rel="noopener">来源 5</a></div>
+  <label class="check"><input type="checkbox" data-check="7"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="7" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="8">
+  <div class="top"><b>埃米·马丁内斯</b><span class="badge warn">待确认</span></div>
+  <div class="en">Emiliano Martinez / Emiliano Martínez / Dibu / 埃米·马丁内斯</div>
+  <div class="meta">
+    <span class="kv">位置 <b>GK</b></span>
+    <span class="kv">惯用脚 <b>右</b></span>
+  </div>
+  <div class="tags"><span class="tag">门线型</span></div>
+  <div class="weak">弱点：压迫下失误</div>
+  <div class="weaknote">弱点依据：Total Football Analysis：长传准确率仅 53.7%，禁区外/出球不自信；TalkChelsea：2026-27 开局受压时失误增多。</div>
+  <div class="note">备注：已写入的 5 人之一；队籍官宣 2026-08-30。weak 维持，补 weakNote。</div>
+  <div class="src"><a href="https://www.chelseafc.com/en/teams/profile/emiliano-martinez" target="_blank" rel="noopener">来源 1</a> · <a href="https://www.chelseafc.com/en/news/article/emiliano-martinez-signs-for-chelsea" target="_blank" rel="noopener">来源 2</a> · <a href="https://totalfootballanalysis.com/player-analysis/emiliano-martinez-at-aston-villa-202021-scout-report-tactical-analysis-tactics" target="_blank" rel="noopener">来源 3</a> · <a href="https://www.talkchelsea.net/news/crazy-stats-explain-emi-martinez-bad-start/" target="_blank" rel="noopener">来源 4</a> · <a href="https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/emiliano-martinez/202811" target="_blank" rel="noopener">来源 5</a></div>
+  <label class="check"><input type="checkbox" data-check="8"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="8" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="9">
+  <div class="top"><b>马克桑斯·拉克鲁瓦</b><span class="badge warn">待确认</span></div>
+  <div class="en">Maxence Lacroix / 马克桑斯·拉克鲁瓦</div>
+  <div class="meta">
+    <span class="kv">位置 <b>CB</b></span>
+    <span class="kv">惯用脚 <b>右</b></span>
+  </div>
+  <div class="tags"><span class="tag">回追型</span><span class="tag">上抢型</span></div>
+  <div class="weak">弱点：怕一对一</div>
+  <div class="weaknote">弱点依据：Breaking The Lines：主要弱点是在宽区域被孤立一对一，容易被边锋打穿、出脚时机错误或犯规；Total Football Analysis 认为常规站位大多准确。原『易失位』依据不足，改『怕一对一』更准。</div>
+  <div class="note">备注：已写入；建议 weak 易失位→怕一对一。若不同意，保留易失位但依据较弱。</div>
+  <div class="src"><a href="https://www.chelseafc.com/en/teams/profile/maxence-lacroix" target="_blank" rel="noopener">来源 1</a> · <a href="https://www.chelseafc.com/en/news/article/maxence-lacroix-signs-for-chelsea" target="_blank" rel="noopener">来源 2</a> · <a href="https://breakingthelines.com/@btl/player-analysis-maxence-lacroix" target="_blank" rel="noopener">来源 3</a> · <a href="https://totalfootballanalysis.com/player-analysis/maxence-lacroix-scout-report-crystal-palace-2025-2026-analysis" target="_blank" rel="noopener">来源 4</a> · <a href="https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/maxence-lacroix/244067" target="_blank" rel="noopener">来源 5</a></div>
+  <label class="check"><input type="checkbox" data-check="9"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="9" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="10">
+  <div class="top"><b>瓦伦丁·巴尔科</b><span class="badge bad">冲突</span></div>
+  <div class="en">Valentin Barco / Valentín Barco / 瓦伦丁·巴尔科</div>
+  <div class="meta">
+    <span class="kv">位置 <b>LB / LWB / CM</b></span>
+    <span class="kv">惯用脚 <b>左</b></span>
+  </div>
+  <div class="tags"><span class="tag">套边型</span><span class="tag">攻击型</span></div>
+  <div class="weak">弱点：怕一对一</div>
+  <div class="weaknote">弱点依据：Blue Lions FC：one-on-one defending、back-post defending、physicality 是主要审视点。原『易失位』不如『怕一对一』直接。</div>
+  <div class="note">备注：已写入；官网 Position=Midfielder、EA 主位置 CM，项目为 3-4-2-1 保留 LWB 可打。建议 weak 易失位→怕一对一；是否把主位置改成 CM 待你定。</div>
+  <div class="src"><a href="https://www.chelseafc.com/en/teams/profile/valentin-barco" target="_blank" rel="noopener">来源 1</a> · <a href="https://www.chelseafc.com/en/news/article/valentin-barco-signs-for-chelsea" target="_blank" rel="noopener">来源 2</a> · <a href="https://www.bluelionsfc.com/article/where-does-valentin-barco-fit-at-chelsea-valentin-barco-analysis" target="_blank" rel="noopener">来源 3</a> · <a href="https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/valentin-barco/263370" target="_blank" rel="noopener">来源 4</a></div>
+  <label class="check"><input type="checkbox" data-check="10"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="10" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="11">
+  <div class="top"><b>罗密欧·拉维亚</b><span class="badge ok">已核实</span></div>
+  <div class="en">Romeo Lavia / Roméo Lavia / 罗密欧·拉维亚</div>
+  <div class="meta">
+    <span class="kv">位置 <b>DM / CM</b></span>
+    <span class="kv">惯用脚 <b>右</b></span>
+  </div>
+  <div class="tags"><span class="tag">破坏型</span><span class="tag">拖后组织</span></div>
+  <div class="weak">弱点：伤病史</div>
+  <div class="weaknote">弱点依据：加盟切尔西后伤病反复，2025-26 大部分赛季缺阵，2026-02 才通过 U21 复出；The Athletic/Transfermarkt 记录。</div>
+  <div class="note">备注：已写入；weak 维持，补 weakNote。</div>
+  <div class="src"><a href="https://www.chelseafc.com/en/teams/profile/romeo-lavia" target="_blank" rel="noopener">来源 1</a> · <a href="https://www.nytimes.com/athletic/7058186/2026/02/19/romeo-lavia-chelsea-injury-latest/" target="_blank" rel="noopener">来源 2</a> · <a href="https://www.transfermarkt.com/romeo-lavia/verletzungen/spieler/628451" target="_blank" rel="noopener">来源 3</a> · <a href="https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/romeo-lavia/263620" target="_blank" rel="noopener">来源 4</a></div>
+  <label class="check"><input type="checkbox" data-check="11"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="11" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="12">
+  <div class="top"><b>摩根·罗杰斯</b><span class="badge warn">待确认</span></div>
+  <div class="en">Morgan Rogers / 摩根·罗杰斯</div>
+  <div class="meta">
+    <span class="kv">位置 <b>AM / LW</b></span>
+    <span class="kv">惯用脚 <b>右</b></span>
+  </div>
+  <div class="tags"><span class="tag">现代10</span></div>
+  <div class="weak">弱点：不参与防守</div>
+  <div class="weaknote">弱点依据：Breaking The Lines（维拉时期）：防守端贡献有限，1.01 tackles/90（29th percentile）、0.43 interceptions/90、1.45 combined；定位功能性而非压迫强点。</div>
+  <div class="note">备注：已写入；队籍官宣 2026-07-21。weak 维持，补 weakNote。</div>
+  <div class="src"><a href="https://www.chelseafc.com/en/teams/profile/morgan-rogers" target="_blank" rel="noopener">来源 1</a> · <a href="https://www.chelseafc.com/en/news/article/morgan-rogers-signs-for-chelsea" target="_blank" rel="noopener">来源 2</a> · <a href="https://breakingthelines.com/@btl/morgan-rogers-the-unique-profile-redefining-aston-villas-forward-play" target="_blank" rel="noopener">来源 3</a> · <a href="https://tacticalfootballanalysis.com/morgan-rogers-scout-report-chelsea-2026-2027-tactics-analysis/" target="_blank" rel="noopener">来源 4</a> · <a href="https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/morgan-rogers/260247" target="_blank" rel="noopener">来源 5</a></div>
+  <label class="check"><input type="checkbox" data-check="12"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="12" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<div id="fallback"><textarea id="copyBox" readonly></textarea></div>
+</main>
+<footer><div class="fbar">
+  <div class="count">已确认 <b id="cnt">0</b>/13</div>
+  <button class="primary" id="download">下载确认 JSON</button>
+  <button id="copy">复制</button>
+</div></footer>
+<div class="toast" id="toast">已复制</div>
+<script>
+const DATA = {"team":"切尔西","form":"3-4-2-1","rows":[{"n":"福法纳","en":["Wesley Fofana","福法纳"],"club":"切尔西","pos":["CB"],"foot":"右","tags":["回追型"],"weak":"伤病史","weakNote":"2023-24 十字韧带撕裂、2024-25 腿筋手术赛季报销；2026-27 仍在轮换管理负荷（Transfermarkt 伤病史 + The Athletic 2025-04 报道）。","src":["https://www.chelseafc.com/en/teams/profile/wesley-fofana","https://www.transfermarkt.com/wesley-fofana/verletzungen/spieler/475411","https://www.nytimes.com/athletic/6257377/2025/04/05/wesley-fofana-injury-update-surgery-chelsea/","https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/wesley-fofana/248695"],"conf":"已核实","note":"现有库 8 人之一；只补 weak，不改位置/脚/标签。"},{"n":"科尔威尔","en":["Levi Colwill","科尔威尔"],"club":"切尔西","pos":["CB"],"foot":"左","tags":["左脚中卫","出球型"],"weak":"逆足限制","weakNote":"左脚中卫，Total Football Analysis 指其『actively avoids using his right』，逼他用右脚出球或逆足侧受压时线路降档；2025-26 另有膝伤，属独立出勤风险。","src":["https://www.chelseafc.com/en/teams/profile/levi-colwill","https://totalfootballanalysis.com/article/levi-colwill-202223-scout-report-tactical-analysis-tactics","https://www.greenball360.com/news/squad-analysis/chelsea-squad-depth-202627-strengths-weaknesses-and-season-outlook","https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/levi-colwill/262859"],"conf":"待确认","note":"现有库；只补 weak。若更看重出勤，可改用『伤病史』（2025-26 膝伤）。"},{"n":"里斯·詹姆斯","en":["Reece James","里斯·詹姆斯"],"club":"切尔西","pos":["RB","RWB","DM"],"foot":"右","tags":["套边型","出球型"],"weak":"伤病史","weakNote":"生涯多次腿筋伤，2026-03→05 又缺阵；Sky Sports 称其第 10 次腿筋伤，出勤稳定性是长期风险。","src":["https://www.chelseafc.com/en/teams/profile/reece-james","https://www.transfermarkt.com/reece-james/verletzungen/spieler/472423","https://www.skysports.com/football/news/13520551/reece-james-injury-chelsea-captain-suffers-another-hamstring-injury-just-a-week-after-signing-new-contract","https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/reece-james/238074"],"conf":"已核实","note":"现有库；只补 weak。"},{"n":"古斯托","en":["Malo Gusto","古斯托"],"club":"切尔西","pos":["RB","RWB"],"foot":"右","tags":["套边型"],"weak":"防空弱","weakNote":"WhoScored 将其弱项列为 Aerial Duels；178cm 右后卫，后点高球是可直接攻击点。The Athletic 2026-09 也写其对抗偏被动。备选观察点：压上后的右路身后（怕一对一/易失位）。","src":["https://www.chelseafc.com/en/teams/profile/malo-gusto","https://www.whoscored.com/players/403850/show/malo-gusto","https://www.nytimes.com/athletic/7594276/2026/09/16/chelsea-malo-gusto-hull-performances-analysis/","https://www.futbin.com/27/player/1217/malo-gusto"],"conf":"待确认","note":"现有库；只补 weak，不改位置/脚/标签。"},{"n":"凯塞多","en":["Moises Caicedo","Moisés Caicedo","凯塞多"],"club":"切尔西","pos":["DM"],"foot":"右","tags":["破坏型"],"weak":"纪律差","weakNote":"2025-12 踩踏梅里诺直红停 3 场（央视/英超官网）；2025-26 俱乐部+国家队 12 黄 2 红，因停赛缺 5 场（The Athletic）；连续第三季接近停赛线。不是技术短板，是可用性/纪律风险。","src":["https://www.chelseafc.com/en/teams/profile/moises-caicedo","https://www.nytimes.com/athletic/7065711/2026/02/24/chelsea-premier-league-caicedo-yellow-cards-suspension/","https://sports.cctv.com/2025/12/02/ARTIasCGYHjPoJZdn1xvfIo9251202.shtml","https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/moises-caicedo/256079"],"conf":"已核实","note":"现有库；只补 weak。保持 DM 主位置，EA 副位置 CM 不写入，避免擅自改位置。"},{"n":"帕尔默","en":["Cole Palmer","帕尔默"],"club":"切尔西","pos":["AM","RW"],"foot":"左","tags":["现代10"],"weak":"伤病史","weakNote":"2025-26 腹股沟伤缺阵约 6 周，自述长期带伤；2026-27 已恢复并续约至 2034（ESPN/The Athletic）。","src":["https://www.chelseafc.com/en/teams/profile/cole-palmer","https://www.espn.com/soccer/story/_/id/46623456/chelsea-cole-palmer-groin-injury-six-more-weeks","https://www.nytimes.com/athletic/6664770/2025/09/26/cole-palmer-injury-chelsea-tosin-fofana/","https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/cole-palmer/257534"],"conf":"已核实","note":"现有库；只补 weak。foot 已是左，与 EA/资料一致，保持不变。"},{"n":"内托","en":["Pedro Neto","Pedro Lomba Neto","内托"],"club":"切尔西","pos":["RW","LW"],"foot":"左","tags":["逆足内切"],"weak":"伤病史","weakNote":"左脚将（Transfermarkt/EA FC 27）；2023-24 腿筋伤、2025-26 肌肉伤多次缺阵（TM/Flashscore）。库内 foot=右、tags=顺足下底与来源冲突。","src":["https://www.chelseafc.com/en/teams/profile/pedro-neto","https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/pedro-neto/238616","https://www.transfermarkt.us/pedro-neto/profil/spieler/487465","https://www.transfermarkt.com/pedro-neto/verletzungen/spieler/487465/plus/1"],"conf":"冲突","note":"现有库；建议 foot 右→左、tags 顺足下底→逆足内切，并补 weak。左脚踢右路主位置，内切比下底更贴切；踢 LW 时仍可顺足下底。"},{"n":"若昂·佩德罗","en":["Joao Pedro","João Pedro","若昂·佩德罗"],"club":"切尔西","pos":["ST","AM"],"foot":"右","tags":["伪9","自由10"],"weak":"纪律差","weakNote":"2025-26 对本菲卡两黄变红（ESPN/懂球帝），切尔西该季共 10 红；但只有一次红牌样本，证据弱于凯塞多。没有可靠战术弱点；若你要纯战术标签，建议 weak=待确认，不要硬写防空/逆足。","src":["https://www.chelseafc.com/en/teams/profile/joao-pedro","https://www.espn.co.uk/football/story/_/id/46441441/chelsea-enzo-maresca-red-card-joao-pedro-benfica","https://m.dongqiudi.com/zhanbao/54252847","https://www.goal.com/en/lists/red-cards-chelsea-most-stupid-dismissals-2025-26-ranked/blt0af3a1a204fbd3b3","https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/joao-pedro/252042"],"conf":"已核实","note":"现有库；只补 weak。"},{"n":"埃米·马丁内斯","en":["Emiliano Martinez","Emiliano Martínez","Dibu","埃米·马丁内斯"],"club":"切尔西","pos":["GK"],"foot":"右","tags":["门线型"],"weak":"压迫下失误","weakNote":"Total Football Analysis：长传准确率仅 53.7%，禁区外/出球不自信；TalkChelsea：2026-27 开局受压时失误增多。","src":["https://www.chelseafc.com/en/teams/profile/emiliano-martinez","https://www.chelseafc.com/en/news/article/emiliano-martinez-signs-for-chelsea","https://totalfootballanalysis.com/player-analysis/emiliano-martinez-at-aston-villa-202021-scout-report-tactical-analysis-tactics","https://www.talkchelsea.net/news/crazy-stats-explain-emi-martinez-bad-start/","https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/emiliano-martinez/202811"],"conf":"待确认","note":"已写入的 5 人之一；队籍官宣 2026-08-30。weak 维持，补 weakNote。"},{"n":"马克桑斯·拉克鲁瓦","en":["Maxence Lacroix","马克桑斯·拉克鲁瓦"],"club":"切尔西","pos":["CB"],"foot":"右","tags":["回追型","上抢型"],"weak":"怕一对一","weakNote":"Breaking The Lines：主要弱点是在宽区域被孤立一对一，容易被边锋打穿、出脚时机错误或犯规；Total Football Analysis 认为常规站位大多准确。原『易失位』依据不足，改『怕一对一』更准。","src":["https://www.chelseafc.com/en/teams/profile/maxence-lacroix","https://www.chelseafc.com/en/news/article/maxence-lacroix-signs-for-chelsea","https://breakingthelines.com/@btl/player-analysis-maxence-lacroix","https://totalfootballanalysis.com/player-analysis/maxence-lacroix-scout-report-crystal-palace-2025-2026-analysis","https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/maxence-lacroix/244067"],"conf":"待确认","note":"已写入；建议 weak 易失位→怕一对一。若不同意，保留易失位但依据较弱。"},{"n":"瓦伦丁·巴尔科","en":["Valentin Barco","Valentín Barco","瓦伦丁·巴尔科"],"club":"切尔西","pos":["LB","LWB","CM"],"foot":"左","tags":["套边型","攻击型"],"weak":"怕一对一","weakNote":"Blue Lions FC：one-on-one defending、back-post defending、physicality 是主要审视点。原『易失位』不如『怕一对一』直接。","src":["https://www.chelseafc.com/en/teams/profile/valentin-barco","https://www.chelseafc.com/en/news/article/valentin-barco-signs-for-chelsea","https://www.bluelionsfc.com/article/where-does-valentin-barco-fit-at-chelsea-valentin-barco-analysis","https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/valentin-barco/263370"],"conf":"冲突","note":"已写入；官网 Position=Midfielder、EA 主位置 CM，项目为 3-4-2-1 保留 LWB 可打。建议 weak 易失位→怕一对一；是否把主位置改成 CM 待你定。"},{"n":"罗密欧·拉维亚","en":["Romeo Lavia","Roméo Lavia","罗密欧·拉维亚"],"club":"切尔西","pos":["DM","CM"],"foot":"右","tags":["破坏型","拖后组织"],"weak":"伤病史","weakNote":"加盟切尔西后伤病反复，2025-26 大部分赛季缺阵，2026-02 才通过 U21 复出；The Athletic/Transfermarkt 记录。","src":["https://www.chelseafc.com/en/teams/profile/romeo-lavia","https://www.nytimes.com/athletic/7058186/2026/02/19/romeo-lavia-chelsea-injury-latest/","https://www.transfermarkt.com/romeo-lavia/verletzungen/spieler/628451","https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/romeo-lavia/263620"],"conf":"已核实","note":"已写入；weak 维持，补 weakNote。"},{"n":"摩根·罗杰斯","en":["Morgan Rogers","摩根·罗杰斯"],"club":"切尔西","pos":["AM","LW"],"foot":"右","tags":["现代10"],"weak":"不参与防守","weakNote":"Breaking The Lines（维拉时期）：防守端贡献有限，1.01 tackles/90（29th percentile）、0.43 interceptions/90、1.45 combined；定位功能性而非压迫强点。","src":["https://www.chelseafc.com/en/teams/profile/morgan-rogers","https://www.chelseafc.com/en/news/article/morgan-rogers-signs-for-chelsea","https://breakingthelines.com/@btl/morgan-rogers-the-unique-profile-redefining-aston-villas-forward-play","https://tacticalfootballanalysis.com/morgan-rogers-scout-report-chelsea-2026-2027-tactics-analysis/","https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/morgan-rogers/260247"],"conf":"待确认","note":"已写入；队籍官宣 2026-07-21。weak 维持，补 weakNote。"}]};
+const rows = Array.isArray(DATA.rows) ? DATA.rows : [];
+const boxes = Array.prototype.slice.call(document.querySelectorAll('[data-check]'));
+const memos = Array.prototype.slice.call(document.querySelectorAll('[data-memo]'));
+const cards = Array.prototype.slice.call(document.querySelectorAll('[data-card]'));
+const cnt = document.getElementById('cnt');
+function selected() {
+  return rows.map(function(r, i) {
+    if (!boxes[i] || !boxes[i].checked) return null;
+    const out = Object.assign({}, r);
+    const memo = (memos[i] && memos[i].value || '').trim();
+    if (memo) out.reviewNote = memo;
+    out.confirmed = true;
+    return out;
+  }).filter(Boolean);
+}
+function update() {
+  let n = 0;
+  boxes.forEach(function(b, i) {
+    if (b.checked) n++;
+    cards[i].classList.toggle('done', b.checked);
+  });
+  cnt.textContent = String(n);
+}
+boxes.forEach(function(b) { b.addEventListener('change', update); });
+update();
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('on');
+  setTimeout(function() { t.classList.remove('on'); }, 1400);
+}
+document.getElementById('download').addEventListener('click', function() {
+  const payload = { team: DATA.team || '', form: DATA.form || '', rows: selected() };
+  if (!payload.rows.length) { toast('先勾选至少一行'); return; }
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (DATA.team || 'team') + '-confirmed.json';
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(function() { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+  toast('已下载 ' + payload.rows.length + ' 行');
+});
+document.getElementById('copy').addEventListener('click', function() {
+  const payload = { team: DATA.team || '', form: DATA.form || '', rows: selected() };
+  if (!payload.rows.length) { toast('先勾选至少一行'); return; }
+  const text = JSON.stringify(payload, null, 2);
+  const fallback = document.getElementById('fallback');
+  const box = document.getElementById('copyBox');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function() { toast('已复制'); }).catch(function() {
+      box.value = text; fallback.style.display = 'block'; box.focus(); box.select(); toast('请手动复制');
+    });
+  } else {
+    box.value = text; fallback.style.display = 'block'; box.focus(); box.select(); toast('请手动复制');
+  }
+});
+</script>
+</body></html>

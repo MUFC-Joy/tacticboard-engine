@@ -1,0 +1,1460 @@
+{
+  "team": "阿森纳",
+  "form": "4-2-3-1",
+  "generatedAt": "2026-10-21",
+  "sourcePolicy": "PREFERRED=2026-27最常用11人（7场逐场首发计数；Tzolis伤→Eze）；替补7人按26/27全赛事分钟+25/26联赛分钟合计排序（Statz.ai 26/27, FotMob 25/26）；队籍/位置以Arsenal官网/PL为第一来源；脚以TM/EA交叉；弱点只用可打开的分析/官方伤病页。",
+  "summary": {
+    "existing": 16,
+    "afterTrossardOut": 15,
+    "additions": 4,
+    "candidateRows": 18,
+    "afterAdditions": 18,
+    "explicitWeak": 11,
+    "pendingWeak": 7,
+    "removed": [
+      "特罗萨德"
+    ],
+    "formationChange": "4-3-3 → 4-2-3-1（候选；PL 官网口径；Sky 对同一套人标 4-3-3，标签待确认）",
+    "positionChanges": [
+      "廷贝尔 CB→RB 主位",
+      "卡拉菲奥里 CB→LB 主位",
+      "刘易斯·斯凯利 LB→CM 主位并加 DM",
+      "厄德高 AM/RW→AM/CM",
+      "苏比门迪 +CM 副位",
+      "本·怀特 RB/CB（新增）",
+      "孔萨 CB/RB（新增）",
+      "措利斯 LW/RW（新增）"
+    ],
+    "footChanges": [
+      "梅里诺 右→左"
+    ],
+    "tagChanges": [
+      "萨利巴 +回追型",
+      "刘易斯·斯凯利 攻击型→B2B"
+    ],
+    "preferredXI": [
+      "拉亚",
+      "本·怀特",
+      "孔萨",
+      "加布里埃尔",
+      "卡拉菲奥里",
+      "赖斯",
+      "刘易斯·斯凯利",
+      "萨卡",
+      "厄德高",
+      "措利斯",
+      "哈弗茨"
+    ],
+    "target": 18,
+    "dataRows": 16,
+    "currentActual": 15,
+    "trossard": "仍在 players.js，未删除；方案A不计配额（推荐），方案B计入则只需White/Konsa、不加Tzolis；待你确认",
+    "quota": "GK 1/1 · DEF 6/6 · MID 6/6 · FWD 5/5 · 合计 18/18",
+    "reserve": [
+      "梅里诺（第19，未删）"
+    ],
+    "poolExclusions": [
+      "特罗萨德（离队）",
+      "梅里诺（分钟排序第19，未删）"
+    ],
+    "substitutes": [
+      "苏比门迪",
+      "布鲁诺·吉马良斯",
+      "廷贝尔",
+      "萨利巴",
+      "约克雷斯",
+      "埃泽",
+      "马杜埃凯"
+    ],
+    "currentAvailableXI": [
+      "拉亚",
+      "本·怀特",
+      "孔萨",
+      "加布里埃尔",
+      "卡拉菲奥里",
+      "赖斯",
+      "刘易斯·斯凯利",
+      "萨卡",
+      "厄德高",
+      "埃泽",
+      "哈弗茨"
+    ]
+  },
+  "rows": [
+    {
+      "n": "拉亚",
+      "en": [
+        "Raya",
+        "David Raya"
+      ],
+      "club": "阿森纳",
+      "nat": "西班牙",
+      "pos": [
+        "GK"
+      ],
+      "foot": "右",
+      "tags": [
+        "清球型"
+      ],
+      "weak": "待确认",
+      "weakNote": "无可靠战术弱点：BBC 2025-12 称其高空球/角球出击是强项，EA FC 27 给 Cross Claimer+；替代观察点：禁区外远射、被高位逼抢时的第一脚出球、点球。",
+      "src": [
+        "https://www.arsenal.com/news/arsenal-confirm-202627-squad-numbers-aPsbc3S4LJdQ",
+        "https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/david-raya/220901",
+        "https://www.bbc.com/sport/articles/cx231l7z32do",
+        "https://www.transfermarkt.com/david-raya/verletzungen/spieler/262749/plus/1"
+      ],
+      "conf": "待确认",
+      "note": "队籍/位置/右脚已核实；weak 待确认原因见 weakNote。",
+      "st": "清球型，脚下参与build-up",
+      "pair": [
+        "萨利巴：短传出球网"
+      ],
+      "d": "阿尔特塔体系的第11人传球点，敢在压迫下短传两翼。"
+    },
+    {
+      "n": "萨利巴",
+      "en": [
+        "Saliba",
+        "William Saliba"
+      ],
+      "club": "阿森纳",
+      "nat": "法国",
+      "pos": [
+        "CB"
+      ],
+      "foot": "右",
+      "tags": [
+        "出球型",
+        "回追型"
+      ],
+      "weak": "伤病史",
+      "weakNote": "2026-07-22 官方医疗更新：世界杯半决赛后背伤，需较长时间缺阵；2026-10-03 报道接近复出但未确认。可用性风险，不是战术短板。",
+      "src": [
+        "https://www.arsenal.com/news/arsenal-confirm-202627-squad-numbers-aPsbc3S4LJdQ",
+        "https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/william-saliba/243715",
+        "https://www.arsenal.com/news/medical-update-william-saliba-aVUca3q2han2",
+        "https://www.sportsmole.co.uk/football/arsenal/news/arsenal-handed-huge-william-saliba-injury-boost_606172.html"
+      ],
+      "conf": "已核实",
+      "note": "PREFERRED 满员 XI 不含他（Konsa 健康首发）；留 18 人替补，status=背伤，约11月复出；不是赛季报销。",
+      "st": "出球型+回追型中卫",
+      "pair": [
+        "加布里埃尔：一左一右出球网"
+      ],
+      "d": "带球推进破压迫是招牌，回追速度中卫里前几；阿森纳后场秩序的根基。",
+      "status": "背伤（约11月复出）"
+    },
+    {
+      "n": "加布里埃尔",
+      "en": [
+        "Gabriel Magalhaes",
+        "Gabriel"
+      ],
+      "club": "阿森纳",
+      "nat": "巴西",
+      "pos": [
+        "CB"
+      ],
+      "foot": "左",
+      "tags": [
+        "左脚中卫",
+        "争顶型"
+      ],
+      "weak": "待确认",
+      "weakNote": "无可靠战术弱点：TFA 只指其长传调度偏保守（不属于 11 词）；替代观察点：被快速二过一拉出左肋、转身回追、定位球防守犯规。",
+      "src": [
+        "https://www.arsenal.com/news/arsenal-confirm-202627-squad-numbers-aPsbc3S4LJdQ",
+        "https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/gabriel/232580",
+        "https://totalfootballanalysis.com/article/scout-report-gabriel-magalhaes-201920-tactical-analysis-tactics",
+        "https://www.premierleague.com/en/players/226597/gabriel-magalhaes/stats"
+      ],
+      "conf": "待确认",
+      "note": "队籍/位置/左脚已核实；weak 待确认原因见 weakNote。",
+      "st": "左脚争顶+定位球杀手",
+      "pair": [
+        "萨利巴：他上抢你补位"
+      ],
+      "d": "攻防两端定位球都是武器，左脚中卫让阿森纳左侧出球天然顺。"
+    },
+    {
+      "n": "廷贝尔",
+      "en": [
+        "Timber",
+        "Jurrien Timber"
+      ],
+      "club": "阿森纳",
+      "nat": "荷兰",
+      "pos": [
+        "RB",
+        "CB",
+        "LB"
+      ],
+      "foot": "右",
+      "tags": [
+        "多面手"
+      ],
+      "weak": "伤病史",
+      "weakNote": "2023-24 ACL 赛季报销；2025-12 踝伤、2026-03 踝伤、2026-06 腹股沟伤；2026-27 季前持续缺阵。出勤不稳定。",
+      "src": [
+        "https://www.arsenal.com/news/arsenal-confirm-202627-squad-numbers-aPsbc3S4LJdQ",
+        "https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/jurrien-timber/251805",
+        "https://www.transfermarkt.com/jurrien-timber/verletzungen/spieler/420243/plus/1",
+        "https://dailycannon.com/2026/08/arteta-jurrien-timber-injury-update/"
+      ],
+      "conf": "已核实",
+      "note": "EA FC 27 主位置 RB（alt CB/LB）；pos[0] 由 CB 改为 RB，符合当前用法。本季英超1次首发（对布莱顿），PREFERRED 不含他。",
+      "st": "右后卫为主的全能防线",
+      "pair": [],
+      "d": "右后卫为主，能踢中卫/左后卫且都是高水平；阿森纳防线的万能胶。"
+    },
+    {
+      "n": "卡拉菲奥里",
+      "en": [
+        "Calafiori",
+        "Riccardo Calafiori"
+      ],
+      "club": "阿森纳",
+      "nat": "意大利",
+      "pos": [
+        "LB",
+        "CB"
+      ],
+      "foot": "左",
+      "tags": [
+        "左脚中卫",
+        "出球型"
+      ],
+      "weak": "伤病史",
+      "weakNote": "16岁左膝多条韧带撕裂；2025-12 对布莱顿热身肌肉伤缺约一个月，2026-02 对维冈热身再伤；出勤不稳定。",
+      "src": [
+        "https://www.arsenal.com/news/arsenal-confirm-202627-squad-numbers-aPsbc3S4LJdQ",
+        "https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/riccardo-calafiori/257711",
+        "https://www.arsenal.com/news/calafiori-on-injuries-versatility-and-arteta-apHrT1Q12mnM",
+        "https://www.espn.co.uk/football/story/_/id/47954675/mikel-arteta-arsenal-warm-pre-match-injuries-premier-league-tottenham"
+      ],
+      "conf": "已核实",
+      "note": "EA FC 27 主位置 LB（alt CB/CM），TM 也列左后卫；pos[0] 由 CB 改为 LB。",
+      "st": "带球推进的左脚左后卫",
+      "pair": [
+        "萨利巴：推进分工"
+      ],
+      "d": "左后卫为主，中卫出身敢带球突进前场；阿尔特塔把他当左路组织点用。"
+    },
+    {
+      "n": "刘易斯·斯凯利",
+      "en": [
+        "Lewis-Skelly",
+        "Myles Lewis-Skelly"
+      ],
+      "club": "阿森纳",
+      "nat": "英格兰",
+      "pos": [
+        "CM",
+        "DM",
+        "LB"
+      ],
+      "foot": "左",
+      "tags": [
+        "B2B"
+      ],
+      "weak": "待确认",
+      "weakNote": "无可靠战术弱点；2026-27 已主要踢中场（官网 2026-05、Yahoo 2026-10），EA 仍列 LB；替代观察点：高位丢球后的回追、强对抗、防守站位。",
+      "src": [
+        "https://www.arsenal.com/news/arsenal-confirm-202627-squad-numbers-aPsbc3S4LJdQ",
+        "https://www.arsenal.com/news/lewis-skelly-delighted-with-his-midfield-impact-a9dSu4A98Mob",
+        "https://sports.yahoo.com/articles/mikel-arteta-praises-lewis-skelly-140000439.html",
+        "https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/myles-lewis-skelly/278773"
+      ],
+      "conf": "待确认",
+      "note": "位置存在口径差：EA FC 27 主位 LB，但 2026-05 官网、2026-10 Yahoo 与 7 场首发计数都指其中场；本季最常用 4-2-3-1 里与赖斯搭档双后腰。候选 pos=[CM,DM,LB]，待你确认。原 pair 里的马丁内利已离队，已清空。",
+      "st": "左脚中场/左后卫",
+      "pair": [],
+      "d": "2026-27 主要踢中场：左脚、能在狭小空间转身推进；也能回到左后卫。"
+    },
+    {
+      "n": "苏比门迪",
+      "en": [
+        "Zubimendi",
+        "Martin Zubimendi",
+        "祖比门迪"
+      ],
+      "club": "阿森纳",
+      "nat": "西班牙",
+      "pos": [
+        "DM",
+        "CM"
+      ],
+      "foot": "右",
+      "tags": [
+        "拖后组织"
+      ],
+      "weak": "防空弱",
+      "weakNote": "TFA 球探报告：缺乏传统 6 号的制空与身体对抗；对手可用长球打他所在区域。PL 官方同时称其出球抗压是强项，弱点只在防守空中/对抗。",
+      "src": [
+        "https://www.arsenal.com/news/arsenal-confirm-202627-squad-numbers-aPsbc3S4LJdQ",
+        "https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/zubimendi/248148",
+        "https://totalfootballanalysis.com/player-analysis/martin-zubimendi-arsenal-2025-2026-player-analysis-scout-report-tactics",
+        "https://www.premierleague.com/en/news/4322415/analysis-how-can-zubimendi-fits-in-arteta-system"
+      ],
+      "conf": "已核实",
+      "note": "在队；最近对森林进替补席。EA CDM；加 CM 副位。本季英超0首发，PREFERRED 不含他；留作轮换/伤停备选。",
+      "st": "拖后组织6号：罗德里同门",
+      "pair": [
+        "赖斯：一组织一破坏双6"
+      ],
+      "d": "皇家社会青训：接球转身一气呵成，压迫下从不慌。2025夏窗加盟阿森纳当节拍器。"
+    },
+    {
+      "n": "赖斯",
+      "en": [
+        "Rice",
+        "Declan Rice"
+      ],
+      "club": "阿森纳",
+      "nat": "英格兰",
+      "pos": [
+        "DM",
+        "CM"
+      ],
+      "foot": "右",
+      "tags": [
+        "破坏型",
+        "B2B"
+      ],
+      "weak": "待确认",
+      "weakNote": "无可靠战术弱点；左脚较弱（EA FC 27 3星），但 BTL 统计他仍场均左脚传球 7.89 次；替代观察点：逼他左脚出球、背身接球、禁区前沿转身。",
+      "src": [
+        "https://www.arsenal.com/news/arsenal-confirm-202627-squad-numbers-aPsbc3S4LJdQ",
+        "https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/declan-rice/234378",
+        "https://breakingthelines.com/@btl/player-analysis-declan-rice"
+      ],
+      "conf": "待确认",
+      "note": "队籍/位置/右脚已核实；weak 待确认原因见 weakNote。本季最常用 4-2-3-1 与刘易斯·斯凯利搭档双后腰，PREFERRED 放在 DM。",
+      "st": "破坏型+推进双料6/8",
+      "pair": [
+        "苏比门迪：一保一攻"
+      ],
+      "d": "带球推进破压迫是隐藏技能，防守拦截覆盖面积大；角球进攻也是头牌。"
+    },
+    {
+      "n": "厄德高",
+      "en": [
+        "Odegaard",
+        "Martin Odegaard"
+      ],
+      "club": "阿森纳",
+      "nat": "挪威",
+      "pos": [
+        "AM",
+        "CM"
+      ],
+      "foot": "左",
+      "tags": [
+        "现代10"
+      ],
+      "weak": "逆足限制",
+      "weakNote": "EA FC 27 右脚弱势脚仅 2 星；TFA 另指其持球推进成功率 53.1%、有时拖延出球；逼他右脚/右侧出球是可用针对点。",
+      "src": [
+        "https://www.arsenal.com/news/arsenal-confirm-202627-squad-numbers-aPsbc3S4LJdQ",
+        "https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/martin-degaard/222665",
+        "https://totalfootballanalysis.com/player-analysis/martin-odegaard-scout-report-arsenal-2025-2026-analysis-tactics"
+      ],
+      "conf": "已核实",
+      "note": "在队、队长。EA FC 27 列 CM；实际 4-2-3-1 踢 10 号；pos 由 AM/RW 改为 AM/CM，删掉过时的 RW。",
+      "st": "右肋组织核心：内切直塞",
+      "pair": [
+        "萨卡：右路双左脚连线"
+      ],
+      "d": "右肋部持球吸引+斜塞身后，阿森纳进攻的发牌员；压迫逼抢也是队内标杆。"
+    },
+    {
+      "n": "埃泽",
+      "en": [
+        "Eze",
+        "Eberechi Eze"
+      ],
+      "club": "阿森纳",
+      "nat": "英格兰",
+      "pos": [
+        "AM",
+        "LW"
+      ],
+      "foot": "右",
+      "tags": [
+        "自由10"
+      ],
+      "weak": "待确认",
+      "weakNote": "无可靠战术弱点；TFA 数据：29.7% 丢球在本方半场、70 次空中对抗仅赢 14.3%，但不足以定为“压迫下失误”；替代观察点：后场背身接球、左路回防、空中对抗。",
+      "src": [
+        "https://www.arsenal.com/news/arsenal-confirm-202627-squad-numbers-aPsbc3S4LJdQ",
+        "https://www.ea.com/zh-hant/games/ea-sports-fc/ratings/player-ratings/eberechi-eze/235794",
+        "https://totalfootballanalysis.com/data-analysis/eberechi-eze-scout-report-arsenal-2025-2026-data-analysis"
+      ],
+      "conf": "待确认",
+      "note": "在队；最近对森林首发左路。队籍/位置/右脚已核实；weak 待确认原因见 weakNote。",
+      "st": "盘带型10：一对多破密集",
+      "pair": [
+        "厄德高：双组织点轮转"
+      ],
+      "d": "2025夏窗加盟：人球结合晃开空间后直塞或远射，破密集防守的钥匙。"
+    },
+    {
+      "n": "哈弗茨",
+      "en": [
+        "Havertz",
+        "Kai Havertz"
+      ],
+      "club": "阿森纳",
+      "nat": "德国",
+      "pos": [
+        "ST",
+        "AM",
+        "CM"
+      ],
+      "foot": "左",
+      "tags": [
+        "伪9",
+        "全能9"
+      ],
+      "weak": "伤病史",
+      "weakNote": "2025-02 腿筋伤赛季报销；2025-08 膝伤、11月反复；2026-02 肌肉伤再缺阵。出勤不稳定。",
+      "src": [
+        "https://www.arsenal.com/news/arsenal-confirm-202627-squad-numbers-aPsbc3S4LJdQ",
+        "https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/kai-havertz/235790",
+        "https://www.bbc.com/sport/football/articles/cly102j3jlzo",
+        "https://www.arsenal.com/news/injury-update-kai-havertz-aBA6Z2a2wkOw"
+      ],
+      "conf": "已核实",
+      "note": "在队；最近对森林首发中锋。EA ST（alt CAM/CM）；位置不变。",
+      "st": "全能前场：9号/10号/8号都能踢",
+      "pair": [
+        "约克雷斯：轮换/共存实验"
+      ],
+      "d": "1米93的脚下流：背身、回撤、后插上都会；伤病是变量。"
+    },
+    {
+      "n": "萨卡",
+      "en": [
+        "Saka",
+        "Bukayo Saka"
+      ],
+      "club": "阿森纳",
+      "nat": "英格兰",
+      "pos": [
+        "RW",
+        "RB"
+      ],
+      "foot": "左",
+      "tags": [
+        "逆足内切"
+      ],
+      "weak": "伤病史",
+      "weakNote": "2024-12 腿筋伤、2025-08 腿筋伤、2026-01 髋伤；多次软组织伤，出勤有风险。",
+      "src": [
+        "https://www.arsenal.com/news/arsenal-confirm-202627-squad-numbers-aPsbc3S4LJdQ",
+        "https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/bukayo-saka/246669",
+        "https://www.transfermarkt.com/bukayo-saka/verletzungen/spieler/433177/plus/1"
+      ],
+      "conf": "已核实",
+      "note": "在队；最近对森林首发右路。队籍/位置/左脚已核实。",
+      "st": "左脚右路：内切+回做双核",
+      "pair": [
+        "厄德高：右肋双左脚",
+        "卡拉菲奥里/斯凯利:套边"
+      ],
+      "d": "阿森纳青训招牌：内切射门+倒三角回做+防守回追全都有，英超最全面右边锋。"
+    },
+    {
+      "n": "马杜埃凯",
+      "en": [
+        "Madueke",
+        "Noni Madueke"
+      ],
+      "club": "阿森纳",
+      "nat": "英格兰",
+      "pos": [
+        "RW",
+        "LW"
+      ],
+      "foot": "左",
+      "tags": [
+        "逆足内切"
+      ],
+      "weak": "终结效率低",
+      "weakNote": "BBC 2026-10 仍指其 end product 受质疑；Sky 2025-07 称缺乏产出一贯是挫败点；Athletic 称无球端有进步，但产出仍是短板。",
+      "src": [
+        "https://www.arsenal.com/news/arsenal-confirm-202627-squad-numbers-aPsbc3S4LJdQ",
+        "https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/noni-madueke/254796",
+        "https://www.bbc.co.uk/sport/football/articles/c3qjnyw8qe4do",
+        "https://www.skysports.com/football/news/13395319/noni-madueke-to-arsenal-why-fans-are-doubting-the-chelsea-winger-and-why-they-might-be-wrong"
+      ],
+      "conf": "已核实",
+      "note": "在队；最近对森林进替补席。EA RW（alt RM）；项目保留 LW 副位以覆盖边路轮换。",
+      "st": "左脚右路：爆点+内切",
+      "pair": [
+        "萨卡：右路轮换双保险"
+      ],
+      "d": "2025夏窗从切尔西加盟：一对一爆趟凶，内切爆射有力。"
+    },
+    {
+      "n": "约克雷斯",
+      "en": [
+        "Gyokeres",
+        "Viktor Gyokeres",
+        "约克雷斯"
+      ],
+      "club": "阿森纳",
+      "nat": "瑞典",
+      "pos": [
+        "ST"
+      ],
+      "foot": "右",
+      "tags": [
+        "全能9"
+      ],
+      "weak": "防空弱",
+      "weakNote": "争顶/背身护球不是强项：Arseblog 2026-09 称其护球几乎不存在、不能当压力阀；多篇分析指其第一脚在对抗下不稳、做球受限。非官方统计。",
+      "src": [
+        "https://www.arsenal.com/news/arsenal-confirm-202627-squad-numbers-aPsbc3S4LJdQ",
+        "https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/viktor-gyokeres/241651",
+        "https://arseblog.com/2026/09/viktor-gyokeres-feels-increasingly-like-a-square-peg/",
+        "https://the-footballanalyst.com/viktor-gyokeres-player-analysis/"
+      ],
+      "conf": "已核实",
+      "note": "在队；最近对森林进替补席。队籍/位置/右脚已核实。本季英超0首发，PREFERRED 不含他；哈弗茨是最常用9号。",
+      "st": "冲击型9：转身暴走+爆射",
+      "pair": [
+        "厄德高(国家队):连线重启"
+      ],
+      "d": "葡超两季轰出夸张数据后2025夏窗登陆酋长球场：直塞身后接应+一条龙暴走是招牌。"
+    },
+    {
+      "n": "本·怀特",
+      "en": [
+        "Ben White",
+        "White"
+      ],
+      "club": "阿森纳",
+      "nat": "英格兰",
+      "pos": [
+        "RB",
+        "CB"
+      ],
+      "foot": "右",
+      "tags": [
+        "套边型"
+      ],
+      "weak": "伤病史",
+      "weakNote": "2024-25 膝伤手术缺阵约3个月；2025-26 多次短期缺阵；2026-05-12 官方医疗更新：内侧副韧带重伤、赛季报销且未手术；2026-27 已复出但出勤有风险。",
+      "src": [
+        "https://www.arsenal.com/news/arsenal-confirm-202627-squad-numbers-aPsbc3S4LJdQ",
+        "https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/benjamin-white/231936",
+        "https://www.transfermarkt.com/ben-white/profil/spieler/335721",
+        "https://www.arsenal.com/news/medical-update-ben-white-aJrGl0o5JuqF",
+        "https://totalfootballanalysis.com/player-analysis/ben-white-scout-report-arsenal-2025-2026-analysis-tactics"
+      ],
+      "conf": "已核实",
+      "note": "2026-27 英超前7场6次首发 RB；EA FC 27 主位 RB（alt RM）、TM 右后卫；pos[0]=RB。",
+      "st": "套边型右后卫：与萨卡叠瓦",
+      "pair": [
+        "萨卡：右路套边"
+      ],
+      "d": "2021年加盟；右后卫为主，能踢中卫；前插套边给萨卡制造内切空间，防守站位稳。"
+    },
+    {
+      "n": "孔萨",
+      "en": [
+        "Konsa",
+        "Ezri Konsa"
+      ],
+      "club": "阿森纳",
+      "nat": "英格兰",
+      "pos": [
+        "CB",
+        "RB"
+      ],
+      "foot": "右",
+      "tags": [
+        "对抗型",
+        "多面手"
+      ],
+      "weak": "待确认",
+      "weakNote": "无可靠战术弱点：Arsenal 官网称其 2025/26 空中对抗成功率 67.1%、高于队内其他后卫；The Analyst 只指其 line-breaking passes 偏低（不属 11 词）；替代观察点：被拉到边路后的1v1、长传调度、定位球盯人。",
+      "src": [
+        "https://www.arsenal.com/news/arsenal-submit-202627-premier-league-squad-list-aThi88L0b3k8",
+        "https://www.arsenal.com/news/team-news-havertz-saka-and-odegaard-return-v-forest-angba8L4ot3m",
+        "https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/ezri-konsa/227678",
+        "https://www.arsenal.com/news/examining-ezri-how-will-konsa-fit-in-aaMGb3N8jA7c",
+        "https://theanalyst.com/articles/ezri-konsa-arsenal-stats-duels-availability-transfer-aston-villa",
+        "https://www.transfermarkt.com/ezri-konsa/profil/spieler/413403"
+      ],
+      "conf": "待确认",
+      "note": "2026夏窗从维拉加盟；英超前7场5次首发 CB；EA CB、可客串 RB；pos[0]=CB。公开分析里“空中弱”的说法与 Arsenal 官网 67.1% 冲突，未采用。",
+      "st": "对抗型中卫：地面1v1强，可客串右后卫",
+      "pair": [
+        "加布里埃尔：一左一右"
+      ],
+      "d": "2026夏窗从维拉加盟：地面对抗和回追强，能踢中卫/右后卫；空中数据不弱，向前传球偏保守。"
+    },
+    {
+      "n": "措利斯",
+      "en": [
+        "Tzolis",
+        "Christos Tzolis"
+      ],
+      "club": "阿森纳",
+      "nat": "希腊",
+      "pos": [
+        "LW",
+        "RW"
+      ],
+      "foot": "右",
+      "tags": [
+        "逆足内切"
+      ],
+      "weak": "伤病史",
+      "weakNote": "2026-10 肌肉伤（Grade 2）缺阵数周，Arteta 10-13 称其“not available yet”；属可用性风险，不是战术短板。",
+      "src": [
+        "https://www.arsenal.com/news/arsenal-confirm-202627-squad-numbers-aPsbc3S4LJdQ",
+        "https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/christos-tzolis/256948",
+        "https://www.transfermarkt.com/christos-tzolis/profil/spieler/451677",
+        "https://www.standard.co.uk/sport/football/arsenal-fc-injury-update-zubimendi-hincapie-tzolis-latest-news-return-dates-b1300254.html",
+        "https://www.sportsmole.co.uk/football/arsenal/injury-news/news/which-arsenal-games-could-tzolis-miss-through-injury_606564.html"
+      ],
+      "conf": "已核实",
+      "note": "PREFERRED 满员 XI 含他；当前 status=肌肉伤，短期不首发，用 Eze 顶 LW（Madueke 第二备选）；复出后回首发。",
+      "st": "右脚左边锋：内切+终结",
+      "pair": [
+        "卡拉菲奥里：左路套边"
+      ],
+      "d": "2026夏窗从布鲁日加盟：右脚左路，内切射门和最后一传是强项；无球防守仍需适应英超。",
+      "status": "肌肉伤（数周）"
+    },
+    {
+      "n": "布鲁诺·吉马良斯",
+      "en": [
+        "Bruno Guimaraes",
+        "Guimaraes",
+        "布鲁诺"
+      ],
+      "club": "阿森纳",
+      "nat": "巴西",
+      "pos": [
+        "CM",
+        "DM"
+      ],
+      "foot": "右",
+      "tags": [
+        "B2B",
+        "组织8"
+      ],
+      "weak": "待确认",
+      "weakNote": "无可靠战术弱点：Arsenal官网称其对抗/跑动强、能推进；2025-26有6黄1停赛，属可用性风险不是战术短板；替代观察点：被快速转换打身后、逼他背身接球、诱导前压后打身后。",
+      "src": [
+        "https://www.arsenal.com/news/arsenal-confirm-202627-squad-numbers-aPsbc3S4LJdQ",
+        "https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/bruno-guimaraes/247851",
+        "https://www.transfermarkt.com/bruno-guimaraes/profil/spieler/520624",
+        "https://www.arsenal.com/news/breaking-down-bruno-what-will-he-bring-to-our-midfield-aZQYE0y56UzB",
+        "https://statz.ai/team/arsenal/squad",
+        "https://www.fotmob.com/leagues/47/stats/season/27110/players/mins_played/team/10261/newcastle-united"
+      ],
+      "conf": "待确认",
+      "note": "2026夏窗从纽卡加盟；26/27 11场464分钟（9场），25/26 PL 2455分钟；当前与赖斯竞争双后腰/8号。",
+      "st": "B2B/组织8：对抗+推进，能踢6/8",
+      "pair": [
+        "赖斯：双后腰轮换"
+      ],
+      "d": "2026夏窗从纽卡加盟：对抗和跑动强，能在压力下转身推进；创造力低于厄德高，纪律是可用性风险。"
+    }
+  ],
+  "preferred": {
+    "previous": {
+      "form": "4-3-3",
+      "xi": [
+        "拉亚",
+        "廷贝尔",
+        "萨利巴",
+        "加布里埃尔",
+        "卡拉菲奥里",
+        "苏比门迪",
+        "赖斯",
+        "厄德高",
+        "萨卡",
+        "约克雷斯",
+        "埃泽"
+      ],
+      "verdict": "11人全部在队，但不是2026-27最常用阵型/最常用11人：Saliba伤停且0首发、Zubimendi与Gyokeres本季英超0首发；White/Konsa/Tzolis不在旧库。"
+    },
+    "mostUsed": {
+      "form": "4-2-3-1",
+      "xi": [
+        "拉亚",
+        "本·怀特",
+        "孔萨",
+        "加布里埃尔",
+        "卡拉菲奥里",
+        "赖斯",
+        "刘易斯·斯凯利",
+        "萨卡",
+        "厄德高",
+        "措利斯",
+        "哈弗茨"
+      ],
+      "matches": 7,
+      "formationCount": "Starting11 逐场标注 4-2-3-1 6/7、4-3-3 1/7（8/21 Coventry）；PL 官网阿森纳页标 4-2-3-1。Sky 对 9/6 Chelsea 的同一套首发标 4-3-3（差别是 Odegaard 踢 10 还是右 8）。候选按 PL 官网 + Rice/Lewis-Skelly 双后腰结构选 4-2-3-1，阵型标签本身待确认。",
+      "startCounts": {
+        "拉亚": 7,
+        "本·怀特": 6,
+        "莫斯克拉": 2,
+        "加布里埃尔": 7,
+        "卡拉菲奥里": 7,
+        "厄德高": 7,
+        "赖斯": 7,
+        "刘易斯·斯凯利": 5,
+        "萨卡": 7,
+        "哈弗茨": 7,
+        "措利斯": 5,
+        "孔萨": 5,
+        "廷贝尔": 1,
+        "吉马良斯": 2,
+        "马杜埃凯": 1,
+        "埃泽": 1
+      },
+      "sample": "这套11人实际在9/6 Chelsea与9/12 Sunderland连续两场首发，不是按位置拼出来的理论阵。",
+      "matchesDetail": [
+        {
+          "date": "2026-08-21",
+          "opp": "Coventry (H)",
+          "form": "4-3-3",
+          "xi": [
+            "拉亚",
+            "本·怀特",
+            "莫斯克拉",
+            "加布里埃尔",
+            "卡拉菲奥里",
+            "厄德高",
+            "赖斯",
+            "刘易斯·斯凯利",
+            "萨卡",
+            "哈弗茨",
+            "措利斯"
+          ],
+          "src": "https://starting11.com/fixtures/arsenal-vs-coventry"
+        },
+        {
+          "date": "2026-08-31",
+          "opp": "Aston Villa (A)",
+          "form": "4-2-3-1",
+          "xi": [
+            "拉亚",
+            "本·怀特",
+            "莫斯克拉",
+            "加布里埃尔",
+            "卡拉菲奥里",
+            "刘易斯·斯凯利",
+            "赖斯",
+            "萨卡",
+            "厄德高",
+            "措利斯",
+            "哈弗茨"
+          ],
+          "src": "https://starting11.com/fixtures/aston-villa-vs-arsenal"
+        },
+        {
+          "date": "2026-09-06",
+          "opp": "Chelsea (H)",
+          "form": "4-2-3-1",
+          "xi": [
+            "拉亚",
+            "本·怀特",
+            "孔萨",
+            "加布里埃尔",
+            "卡拉菲奥里",
+            "赖斯",
+            "刘易斯·斯凯利",
+            "萨卡",
+            "厄德高",
+            "措利斯",
+            "哈弗茨"
+          ],
+          "src": "https://starting11.com/fixtures/arsenal-vs-chelsea"
+        },
+        {
+          "date": "2026-09-12",
+          "opp": "Sunderland (A)",
+          "form": "4-2-3-1",
+          "xi": [
+            "拉亚",
+            "本·怀特",
+            "孔萨",
+            "加布里埃尔",
+            "卡拉菲奥里",
+            "赖斯",
+            "刘易斯·斯凯利",
+            "萨卡",
+            "厄德高",
+            "措利斯",
+            "哈弗茨"
+          ],
+          "src": "https://starting11.com/fixtures/sunderland-vs-arsenal"
+        },
+        {
+          "date": "2026-09-19",
+          "opp": "Brighton (A)",
+          "form": "4-2-3-1",
+          "xi": [
+            "拉亚",
+            "廷贝尔",
+            "孔萨",
+            "加布里埃尔",
+            "卡拉菲奥里",
+            "赖斯",
+            "吉马良斯",
+            "萨卡",
+            "厄德高",
+            "措利斯",
+            "哈弗茨"
+          ],
+          "src": "https://starting11.com/fixtures/brighton-vs-arsenal"
+        },
+        {
+          "date": "2026-10-10",
+          "opp": "Leeds (H)",
+          "form": "4-2-3-1",
+          "xi": [
+            "拉亚",
+            "本·怀特",
+            "孔萨",
+            "加布里埃尔",
+            "卡拉菲奥里",
+            "赖斯",
+            "刘易斯·斯凯利",
+            "萨卡",
+            "厄德高",
+            "马杜埃凯",
+            "哈弗茨"
+          ],
+          "src": "https://starting11.com/fixtures/arsenal-vs-leeds"
+        },
+        {
+          "date": "2026-10-18",
+          "opp": "Nottingham Forest (A)",
+          "form": "4-2-3-1",
+          "xi": [
+            "拉亚",
+            "本·怀特",
+            "孔萨",
+            "加布里埃尔",
+            "卡拉菲奥里",
+            "赖斯",
+            "吉马良斯",
+            "萨卡",
+            "厄德高",
+            "埃泽",
+            "哈弗茨"
+          ],
+          "src": "https://starting11.com/fixtures/nottingham-forest-vs-arsenal"
+        }
+      ],
+      "reason": "按7场英超逐场首发计数：Raya7、White6、Gabriel7、Konsa5、Calafiori7、Rice7、Lewis-Skelly5、Saka7、Odegaard7、Tzolis5、Havertz7；这11人是各位置最高出场组合。",
+      "caveat": "Tzolis 复出后直接回 PREFERRED；伤停期间用 currentAvailable（Eze）。Saliba 不首发，Konsa+Gabriel 先发。",
+      "originalXI": [
+        "拉亚",
+        "本·怀特",
+        "孔萨",
+        "加布里埃尔",
+        "卡拉菲奥里",
+        "赖斯",
+        "刘易斯·斯凯利",
+        "萨卡",
+        "厄德高",
+        "措利斯",
+        "哈弗茨"
+      ],
+      "injuryAdjustment": "PREFERRED（满员）含 Tzolis；当前 status=肌肉伤，短期用 Eze 顶 LW；Saliba 留替补、status=背伤、约11月复出。"
+    },
+    "latest": {
+      "date": "2026-10-18",
+      "opp": "Nottingham Forest (A)",
+      "form": "4-2-3-1",
+      "xi": [
+        "拉亚",
+        "本·怀特",
+        "孔萨",
+        "加布里埃尔",
+        "卡拉菲奥里",
+        "赖斯",
+        "吉马良斯",
+        "萨卡",
+        "厄德高",
+        "埃泽",
+        "哈弗茨"
+      ],
+      "note": "最新一场用Guimarães替Lewis-Skelly、Eze替Tzolis；若你要“最近状态”而非“赛季最常用”，用这版。Tzolis 10月肌肉伤缺阵数周。"
+    },
+    "currentAvailable": {
+      "form": "4-2-3-1",
+      "xi": [
+        "拉亚",
+        "本·怀特",
+        "孔萨",
+        "加布里埃尔",
+        "卡拉菲奥里",
+        "赖斯",
+        "刘易斯·斯凯利",
+        "萨卡",
+        "厄德高",
+        "埃泽",
+        "哈弗茨"
+      ],
+      "reason": "Tzolis status=肌肉伤；Eze 顶 LW，Madueke 第二备选；其余 10 人不变。",
+      "note": "这是短期默认首发，不是长期 PREFERRED；Tzolis 复出后切回 PREFERRED。"
+    }
+  },
+  "removed": [
+    {
+      "n": "特罗萨德",
+      "en": [
+        "Trossard",
+        "Leandro Trossard"
+      ],
+      "from": "阿森纳",
+      "to": "贝西克塔斯",
+      "date": "2026-07-15",
+      "fee": "约 £17m",
+      "src": [
+        "https://www.skysports.com/football/news/13563271/leandro-trossard-arsenal-confirm-winger-joining-besiktas-in-lb17m-deal",
+        "https://www.theguardian.com/football/2026/jul/14/leandro-trossard-set-for-besiktas-move-after-arsenal-agree-deal-with-turkish-side"
+      ],
+      "action": "写库阶段必须处理：改 club=贝西克塔斯，或删除整行；不能只在候选行里消失。项目文件本轮不动，等你确认。"
+    }
+  ],
+  "missingWatchlist": [
+    {
+      "n": "凯帕",
+      "pos": [
+        "GK"
+      ],
+      "why": "GK配额1/1已满；只有你改成2门将配额才考虑。",
+      "addNow": false
+    },
+    {
+      "n": "莫斯克拉",
+      "pos": [
+        "CB"
+      ],
+      "why": "DEF配额6/6已满；169+989分钟，轮换备选。",
+      "addNow": false
+    },
+    {
+      "n": "因卡皮耶",
+      "pos": [
+        "CB",
+        "LB"
+      ],
+      "why": "DEF配额6/6已满；130+1792分钟，左中卫/左后卫深度。",
+      "addNow": false
+    },
+    {
+      "n": "梅利耶",
+      "pos": [
+        "GK"
+      ],
+      "why": "GK配额1/1已满；三号门将。",
+      "addNow": false
+    }
+  ],
+  "conflicts": [
+    {
+      "topic": "PREFERRED口径",
+      "project": "旧PREFERRED：4-3-3，Raya/Timber/Saliba/Gabriel/Calafiori/Zubimendi/Rice/Odegaard/Saka/Gyokeres/Eze",
+      "reality": "PREFERRED（满员）4-2-3-1：Raya/White/Konsa/Gabriel/Calafiori/Rice/Lewis-Skelly/Saka/Odegaard/Tzolis/Havertz；Tzolis 当前伤停，短期用 Eze。旧PREFERRED含Saliba/Zubimendi/Gyokeres，三人本季英超0首发（Saliba伤停）。",
+      "impact": "旧PREFERRED既不是最常用阵型，也不是最常用11人；Saliba伤停、Zubimendi/Gyokeres 0首发",
+      "action": "候选PREFERRED改为上述11人；Tzolis 保留在 PREFERRED 但标 status；短期 currentAvailable 用 Eze；写入阶段同步 FORM_OVERRIDE 4-3-3→4-2-3-1。"
+    },
+    {
+      "topic": "萨利巴",
+      "project": "旧PREFERRED首发CB",
+      "reality": "2026-07背伤，约11月复出；本季英超0首发",
+      "impact": "默认首发不能排他；但可留18人替补",
+      "action": "PREFERRED用Konsa+Gabriel；Saliba留替补并标status=背伤；不是赛季报销。"
+    },
+    {
+      "topic": "特罗萨德",
+      "project": "players.js仍写阿森纳",
+      "reality": "2026-07-15转会贝西克塔斯",
+      "impact": "队籍过期",
+      "action": "写库阶段改 club=贝西克塔斯或删除整行，不能只在候选行删掉；配额不计。项目文件本轮不动。"
+    },
+    {
+      "topic": "梅里诺惯用脚",
+      "project": "players.js写右",
+      "reality": "Transfermarkt/EA FC 27均为左",
+      "impact": "脚是硬字段",
+      "action": "候选改为左"
+    },
+    {
+      "topic": "刘易斯·斯凯利位置",
+      "project": "players.js写LB主位",
+      "reality": "EA FC 27仍列LB；但本季7场5次首发，实际与赖斯搭档双后腰（4-2-3-1的两个DM位）",
+      "impact": "pos[0]影响autoLineup与槽位覆盖",
+      "action": "候选pos=[CM,DM,LB]；conf=待确认，写入前你确认"
+    },
+    {
+      "topic": "孔萨空中能力",
+      "project": "公开分析（X/二手）称其空中对抗低于精英中卫",
+      "reality": "Arsenal官网：2025/26空中对抗成功率67.1%，高于队内其他后卫",
+      "impact": "若写成防空弱会与第一权威冲突",
+      "action": "不采用防空弱；weak=待确认，观察点改为被拉到边路后的1v1/长传调度"
+    },
+    {
+      "topic": "措利斯伤停",
+      "project": "最常用11人包含Tzolis",
+      "reality": "2026-10肌肉伤（Grade 2），缺阵数周；用户要求保留在18人和PREFERRED，只标伤停",
+      "impact": "PREFERRED包含伤停球员；短期默认首发需用Eze",
+      "action": "Tzolis 留 PREFERRED + status=肌肉伤；currentAvailable 用 Eze；Madueke 第二备选；复出后切回。"
+    },
+    {
+      "topic": "阵型标签",
+      "project": "旧PREFERRED 4-3-3",
+      "reality": "PL官网标4-2-3-1；Starting11逐场6/7标4-2-3-1；Sky对9/6 Chelsea同一套首发标4-3-3",
+      "impact": "同一套人可读成4-2-3-1或4-3-3，差别在Odegaard踢10还是右8；不是人员差异",
+      "action": "候选用4-2-3-1（PL官网+双后腰结构），但标为待确认；若你坚持4-3-3，11人不变，只换槽位标签"
+    },
+    {
+      "topic": "梅里诺 vs 吉马良斯",
+      "project": "此前18人池含梅里诺",
+      "reality": "26/27+25/26分钟：Guimarães 464+2455=2919；Merino 331+1027=1358；Guimarães还是最近对Forest首发",
+      "impact": "中场只有6席，两人只能留一个进18人池",
+      "action": "候选Guimarães进池、Merino列第19（未删）；若你要求保留Merino，需放弃Guimarães或另一名中场"
+    },
+    {
+      "topic": "替补口径",
+      "project": "旧候选没有按分钟排替补",
+      "reality": "7名替补按26/27全赛事+25/26联赛分钟合计排序；最低的Madueke 1622，Merino 1358被挤出",
+      "impact": "没有人靠10分钟/0场进替补",
+      "action": "替补7人：Tzolis/Zubimendi/Guimarães/Timber/Saliba/Gyokeres/Madueke；Saliba/Tzolis为伤停但赛季中旬可恢复，保留"
+    },
+    {
+      "topic": "PREFERRED遇伤停的引擎行为",
+      "project": "autoLineup 直接返回 PREFERRED，未检查 hurt()",
+      "reality": "PREFERRED 含 Tzolis（status=肌肉伤）；Saliba 替补也标伤停",
+      "impact": "只加 status 而不改 autoLineup，引擎仍会首发 Tzolis",
+      "action": "写库阶段二选一：A) autoLineup 逐个检查 PREFERRED 的 hurt，伤停用同位置替补顶；B) 增加 currentAvailable 短期 PREFERRED，Tzolis复出后切回。当前只出候选，不改代码。"
+    }
+  ],
+  "notTested": [
+    "未在390px真机测试；将用headless Chrome 390×844检查18行审查页。",
+    "PREFERRED含Tzolis+status伤停时，当前autoLineup不会自动换人；该引擎行为未改、未测。",
+    "2026-27分钟为全赛事（PL+CL+Carabao，11场），2025-26为联赛分钟；两者简单相加只用于替补排序，不是跨赛事等价换算。",
+    "Saliba约11月复出、Tzolis肌肉伤数周的具体日期未确认。",
+    "未逐场验证所有站位细节；首发计数以starting11逐场确认阵容为准，Forest与Arsenal官网team news交叉。",
+    "未跑build.py；未改任何项目文件；未提交git。"
+  ],
+  "quota": {
+    "note": "按 pos[0] 主位置统计；多面手只用 pos[] 作为备选，不为凑数改主位置；Trossard 已离队，暂不删行、不计入配额。",
+    "rule": "BIG6 18人 = 1 GK + 6 DEF + 6 MID + 5 FWD",
+    "before": {
+      "GK": {
+        "target": 1,
+        "have": 1,
+        "players": [
+          "拉亚"
+        ]
+      },
+      "DEF": {
+        "target": 6,
+        "have": 4,
+        "players": [
+          "萨利巴",
+          "加布里埃尔",
+          "廷贝尔",
+          "卡拉菲奥里"
+        ],
+        "gap": 2
+      },
+      "MID": {
+        "target": 6,
+        "have": 6,
+        "players": [
+          "刘易斯·斯凯利",
+          "苏比门迪",
+          "赖斯",
+          "厄德高",
+          "埃泽",
+          "梅里诺"
+        ],
+        "gap": 0
+      },
+      "FWD": {
+        "target": 5,
+        "have": 4,
+        "players": [
+          "哈弗茨",
+          "萨卡",
+          "马杜埃凯",
+          "约克雷斯"
+        ],
+        "gap": 1
+      }
+    },
+    "after": {
+      "GK": {
+        "target": 1,
+        "have": 1,
+        "players": [
+          "拉亚"
+        ],
+        "gap": 0
+      },
+      "DEF": {
+        "target": 6,
+        "have": 6,
+        "players": [
+          "萨利巴",
+          "加布里埃尔",
+          "廷贝尔",
+          "卡拉菲奥里",
+          "本·怀特",
+          "孔萨"
+        ],
+        "gap": 0
+      },
+      "MID": {
+        "target": 6,
+        "have": 6,
+        "players": [
+          "刘易斯·斯凯利",
+          "苏比门迪",
+          "赖斯",
+          "厄德高",
+          "埃泽",
+          "布鲁诺·吉马良斯"
+        ],
+        "gap": 0
+      },
+      "FWD": {
+        "target": 5,
+        "have": 5,
+        "players": [
+          "哈弗茨",
+          "萨卡",
+          "马杜埃凯",
+          "约克雷斯",
+          "措利斯"
+        ],
+        "gap": 0
+      }
+    },
+    "additions": [
+      {
+        "n": "本·怀特",
+        "group": "DEF",
+        "pos": [
+          "RB",
+          "CB"
+        ],
+        "why": "6次首发RB；补DEF缺口1/2"
+      },
+      {
+        "n": "孔萨",
+        "group": "DEF",
+        "pos": [
+          "CB",
+          "RB"
+        ],
+        "why": "5次首发CB；补DEF缺口2/2"
+      },
+      {
+        "n": "措利斯",
+        "group": "FWD",
+        "pos": [
+          "LW",
+          "RW"
+        ],
+        "why": "5次首发LW；补FWD缺口1/1"
+      },
+      {
+        "n": "布鲁诺·吉马良斯",
+        "group": "MID",
+        "pos": [
+          "CM",
+          "DM"
+        ],
+        "why": "464+2455分钟；替梅里诺进18人池（梅里诺1358列第19，未删）"
+      }
+    ],
+    "noMoreAdditions": "GK 1/1、MID 6/6、DEF 6/6、FWD 5/5 已满；吉马良斯/凯帕/莫斯克拉/因卡皮耶/梅利耶均不再加，避免超配额。",
+    "countingExamples": "Lewis-Skelly pos[0]=CM→MID（LB只在pos[]）；Eze pos[0]=AM→MID（LW只在pos[]）；Havertz pos[0]=ST→FWD（AM/CM只在pos[]）；White pos[0]=RB→DEF；Konsa pos[0]=CB→DEF；Tzolis pos[0]=LW→FWD；Timber pos[0]=RB→DEF。",
+    "scenarios": [
+      {
+        "id": "A",
+        "label": "推荐（按实际在队）",
+        "detail": "Trossard不计；15人 + White/Konsa/Tzolis/Guimarães - Merino = 18（GK1/DEF6/MID6/FWD5）。"
+      },
+      {
+        "id": "B",
+        "label": "若坚持把Trossard算进16人",
+        "detail": "FWD已满，Tzolis不能加；中场要加Guimarães仍需Merino让位；最终仍18人但含1名离队球员且LW缺Tzolis。不推荐。"
+      }
+    ],
+    "netChange": "15实际在队 + 4新增 - 梅里诺出池 = 18；Trossard离队不计。"
+  },
+  "minutes": {
+    "scope": "2026-27=all competitions (PL+CL+Carabao, 11 matches, Statz.ai, updated 21 Oct 2026)；2025-26=league minutes (FotMob: PL for Arsenal/Newcastle/Villa, Belgian Pro League for Tzolis)。combined=两者简单相加，只用于替补排序，不是跨赛事等价换算。",
+    "players": {
+      "拉亚": {
+        "apps": 10,
+        "m27": 900,
+        "m26": 3330,
+        "combined": 4230
+      },
+      "加布里埃尔": {
+        "apps": 11,
+        "m27": 946,
+        "m26": 2751,
+        "combined": 3697
+      },
+      "赖斯": {
+        "apps": 10,
+        "m27": 864,
+        "m26": 3099,
+        "combined": 3963
+      },
+      "厄德高": {
+        "apps": 11,
+        "m27": 776,
+        "m26": 1370,
+        "combined": 2146
+      },
+      "孔萨": {
+        "apps": 10,
+        "m27": 775,
+        "m26": 3036,
+        "combined": 3811
+      },
+      "萨卡": {
+        "apps": 10,
+        "m27": 707,
+        "m26": 2225,
+        "combined": 2932
+      },
+      "卡拉菲奥里": {
+        "apps": 8,
+        "m27": 680,
+        "m26": 1707,
+        "combined": 2387
+      },
+      "哈弗茨": {
+        "apps": 10,
+        "m27": 677,
+        "m26": 583,
+        "combined": 1260
+      },
+      "本·怀特": {
+        "apps": 8,
+        "m27": 539,
+        "m26": 704,
+        "combined": 1243
+      },
+      "刘易斯·斯凯利": {
+        "apps": 8,
+        "m27": 538,
+        "m26": 698,
+        "combined": 1236
+      },
+      "布鲁诺·吉马良斯": {
+        "apps": 9,
+        "m27": 464,
+        "m26": 2455,
+        "combined": 2919
+      },
+      "埃泽": {
+        "apps": 9,
+        "m27": 437,
+        "m26": 1900,
+        "combined": 2337
+      },
+      "马杜埃凯": {
+        "apps": 8,
+        "m27": 405,
+        "m26": 1217,
+        "combined": 1622
+      },
+      "措利斯": {
+        "apps": 7,
+        "m27": 404,
+        "m26": 3072,
+        "combined": 3476
+      },
+      "梅里诺": {
+        "apps": 11,
+        "m27": 331,
+        "m26": 1027,
+        "combined": 1358
+      },
+      "约克雷斯": {
+        "apps": 8,
+        "m27": 330,
+        "m26": 2230,
+        "combined": 2560
+      },
+      "廷贝尔": {
+        "apps": 6,
+        "m27": 323,
+        "m26": 2457,
+        "combined": 2780
+      },
+      "苏比门迪": {
+        "apps": 7,
+        "m27": 182,
+        "m26": 3001,
+        "combined": 3183
+      },
+      "萨利巴": {
+        "apps": 0,
+        "m27": 0,
+        "m26": 2615,
+        "combined": 2615
+      }
+    }
+  },
+  "reserve": [
+    {
+      "n": "梅里诺",
+      "en": [
+        "Merino",
+        "Mikel Merino"
+      ],
+      "club": "阿森纳",
+      "nat": "西班牙",
+      "pos": [
+        "CM",
+        "ST"
+      ],
+      "foot": "左",
+      "tags": [
+        "B2B"
+      ],
+      "weak": "回追慢",
+      "weakNote": "PL 官方 2025-04 分析：很少冲刺，是阿森纳较慢的球员；替代观察点：被拉边、转换回追。现库 foot=右为错，TM/EA 均为左。",
+      "src": [
+        "https://www.arsenal.com/news/arsenal-confirm-202627-squad-numbers-aPsbc3S4LJdQ",
+        "https://www.transfermarkt.com/mikel-merino/profil/spieler/338424",
+        "https://www.ea.com/zh-hans/games/ea-sports-fc/ratings/player-ratings/mikel-merino/225193",
+        "https://www.premierleague.com/en/news/4293186"
+      ],
+      "conf": "已核实",
+      "note": "重点修正：foot 由“右”改“左”（Transfermarkt/EA FC 27 一致）。位置 CM/ST 不变。",
+      "st": "B2B兼职9号",
+      "pair": [],
+      "d": "世界杯冠军中场：头球和后插上让他客串中锋都高产；左脚球员。",
+      "reserveReason": "按 26/27+25/26 分钟合计 1358，排替补第8/全池第19；不进18人池，但未从players.js删除；若你要求保留他，需放弃Guimarães或另一名中场。"
+    }
+  ],
+  "substitutes": [
+    {
+      "rank": 1,
+      "n": "苏比门迪",
+      "pos": [
+        "DM",
+        "CM"
+      ],
+      "m27": 182,
+      "m26": 3001,
+      "combined": 3183,
+      "status": "健康"
+    },
+    {
+      "rank": 2,
+      "n": "布鲁诺·吉马良斯",
+      "pos": [
+        "CM",
+        "DM"
+      ],
+      "m27": 464,
+      "m26": 2455,
+      "combined": 2919,
+      "status": "健康"
+    },
+    {
+      "rank": 3,
+      "n": "廷贝尔",
+      "pos": [
+        "RB",
+        "CB",
+        "LB"
+      ],
+      "m27": 323,
+      "m26": 2457,
+      "combined": 2780,
+      "status": "健康"
+    },
+    {
+      "rank": 4,
+      "n": "萨利巴",
+      "pos": [
+        "CB"
+      ],
+      "m27": 0,
+      "m26": 2615,
+      "combined": 2615,
+      "status": "背伤，约11月复出"
+    },
+    {
+      "rank": 5,
+      "n": "约克雷斯",
+      "pos": [
+        "ST"
+      ],
+      "m27": 330,
+      "m26": 2230,
+      "combined": 2560,
+      "status": "健康"
+    },
+    {
+      "rank": 6,
+      "n": "埃泽",
+      "pos": [
+        "AM",
+        "LW"
+      ],
+      "m27": 437,
+      "m26": 1900,
+      "combined": 2337,
+      "status": "健康"
+    },
+    {
+      "rank": 7,
+      "n": "马杜埃凯",
+      "pos": [
+        "RW",
+        "LW"
+      ],
+      "m27": 405,
+      "m26": 1217,
+      "combined": 1622,
+      "status": "健康"
+    }
+  ],
+  "benchCut": {
+    "n": "梅里诺",
+    "m27": 331,
+    "m26": 1027,
+    "combined": 1358,
+    "reason": "替补第8/全池第19；不进18人池，未删除"
+  },
+  "statusNotes": [
+    {
+      "n": "措利斯",
+      "status": "肌肉伤（数周）",
+      "role": "PREFERRED LW；当前不首发，Eze 顶替"
+    },
+    {
+      "n": "萨利巴",
+      "status": "背伤（约11月复出）",
+      "role": "替补 CB；不首发"
+    }
+  ]
+}

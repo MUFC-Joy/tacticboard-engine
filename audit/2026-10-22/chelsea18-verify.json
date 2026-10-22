@@ -1,0 +1,648 @@
+{
+  "team": "切尔西",
+  "form": "3-4-2-1",
+  "generated": "2026-10-22",
+  "baseline": "2026-10-21 引擎 v4.2；现有 13 人 + PREFERRED 3-4-2-1",
+  "verdict": "现有 13 人全部仍在队、无重复、无离队；18 人缺口 5 人。推荐 B 方案 1/8/6/3，不推荐硬凑 1/6/6/5。",
+  "planA": {
+    "split": "1 GK / 6 DEF / 6 MID / 5 FWD",
+    "status": "不推荐",
+    "reason": "切尔西 2026-27 真正有分钟的前锋只有 Neto、João Pedro、Welbeck；Estêvão 23 分钟、Quenda 28 分钟、Gittens 0 分钟、Emegha 0 分钟。凑 5 前锋必然违反“不能拿 10 分钟/0 场凑数”。"
+  },
+  "planB": {
+    "split": "1 GK / 8 DEF / 6 MID / 3 FWD",
+    "status": "推荐",
+    "adds": [
+      "阿奇姆蓬",
+      "佩普·查瓦里亚",
+      "约雷尔·哈托",
+      "乔丹·亨德森",
+      "维尔贝克（改 club，非新增）"
+    ],
+    "reason": "Barco 按官网/PL 登记为 Midfielder（CM），中场自然到 6；后卫 8 人对应实际三中卫+两翼卫的轮换深度；前锋 3 人全部有真实分钟。"
+  },
+  "planC": {
+    "split": "1 GK / 7 DEF / 6 MID / 4 FWD",
+    "status": "备选（需用户批准）",
+    "reason": "若必须保留 4 名前锋，只能拿 Hato（258 分钟）换 Estêvão（23 分钟）或 Emegha（0 分钟），替补质量下降；不建议。"
+  },
+  "preferredXI": {
+    "form": "3-4-2-1",
+    "xi": [
+      "埃米·马丁内斯",
+      "阿奇姆蓬",
+      "马克桑斯·拉克鲁瓦",
+      "科尔威尔",
+      "内托",
+      "凯塞多",
+      "乔丹·亨德森",
+      "佩普·查瓦里亚",
+      "帕尔默",
+      "摩根·罗杰斯",
+      "若昂·佩德罗"
+    ],
+    "evidence": "对伯恩茅斯（10-10，5-1）与对埃弗顿（10-17，2-0）连续两场 3-4-2-1；共同 10 人 + 左翼卫 Chavarría/Hato 轮换。Chavarría 298 分钟 > Hato 258 分钟，取 Chavarría。",
+    "changesFromCurrent": "换入 阿奇姆蓬、佩德罗·内托、乔丹·亨德森、佩普·查瓦里亚；换出 福法纳、里斯·詹姆斯、罗密欧·拉维亚、瓦伦丁·巴尔科（均改替补）。"
+  },
+  "bench7": [
+    {
+      "n": "福法纳",
+      "pos": "CB",
+      "min": 315,
+      "apps": 4
+    },
+    {
+      "n": "罗密欧·拉维亚",
+      "pos": "DM",
+      "min": 293,
+      "apps": 6
+    },
+    {
+      "n": "里斯·詹姆斯",
+      "pos": "RB",
+      "min": 292,
+      "apps": 4
+    },
+    {
+      "n": "古斯托",
+      "pos": "RB",
+      "min": 274,
+      "apps": 4
+    },
+    {
+      "n": "约雷尔·哈托",
+      "pos": "CB/LB",
+      "min": 258,
+      "apps": 4
+    },
+    {
+      "n": "瓦伦丁·巴尔科",
+      "pos": "CM/LWB",
+      "min": 116,
+      "apps": 3
+    },
+    {
+      "n": "韦尔贝克",
+      "pos": "ST",
+      "min": 92,
+      "apps": 3,
+      "note": "杯赛 5 场 3 球"
+    }
+  ],
+  "departures": [
+    {
+      "n": "恩佐·费尔南德斯",
+      "to": "曼城",
+      "date": "2026-09-01",
+      "src": "https://www.mancity.com/news/mens/enzo-fernandez-signs-for-city-63923893"
+    },
+    {
+      "n": "利亚姆·德拉普",
+      "to": "诺丁汉森林",
+      "date": "2026-08-27",
+      "src": "https://www.theguardian.com/football/2026/aug/27/liam-delap-signs-nottingham-forest-chelsea-transfer-latest"
+    },
+    {
+      "n": "尼古拉斯·杰克逊",
+      "to": "阿斯顿维拉",
+      "date": "2026-08-28"
+    },
+    {
+      "n": "托辛·阿达拉比奥尤",
+      "to": "热刺",
+      "date": "2026-09-01",
+      "src": "https://www.tottenhamhotspur.com/news/1088054/welcome-tosin-adarabioyo-joins-from-chelsea"
+    },
+    {
+      "n": "安德烈·桑托斯",
+      "to": "曼联",
+      "date": "2026-07-13",
+      "src": "https://www.chelseafc.com/en/news/article/andrey-santos-moves-to-manchester-united"
+    },
+    {
+      "n": "达里奥·埃苏戈",
+      "to": "斯特拉斯堡（租借）",
+      "date": "2026-09-01",
+      "src": "https://sports.yahoo.com/articles/d-rio-essugo-joins-strasbourg-201500757.html"
+    },
+    {
+      "n": "穆德里克",
+      "to": "热刺（租借）",
+      "date": "2026-08-31"
+    },
+    {
+      "n": "罗伯特·桑切斯",
+      "to": "科莫",
+      "date": "2026-08-31"
+    }
+  ],
+  "conflicts": [
+    "Barco：官网/PL 登记 Midfielder，项目原 pos[0]=LB。推荐改 CM（保留 LWB/LB），否则 6 中场配额不成立。",
+    "Welbeck：players.js 里 club=布莱顿，2026-08-01 已官宣切尔西。写库必须改 club，不能只在候选表里删；布莱顿 16 人池会少 1 人，需另记。",
+    "埃米·马丁内斯 weak=压迫下失误 缺乏 2026-27 证据（球探报告反而肯定其分配球），建议改 待确认。",
+    "科尔威尔 weak=逆足限制 不成立（左脚中卫是体系资产），建议改 待确认。",
+    "若昂·佩德罗 weak=纪律差 证据不足（仅 2025 欧冠 1 红、2026-27 仅 1 黄），建议改 待确认。",
+    "PREFERRED 现含 4 名非首发（福法纳、詹姆斯、拉维亚、巴尔科），且缺 4 名实际首发（阿奇姆蓬、查瓦里亚、亨德森、内托）。",
+    "1/6/6/5 与真实阵容冲突：唯一有分钟的第 3 前锋是 Welbeck（92 分钟），第 4/5 前锋均为 0-23 分钟。",
+    "内托 pos[0]=RW（前锋配额），实际连续两场踢右翼卫；建议 pos 增补 RWB。",
+    "2025-26 分钟只核实到拉维亚（12 场/377 分钟）；其余 6 名替补的 2025-26 分钟未逐项核实，替补排序以 2026-27 分钟为主键。",
+    "Estêvão（23 分钟）、Quenda（28 分钟）、Gittens（0 分钟）、Emegha（0 分钟）本轮不进 18 人池；若要进，违反替补分钟门槛。"
+  ],
+  "rows": [
+    {
+      "n": "埃米·马丁内斯",
+      "en": [
+        "Emiliano Martinez",
+        "Dibu"
+      ],
+      "club": "切尔西",
+      "pos": [
+        "GK"
+      ],
+      "foot": "右",
+      "nat": "阿根廷",
+      "tags": [
+        "门线型"
+      ],
+      "weak": "待确认",
+      "weakNote": "无可靠战术弱点：球探报告反而称其分配球与接高球稳定（Birmingham Mail 2020/TFA 2020-21），The Athletic 2026-01 也指出其扑救处理稳定；原 weak=压迫下失误 缺乏 2026-27 证据，建议改 待确认。替代观察点：高位逼抢下的短传选择、出击范围、禁区外持球决策。2026-27 英超 6 场。",
+      "src": [
+        "https://www.chelseafc.com/en/news/article/emiliano-martinez-signs-for-chelsea",
+        "https://totalfootballanalysis.com/player-analysis/emiliano-martinez-at-aston-villa-202021-scout-report-tactical-analysis-tactics",
+        "https://www.nytimes.com/athletic/6970380/2026/01/19/emiliano-martinez-aston-villa-form/"
+      ],
+      "conf": "待确认",
+      "status": "change-weak",
+      "season": "2026-27 PL：6 场",
+      "note": "队籍：切尔西官网 2026-08-30 官宣（晚于 08-19 号码表，所以不在号码表里）；weak 由 压迫下失误 → 待确认（本轮建议）。"
+    },
+    {
+      "n": "福法纳",
+      "en": [
+        "Fofana"
+      ],
+      "club": "切尔西",
+      "pos": [
+        "CB"
+      ],
+      "foot": "右",
+      "nat": "法国",
+      "tags": [
+        "回追型"
+      ],
+      "weak": "伤病史",
+      "weakNote": "【可用性风险，非战术弱点】长期伤病史（俱乐部/TM 公开记录）；2026-27 英超 4 场 / 315 分钟。健康时是队内回追最快的中卫之一。",
+      "src": [
+        "https://www.premierleague.com/en/players/444463/wesley-fofana/stats",
+        "https://www.chelseafc.com/en/news/article/chelsea-squad-numbers-confirmed-for-the-2026-27-season",
+        "https://www.transfermarkt.com/wesley-fofana/leistungsdaten/spieler/475411"
+      ],
+      "conf": "已核实",
+      "status": "keep",
+      "season": "2026-27 PL：4 场 / 315 分钟",
+      "note": "队籍/号码 3 号；分钟数 PL 官网。"
+    },
+    {
+      "n": "科尔威尔",
+      "en": [
+        "Colwill"
+      ],
+      "club": "切尔西",
+      "pos": [
+        "CB"
+      ],
+      "foot": "左",
+      "nat": "英格兰",
+      "tags": [
+        "左脚中卫",
+        "出球型"
+      ],
+      "weak": "待确认",
+      "weakNote": "原 weak=逆足限制不成立：左脚中卫在三中卫左路是体系资产（阿隆索 3-4-2-1 的左出球点），不是弱点。本轮未找到可靠战术短板，建议改 待确认。替代观察点：被背身支点拉出、禁区高空球、压迫下向前传球。",
+      "src": [
+        "https://www.premierleague.com/en/clubs/8/chelsea/squad",
+        "https://totalfootballanalysis.com/article/levi-colwill-202223-scout-report-tactical-analysis-tactics",
+        "https://www.chelseafc.com/en/news/article/chelsea-squad-numbers-confirmed-for-the-2026-27-season"
+      ],
+      "conf": "已核实",
+      "status": "change-weak",
+      "season": "2026-27 PL：6 场",
+      "note": "队籍/号码 6 号；位置 CB 不变；weak 由 逆足限制 → 待确认（本轮建议）。"
+    },
+    {
+      "n": "马克桑斯·拉克鲁瓦",
+      "en": [
+        "Maxence Lacroix"
+      ],
+      "club": "切尔西",
+      "pos": [
+        "CB"
+      ],
+      "foot": "右",
+      "nat": "法国",
+      "tags": [
+        "回追型",
+        "上抢型"
+      ],
+      "weak": "怕一对一",
+      "weakNote": "Breaking The Lines 球探：在宽区域持球/防守时信心不足，容易在被逼到边路后丢球；2026-27 英超 7 场。取 怕一对一，但证据更偏宽区域而非禁区中路，conf 待确认。",
+      "src": [
+        "https://breakingthelines.com/@btl/player-analysis-maxence-lacroix",
+        "https://www.chelseafc.com/en/news/article/chelsea-squad-numbers-confirmed-for-the-2026-27-season",
+        "https://www.premierleague.com/en/clubs/8/chelsea/squad"
+      ],
+      "conf": "待确认",
+      "status": "keep",
+      "season": "2026-27 PL：7 场",
+      "note": "队籍/号码 5 号；弱点保留但标待确认。"
+    },
+    {
+      "n": "里斯·詹姆斯",
+      "en": [
+        "Reece James"
+      ],
+      "club": "切尔西",
+      "pos": [
+        "RB",
+        "RWB",
+        "DM"
+      ],
+      "foot": "右",
+      "nat": "英格兰",
+      "tags": [
+        "套边型",
+        "出球型"
+      ],
+      "weak": "伤病史",
+      "weakNote": "【可用性风险，非战术弱点】反复腿筋/肌肉伤；2026-27 英超 4 场 / 292 分钟。健康时右路传中与推进仍是队内顶级，问题在出勤。",
+      "src": [
+        "https://twentyclubs.com/players/reece-james",
+        "https://www.chelseafc.com/en/news/article/chelsea-squad-numbers-confirmed-for-the-2026-27-season",
+        "https://www.premierleague.com/en/clubs/8/chelsea/squad"
+      ],
+      "conf": "已核实",
+      "status": "keep",
+      "season": "2026-27 PL：4 场 / 292 分钟",
+      "note": "队籍/号码 24 号；近两轮未首发（Acheampong 顶右中卫）。"
+    },
+    {
+      "n": "凯塞多",
+      "en": [
+        "Caicedo"
+      ],
+      "club": "切尔西",
+      "pos": [
+        "DM"
+      ],
+      "foot": "右",
+      "nat": "厄瓜多尔",
+      "tags": [
+        "破坏型"
+      ],
+      "weak": "纪律差",
+      "weakNote": "【可用性风险，非战术短板】2025-26 俱乐部+国家队 12 黄 2 红，因停赛缺席 5 场（The Athletic 2026-02 专题）；2026-27 英超 3 场。强项仍是扫荡与覆盖。",
+      "src": [
+        "https://www.nytimes.com/athletic/7065711/2026/02/24/chelsea-premier-league-caicedo-yellow-cards-suspension/",
+        "https://www.chelseafc.com/en/news/article/chelsea-squad-numbers-confirmed-for-the-2026-27-season",
+        "https://www.premierleague.com/en/clubs/8/chelsea/squad"
+      ],
+      "conf": "已核实",
+      "status": "keep",
+      "season": "2026-27 PL：3 场",
+      "note": "队籍/号码 25 号；纪律差按可用性风险保留。"
+    },
+    {
+      "n": "罗密欧·拉维亚",
+      "en": [
+        "Romeo Lavia"
+      ],
+      "club": "切尔西",
+      "pos": [
+        "DM",
+        "CM"
+      ],
+      "foot": "右",
+      "nat": "比利时",
+      "tags": [
+        "破坏型",
+        "拖后组织"
+      ],
+      "weak": "伤病史",
+      "weakNote": "【可用性风险，非战术弱点】2025-26 英超 12 场 / 377 分钟（StatsNext）；2026-27 6 场 / 293 分钟，负荷仍需管理。",
+      "src": [
+        "https://statsnext.com/premier-league/players/romeo-lavia-cdc9638f",
+        "https://www.chelseafc.com/en/news/article/chelsea-squad-numbers-confirmed-for-the-2026-27-season",
+        "https://www.premierleague.com/en/clubs/8/chelsea/squad"
+      ],
+      "conf": "已核实",
+      "status": "keep",
+      "season": "2026-27 PL：6 场 / 293 分钟（2025-26：12 场 / 377 分钟）",
+      "note": "队籍/号码 45 号；本赛季出勤明显好转，但伤病史仍成立。"
+    },
+    {
+      "n": "瓦伦丁·巴尔科",
+      "en": [
+        "Valentin Barco"
+      ],
+      "club": "切尔西",
+      "pos": [
+        "CM",
+        "LWB",
+        "LB"
+      ],
+      "foot": "左",
+      "nat": "阿根廷",
+      "tags": [
+        "套边型",
+        "攻击型"
+      ],
+      "weak": "怕一对一",
+      "weakNote": "Bluelions 2026 分析：进攻/传球是卖点，防守端仍需队友保护；2026-27 英超 3 场 / 116 分钟，样本小。取 怕一对一 待确认。官网/PL 把他登记为 Midfielder，主位置建议由 LB 改 CM（本轮建议）。",
+      "src": [
+        "https://www.premierleague.com/en/clubs/8/chelsea/squad",
+        "https://www.bluelionsfc.com/article/where-does-valentin-barco-fit-at-chelsea-valentin-barco-analysis",
+        "https://www.fotmob.com/players/1272440/valentin-barco"
+      ],
+      "conf": "待确认",
+      "status": "change-pos",
+      "season": "2026-27 PL：3 场 / 116 分钟",
+      "note": "官网/号码 4 号；位置主项 LB → CM（按官网 Midfielder）；仍保留 LWB/LB 以适配引擎。"
+    },
+    {
+      "n": "帕尔默",
+      "en": [
+        "Palmer"
+      ],
+      "club": "切尔西",
+      "pos": [
+        "AM",
+        "RW"
+      ],
+      "foot": "左",
+      "nat": "英格兰",
+      "tags": [
+        "现代10"
+      ],
+      "weak": "伤病史",
+      "weakNote": "【可用性风险，非战术弱点】2025-26 有腹股沟伤缺阵记录；2026-27 英超 7 场 2 球 3 助，仍是第一创造力。",
+      "src": [
+        "https://www.premierleague.com/en/clubs/8/chelsea/squad",
+        "https://www.chelseafc.com/en/news/article/chelsea-squad-numbers-confirmed-for-the-2026-27-season",
+        "https://www.premierleague.com/en/players/475168/joao-pedro/stats"
+      ],
+      "conf": "已核实",
+      "status": "keep",
+      "season": "2026-27 PL：7 场 / 2 球 3 助",
+      "note": "队籍/号码 10 号；左脚已核对。"
+    },
+    {
+      "n": "摩根·罗杰斯",
+      "en": [
+        "Morgan Rogers"
+      ],
+      "club": "切尔西",
+      "pos": [
+        "AM",
+        "LW"
+      ],
+      "foot": "右",
+      "nat": "英格兰",
+      "tags": [
+        "现代10"
+      ],
+      "weak": "不参与防守",
+      "weakNote": "TFA 2026 球探报告：无球跑动与防守参与度是相对短板（报道口径，非官方统计）；2026-27 英超 7 场 4 球 1 助。",
+      "src": [
+        "https://tacticalfootballanalysis.com/morgan-rogers-scout-report-chelsea-2026-2027-tactics-analysis/",
+        "https://www.chelseafc.com/en/news/article/chelsea-squad-numbers-confirmed-for-the-2026-27-season",
+        "https://www.premierleague.com/en/clubs/8/chelsea/squad"
+      ],
+      "conf": "已核实",
+      "status": "keep",
+      "season": "2026-27 PL：7 场 / 4 球 1 助",
+      "note": "队籍/号码 17 号；本轮弱点保留。"
+    },
+    {
+      "n": "若昂·佩德罗",
+      "en": [
+        "Joao Pedro"
+      ],
+      "club": "切尔西",
+      "pos": [
+        "ST",
+        "AM"
+      ],
+      "foot": "右",
+      "nat": "巴西",
+      "tags": [
+        "伪9",
+        "自由10"
+      ],
+      "weak": "待确认",
+      "weakNote": "原 weak=纪律差 证据不足：仅有 2025 欧冠对本菲卡一次红牌，2026-27 英超仅 1 黄，不足以支撑纪律差，建议改 待确认。替代观察点：背身护球、回撤串联受压、禁区抢点。2026-27 英超 6 场 5 球 3 助。",
+      "src": [
+        "https://www.premierleague.com/en/players/475168/joao-pedro/stats",
+        "https://www.chelseafc.com/en/news/article/chelsea-squad-numbers-confirmed-for-the-2026-27-season",
+        "https://www.premierleague.com/en/clubs/8/chelsea/squad"
+      ],
+      "conf": "已核实",
+      "status": "change-weak",
+      "season": "2026-27 PL：6 场 / 5 球 3 助",
+      "note": "队籍/号码 9 号；weak 由 纪律差 → 待确认（本轮建议）。"
+    },
+    {
+      "n": "内托",
+      "en": [
+        "Pedro Neto"
+      ],
+      "club": "切尔西",
+      "pos": [
+        "RW",
+        "LW",
+        "RWB"
+      ],
+      "foot": "左",
+      "nat": "葡萄牙",
+      "tags": [
+        "逆足内切"
+      ],
+      "weak": "伤病史",
+      "weakNote": "【可用性风险，非战术弱点】狼队时期多次肌肉/膝伤记录；2026-27 英超 7 场 3 球 1 助，实际位置是右翼卫（对伯恩茅斯/埃弗顿均如此）。",
+      "src": [
+        "https://twentyclubs.com/players/pedro-neto",
+        "https://sports.yahoo.com/articles/chelsea-vs-bournemouth-confirmed-starting-124938033.html",
+        "https://www.chelseafc.com/en/news/article/chelsea-squad-numbers-confirmed-for-the-2026-27-season"
+      ],
+      "conf": "已核实",
+      "status": "change-pos",
+      "season": "2026-27 PL：7 场 / 3 球 1 助（414 分钟，截至 10-10）",
+      "note": "队籍/号码 7 号；pos 增补 RWB（实际用法），主位置仍 RW。"
+    },
+    {
+      "n": "古斯托",
+      "en": [
+        "Gusto"
+      ],
+      "club": "切尔西",
+      "pos": [
+        "RB",
+        "RWB"
+      ],
+      "foot": "右",
+      "nat": "法国",
+      "tags": [
+        "套边型"
+      ],
+      "weak": "防空弱",
+      "weakNote": "WhoScored 统计特征：Aerial Duels = Weak（近两季）；2026-27 英超 4-5 场 / 274 分钟（源口径不一）。",
+      "src": [
+        "https://www.whoscored.com/players/403850/show/malo-gusto",
+        "https://www.chelseafc.com/en/news/article/chelsea-squad-numbers-confirmed-for-the-2026-27-season",
+        "https://twentyclubs.com/players/malo-gusto"
+      ],
+      "conf": "已核实",
+      "status": "keep",
+      "season": "2026-27 PL：4-5 场 / 274 分钟",
+      "note": "队籍/号码 27 号；防空弱保留。"
+    },
+    {
+      "n": "阿奇姆蓬",
+      "en": [
+        "Josh Acheampong"
+      ],
+      "club": "切尔西",
+      "pos": [
+        "CB",
+        "RB"
+      ],
+      "foot": "右",
+      "nat": "英格兰",
+      "tags": [
+        "回追型",
+        "多面手"
+      ],
+      "weak": "待确认",
+      "weakNote": "无可靠战术弱点（2026-27 英超 4 场 / 311 分钟，样本小）。TFA 2025-26 球探：自然位置右中卫，可打右后卫/左后卫。替代观察点：高球落点、被拉到边路 1v1、出球受压。",
+      "src": [
+        "https://www.premierleague.com/en/players/577016/josh-acheampong/overview",
+        "https://tacticalfootballanalysis.com/josh-acheampong-scout-report-at-chelsea-2025-2026-the-blues-next-defensive-leader-player-analysis/",
+        "https://en.wikipedia.org/wiki/Josh_Acheampong"
+      ],
+      "conf": "已核实",
+      "status": "add",
+      "season": "2026-27 PL：4 场 / 311 分钟",
+      "note": "新增。官网号码 34；近两轮联赛首发右中卫（对伯恩茅斯、埃弗顿）。脚：PL 官网 Preferred Foot = Right。"
+    },
+    {
+      "n": "佩普·查瓦里亚",
+      "en": [
+        "Pep Chavarria"
+      ],
+      "club": "切尔西",
+      "pos": [
+        "LWB",
+        "LB"
+      ],
+      "foot": "左",
+      "nat": "西班牙",
+      "tags": [
+        "套边型",
+        "翼卫"
+      ],
+      "weak": "待确认",
+      "weakNote": "无可靠战术弱点：TFA 2026 球探强调防守纪律与传中准确，未列明确短板；2026-27 英超 5 场 / 298 分钟。替代观察点：压上后身后、逆足内切防守、连续作战体能。",
+      "src": [
+        "https://tacticalfootballanalysis.com/pep-chavarria-scout-report-chelsea-2026-2027-tactics-analysis/",
+        "https://www.chelseafc.com/en/news/article/chelsea-squad-numbers-confirmed-for-the-2026-27-season",
+        "https://www.premierleague.com/en/clubs/8/chelsea/squad"
+      ],
+      "conf": "已核实",
+      "status": "add",
+      "season": "2026-27 PL：5 场 / 298 分钟",
+      "note": "新增。官网号码 29；对伯恩茅斯首发左翼卫，对埃弗顿由 Hato 轮换。脚：TM/球探报告均记左脚。"
+    },
+    {
+      "n": "约雷尔·哈托",
+      "en": [
+        "Jorrel Hato"
+      ],
+      "club": "切尔西",
+      "pos": [
+        "CB",
+        "LB"
+      ],
+      "foot": "左",
+      "nat": "荷兰",
+      "tags": [
+        "左脚中卫",
+        "多面手"
+      ],
+      "weak": "防空弱",
+      "weakNote": "WhoScored：Aerial Duels = Weak；TFA 2024-25 球探：29/62 空中对抗（46.8%），当时是明显短板；2026-27 小样本 6/8 有改善。",
+      "src": [
+        "https://www.whoscored.com/players/467715/show/jorrel-hato",
+        "https://totalfootballanalysis.com/article/jorrel-hato-2024-25-scout-report-tactical-analysis-tactics",
+        "https://www.transfermarkt.com/jorrel-hato/profil/spieler/904802"
+      ],
+      "conf": "已核实",
+      "status": "add",
+      "season": "2026-27 PL：4 场 / 258 分钟",
+      "note": "新增。官网号码 21；对埃弗顿首发左翼卫，可打左中卫/左后卫。脚：TM 位置 Left-Back + 左脚（EA FC 27 同）。"
+    },
+    {
+      "n": "乔丹·亨德森",
+      "en": [
+        "Jordan Henderson"
+      ],
+      "club": "切尔西",
+      "pos": [
+        "CM",
+        "DM"
+      ],
+      "foot": "右",
+      "nat": "英格兰",
+      "tags": [
+        "组织8",
+        "B2B"
+      ],
+      "weak": "体能掉档",
+      "weakNote": "36 岁（2026-27 英超 3 场 2 球 1 助）；Alonso 对其负荷明显管理（对伯恩茅斯全场最佳）。属体能/轮换风险，不是战术短板；替代观察点：一周双赛的第二场、被高强度逼抢时的转身。",
+      "src": [
+        "https://www.chelseafc.com/en/news/article/xabi-alonso-on-competitive-monster-jordan-henderson-and-chelsea-absentees",
+        "https://www.chelseafc.com/en/news/article/chelsea-squad-numbers-confirmed-for-the-2026-27-season",
+        "https://www.premierleague.com/en/clubs/8/chelsea/squad"
+      ],
+      "conf": "待确认",
+      "status": "add",
+      "season": "2026-27 PL：3 场 / 2 球 1 助",
+      "note": "新增。官网号码 14；2026 夏窗加盟，近两轮联赛首发 CM。脚：TM 记右脚。"
+    },
+    {
+      "n": "韦尔贝克",
+      "en": [
+        "Danny Welbeck"
+      ],
+      "club": "切尔西",
+      "pos": [
+        "ST"
+      ],
+      "foot": "右",
+      "nat": "英格兰",
+      "tags": [
+        "支点",
+        "抢点型"
+      ],
+      "weak": "体能掉档",
+      "weakNote": "35 岁；2026-27 联赛 3 场 / 92 分钟（官网记 94 分钟）、杯赛 5 场 3 球，作为替补终结者使用。属体能/负荷风险；替代观察点：背身对抗、连续冲刺后的回防。",
+      "src": [
+        "https://www.chelseafc.com/en/news/article/danny-welbeck-signs-for-chelsea",
+        "https://twentyclubs.com/players/danny-welbeck",
+        "https://www.chelseafc.com/en/teams/profile/danny-welbeck"
+      ],
+      "conf": "待确认",
+      "status": "move-club",
+      "season": "2026-27 PL：3 场 / 92 分钟（杯赛 5 场 3 球）",
+      "note": "已存在行，club 由 布莱顿 → 切尔西（2026-08-01 官宣），不是新增；同时补 weak/weakNote、d 改为 35 岁。"
+    }
+  ]
+}

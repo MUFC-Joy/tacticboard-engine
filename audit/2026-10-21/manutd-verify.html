@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>曼联 · 球员审核</title>
+<style>
+:root{--bg:#0c1015;--card:#151a21;--card2:#1b222c;--line:#2a323d;--txt:#e8eef5;--mut:#93a0af;
+--green:#23c55e;--red:#e2383f;--amber:#f0b429;--blue:#4ea1ff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);font:14px/1.55 -apple-system,BlinkMacSystemFont,"PingFang SC",Roboto,"Microsoft YaHei",sans-serif}
+main{max-width:520px;margin:0 auto;padding:14px 12px 96px}
+header{padding:4px 2px 10px}
+h1{font-size:19px;margin:0 0 4px}
+.sub{font-size:12px;color:var(--mut);line-height:1.6}
+.legend{font-size:11px;color:var(--mut);margin-top:8px}
+.badge{display:inline-block;font-size:10px;border:1px solid;border-radius:99px;padding:1px 7px;margin-left:6px;white-space:nowrap}
+.badge.ok{color:#8ef0b3;border-color:rgba(35,197,94,.5);background:rgba(35,197,94,.1)}
+.badge.warn{color:#f5d28a;border-color:rgba(240,180,41,.5);background:rgba(240,180,41,.1)}
+.badge.bad{color:#ffb4b7;border-color:rgba(226,56,63,.5);background:rgba(226,56,63,.1)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:13px;margin:0 0 10px}
+.card.done{border-color:rgba(35,197,94,.55)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:15px}
+.en{font-size:11px;color:var(--mut);margin-top:2px;overflow-wrap:anywhere}
+.meta{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;margin-top:8px}
+.kv{color:var(--mut)}
+.kv b{color:var(--txt);font-weight:700}
+.tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
+.tag{font-size:10.5px;color:#a8d2ff;background:rgba(78,161,255,.12);border:1px solid rgba(78,161,255,.35);border-radius:99px;padding:2px 7px}
+.weak{font-size:12px;color:#d3dce6;margin-top:8px}
+.weaknote{font-size:11px;color:#8fa3b8;margin-top:4px;line-height:1.55}
+.note{font-size:11.5px;color:#b9c6d3;margin-top:6px;background:rgba(255,255,255,.03);border-radius:6px;padding:6px 8px}
+.src{font-size:11px;color:var(--mut);margin-top:8px;overflow-wrap:anywhere}
+.src a{color:#a8d2ff;text-decoration:none;margin-right:4px}
+.muted{color:#6b7887}
+.check{display:flex;align-items:center;gap:9px;margin-top:11px;border-top:1px dashed #ffffff14;padding-top:10px;font-size:12.5px;min-height:42px}
+.check input{width:22px;height:22px;accent-color:var(--green);flex:0 0 22px}
+.memo{display:block;width:100%;margin-top:8px;background:var(--card2);border:1px solid var(--line);color:var(--txt);
+border-radius:8px;padding:10px;font:12px/1.5 inherit;min-height:40px}
+.memo::placeholder{color:#6b7887}
+footer{position:fixed;left:0;right:0;bottom:0;background:rgba(12,16,21,.97);border-top:1px solid var(--line);
+padding:10px 12px calc(10px + env(safe-area-inset-bottom));z-index:9}
+.fbar{max-width:520px;margin:0 auto;display:flex;gap:8px;align-items:center}
+.count{font-size:12px;color:var(--mut);flex:0 0 auto;min-width:80px}
+.count b{color:#fff}
+button{font:13px/1.2 inherit;border-radius:9px;min-height:42px;padding:10px 12px;border:1px solid var(--line);
+background:var(--card2);color:var(--txt)}
+button.primary{background:rgba(35,197,94,.16);border-color:rgba(35,197,94,.55);color:#dfffe9;font-weight:700}
+button:active{transform:scale(.98)}
+#fallback{display:none;margin-top:8px}
+#fallback textarea{width:100%;height:90px;background:var(--card2);border:1px solid var(--line);color:var(--txt);
+border-radius:8px;padding:8px;font:11px/1.5 ui-monospace,Menlo,monospace}
+.toast{position:fixed;left:50%;bottom:70px;transform:translateX(-50%);background:#1f2a35;border:1px solid #3a4a5a;
+color:#fff;border-radius:99px;padding:7px 13px;font-size:12px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:20}
+.toast.on{opacity:1}
+@media(min-width:521px){main{padding-top:20px}}
+</style></head>
+<body>
+<main>
+<header>
+  <h1>曼联 · 球员审核</h1>
+  <div class="sub">4-2-3-1 · 28 行候选 · 勾选=同意写入；不勾=不写。<br>
+  要改的写在备注里。底栏下载的 JSON 只包含已勾选行。</div>
+  <div class="legend"><span class="badge ok">已核实</span> 来源较硬 · <span class="badge warn">待确认</span> 需你判断 · <span class="badge bad">冲突</span> 来源互相矛盾</div>
+</header>
+
+<section class="card" data-card="0">
+  <div class="top"><b>拉门斯</b><span class="badge ok">已核实</span></div>
+  <div class="en">Lammens</div>
+  <div class="meta">
+    <span class="kv">位置 <b>GK</b></span>
+    <span class="kv">惯用脚 <b>右</b></span>
+  </div>
+  <div class="tags"><span class="tag">清球型</span></div>
+  <div class="weak">弱点：防空弱</div>
+  <div class="weaknote">弱点依据：TFA 2025-26 门将球探：禁区制空/空中对抗是相对弱项（&quot;one of the least commanding in aerial duels&quot;）；出击成功率高不等于制空强。作者原 d 也写“制空和指挥防线还在涨球”，判断一致。</div>
+  <div class="note">备注：现有行；只补弱点，不改位置/脚/标签。</div>
+  <div class="src"><a href="https://www.manutd.com/en/players-and-staff/first-team" target="_blank" rel="noopener">来源 1</a> · <a href="https://totalfootballanalysis.com/player-analysis/senne-lammens-scout-report-manchester-united-2025-2026-analysis-tactics" target="_blank" rel="noopener">来源 2</a> · <a href="https://www.premierleague.com/en/players/465247/senne-lammens/overview" target="_blank" rel="noopener">来源 3</a></div>
+  <label class="check"><input type="checkbox" data-check="0"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="0" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="1">
+  <div class="top"><b>达洛</b><span class="badge warn">待确认</span></div>
+  <div class="en">Karl Darlow / Darlow / 卡尔·达洛</div>
+  <div class="meta">
+    <span class="kv">位置 <b>GK</b></span>
+    <span class="kv">惯用脚 <b>右</b></span>
+  </div>
+  <div class="tags"><span class="tag">门线型</span></div>
+  <div class="weak">弱点：待确认</div>
+  <div class="weaknote">弱点依据：无可靠战术弱点（2026-27 英超 0 出场）：36 岁二号门将，无足够战术样本；替代观察点：杯赛中的反应速度、出击范围、指挥防线。不是“达洛特”重复行。</div>
+  <div class="note">备注：现有：en=&quot;Dalu&quot;、nat=&quot;—&quot;、foot=null、season=&quot;1场&quot; → 建议：en=Karl Darlow/Darlow/卡尔·达洛、nat=威尔士、foot=右、season=22场/5零封（2025-26 利兹联英超 22 场 5 零封）。n 保留“达洛”，与“达洛特”区分；不是重复行。</div>
+  <div class="src"><a href="https://www.manutd.com/en/players-and-staff/first-team" target="_blank" rel="noopener">来源 1</a> · <a href="https://www.manutd.com/en/teams/mens-team/karl-darlow" target="_blank" rel="noopener">来源 2</a> · <a href="https://www.premierleague.com/en/players/59735/karl-darlow/overview" target="_blank" rel="noopener">来源 3</a> · <a href="https://apnews.com/article/darlow-man-united-goalkeeper-e24afa2c671e8d87e9e6c5b3cdf80815" target="_blank" rel="noopener">来源 4</a> · <a href="https://www.espn.co.uk/football/team/squad/_/id/360/eng.man_utd" target="_blank" rel="noopener">来源 5</a></div>
+  <label class="check"><input type="checkbox" data-check="1"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="1" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="2">
+  <div class="top"><b>达洛特</b><span class="badge ok">已核实</span></div>
+  <div class="en">Dalot</div>
+  <div class="meta">
+    <span class="kv">位置 <b>RB / RWB / LB</b></span>
+    <span class="kv">惯用脚 <b>右</b></span>
+  </div>
+  <div class="tags"><span class="tag">套边型</span><span class="tag">翼卫</span></div>
+  <div class="weak">弱点：怕一对一</div>
+  <div class="weaknote">弱点依据：TFA 2026 边后卫分析：防守 1v1 表现“extremely low”，压迫时机偏被动、错误的 engagement timing；进攻端传中 36%、xG+xA 0.17/90。不是速度问题，是防守对抗与站位。</div>
+  <div class="note">备注：现有行；只补弱点，不改位置/脚/标签。</div>
+  <div class="src"><a href="https://www.manutd.com/en/players-and-staff/first-team" target="_blank" rel="noopener">来源 1</a> · <a href="https://totalfootballanalysis.com/player-analysis/diogo-dalot-scout-report-manchester-united-2025-2026-analysis-tactics" target="_blank" rel="noopener">来源 2</a> · <a href="https://tacticalfootballanalysis.com/manchester-united-recruitment-2026-2027-tactics-data-analysis/" target="_blank" rel="noopener">来源 3</a></div>
+  <label class="check"><input type="checkbox" data-check="2"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="2" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="3">
+  <div class="top"><b>马兹拉维</b><span class="badge ok">已核实</span></div>
+  <div class="en">Mazraoui</div>
+  <div class="meta">
+    <span class="kv">位置 <b>RB / RWB / CM</b></span>
+    <span class="kv">惯用脚 <b>右</b></span>
+  </div>
+  <div class="tags"><span class="tag">内收型</span><span class="tag">多面手</span></div>
+  <div class="weak">弱点：易失位</div>
+  <div class="weaknote">弱点依据：Busby Babe 2026：习惯收得很窄、不给边锋套边支援，右路宽度常空；TFA 招募分析指其传中/创造力“extremely low”。内收是战术设计，代价是边路 1v1 暴露。</div>
+  <div class="note">备注：现有行；只补弱点，不改位置/脚/标签。</div>
+  <div class="src"><a href="https://www.manutd.com/en/players-and-staff/first-team" target="_blank" rel="noopener">来源 1</a> · <a href="https://thebusbybabe.sbnation.com/general/34806/tactical-analysis-noussair-mazraouis-shortcomings" target="_blank" rel="noopener">来源 2</a> · <a href="https://tacticalfootballanalysis.com/manchester-united-recruitment-2026-2027-tactics-data-analysis/" target="_blank" rel="noopener">来源 3</a></div>
+  <label class="check"><input type="checkbox" data-check="3"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="3" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="4">
+  <div class="top"><b>德利赫特</b><span class="badge ok">已核实</span></div>
+  <div class="en">de Ligt / 德里赫特</div>
+  <div class="meta">
+    <span class="kv">位置 <b>CB</b></span>
+    <span class="kv">惯用脚 <b>右</b></span>
+  </div>
+  <div class="tags"><span class="tag">上抢型</span><span class="tag">对抗型</span></div>
+  <div class="weak">弱点：回追慢</div>
+  <div class="weaknote">弱点依据：The Athletic 2025：不是慢后卫，但缺少约罗那种回追速度，不适合守大空间；原 d 也写“怕被速度型前锋拉进长距离回追”。另有背伤术后 2026-27 英超 0 出场=可用性风险，另记。</div>
+  <div class="note">备注：2026-27 英超 0 出场（背伤术后），PREFERRED 仍列首发；是否加 status/换首发需你定，本轮不改 build.py。</div>
+  <div class="src"><a href="https://www.manutd.com/en/players-and-staff/first-team" target="_blank" rel="noopener">来源 1</a> · <a href="https://www.nytimes.com/athletic/6480014/2025/08/21/matthijs-de-ligt-man-utd-analysis/" target="_blank" rel="noopener">来源 2</a> · <a href="https://www.manutd.com/en/news/matthijs-de-ligt-has-surgery-to-address-a-back-injury" target="_blank" rel="noopener">来源 3</a> · <a href="https://www.espn.co.uk/football/team/squad/_/id/360/eng.man_utd" target="_blank" rel="noopener">来源 4</a></div>
+  <label class="check"><input type="checkbox" data-check="4"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="4" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="5">
+  <div class="top"><b>L.马丁内斯</b><span class="badge ok">已核实</span></div>
+  <div class="en">Lisandro Martinez / 利马 / 利桑德罗</div>
+  <div class="meta">
+    <span class="kv">位置 <b>CB / LB</b></span>
+    <span class="kv">惯用脚 <b>左</b></span>
+  </div>
+  <div class="tags"><span class="tag">上抢型</span><span class="tag">左脚中卫</span></div>
+  <div class="weak">弱点：伤病史</div>
+  <div class="weaknote">弱点依据：【可用性风险，非战术弱点】2025-26 小腿伤停 45 天、2025 年 2 月 ACL 撕裂、早期跖骨骨折（TM/Sky/官网）。防空“身高短板”是常见叙事，但他在空中对抗并不差，不硬编防空弱。</div>
+  <div class="note">备注：现有行；只补弱点。伤病史标签只表示出勤风险，不是战术弱点。</div>
+  <div class="src"><a href="https://www.manutd.com/en/players-and-staff/first-team" target="_blank" rel="noopener">来源 1</a> · <a href="https://www.transfermarkt.com/lisandro-martinez/verletzungen/spieler/480762/plus/1" target="_blank" rel="noopener">来源 2</a> · <a href="https://www.skysports.com/football/news/13574295/man-utd-could-start-2026-27-premier-league-season-with-same-back-four-as-2022-23-opening-game" target="_blank" rel="noopener">来源 3</a> · <a href="https://www.manutd.com/en/news/lisandro-martinez-long-read-about-return-from-injury" target="_blank" rel="noopener">来源 4</a></div>
+  <label class="check"><input type="checkbox" data-check="5"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="5" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="6">
+  <div class="top"><b>马奎尔</b><span class="badge ok">已核实</span></div>
+  <div class="en">Maguire</div>
+  <div class="meta">
+    <span class="kv">位置 <b>CB</b></span>
+    <span class="kv">惯用脚 <b>右</b></span>
+  </div>
+  <div class="tags"><span class="tag">拖后型</span><span class="tag">争顶型</span></div>
+  <div class="weak">弱点：怕一对一</div>
+  <div class="weaknote">弱点依据：Sky 球探观点：直线速度不常被爆，问题在侧向移动/转身；Mastermind 指其“缺乏瞬间反应速度、上抢后守不住位置”。33 岁面对小快灵前锋的禁区 1v1 是更准的针对点，不写笼统“回追慢”。</div>
+  <div class="note">备注：现有行；只补弱点，不改位置/脚/标签。</div>
+  <div class="src"><a href="https://www.manutd.com/en/players-and-staff/first-team" target="_blank" rel="noopener">来源 1</a> · <a href="https://www.skysports.com/football/news/11451337/harry-maguire-to-manchester-united-would-the-leicester-defender-suit-them" target="_blank" rel="noopener">来源 2</a> · <a href="https://themastermindsite.com/2022/04/09/the-real-problem-with-harry-maguires-defending/" target="_blank" rel="noopener">来源 3</a></div>
+  <label class="check"><input type="checkbox" data-check="6"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="6" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="7">
+  <div class="top"><b>约罗</b><span class="badge warn">待确认</span></div>
+  <div class="en">Yoro</div>
+  <div class="meta">
+    <span class="kv">位置 <b>CB</b></span>
+    <span class="kv">惯用脚 <b>右</b></span>
+  </div>
+  <div class="tags"><span class="tag">出球型</span></div>
+  <div class="weak">弱点：防空弱</div>
+  <div class="weaknote">弱点依据：2026-27 英超样本仅 171 分钟、空中对抗赢 1 次（PL stats）；The Athletic 指曼联仍在培养他读比赛/防守细节。样本小，标待确认，不当作成熟结论。</div>
+  <div class="note">备注：现有行；只补弱点，不改位置/脚/标签。</div>
+  <div class="src"><a href="https://www.manutd.com/en/players-and-staff/first-team" target="_blank" rel="noopener">来源 1</a> · <a href="https://www.premierleague.com/en/players/550864/leny-yoro/stats" target="_blank" rel="noopener">来源 2</a> · <a href="https://www.nytimes.com/athletic/7110936/2026/03/19/leny-yoro-manchester-united-cat/" target="_blank" rel="noopener">来源 3</a> · <a href="https://learning.coachesvoice.com/cv/leny-yoro-position-style-of-play-manchester-united/" target="_blank" rel="noopener">来源 4</a></div>
+  <label class="check"><input type="checkbox" data-check="7"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="7" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="8">
+  <div class="top"><b>卢克·肖</b><span class="badge ok">已核实</span></div>
+  <div class="en">Luke Shaw / 肖</div>
+  <div class="meta">
+    <span class="kv">位置 <b>LB / CB</b></span>
+    <span class="kv">惯用脚 <b>左</b></span>
+  </div>
+  <div class="tags"><span class="tag">左脚中卫</span><span class="tag">套边型</span></div>
+  <div class="weak">弱点：回追慢</div>
+  <div class="weaknote">弱点依据：Sky 2026-27 防线分析：曼联后卫线整体缺少回追速度，Shaw 需要轮换；BBC 记录其多次腿筋/小腿伤。取“回追慢”作为战术针对点，伤病史另列为可用性风险，不混写。</div>
+  <div class="note">备注：现有行；只补弱点；伤病史另列为可用性风险。</div>
+  <div class="src"><a href="https://www.manutd.com/en/players-and-staff/first-team" target="_blank" rel="noopener">来源 1</a> · <a href="https://www.skysports.com/football/news/13574295/man-utd-could-start-2026-27-premier-league-season-with-same-back-four-as-2022-23-opening-game" target="_blank" rel="noopener">来源 2</a> · <a href="https://www.bbc.com/sport/football/articles/cn4xyd0vww3o" target="_blank" rel="noopener">来源 3</a></div>
+  <label class="check"><input type="checkbox" data-check="8"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="8" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="9">
+  <div class="top"><b>多古</b><span class="badge ok">已核实</span></div>
+  <div class="en">Dorgu</div>
+  <div class="meta">
+    <span class="kv">位置 <b>LWB / LB / LW</b></span>
+    <span class="kv">惯用脚 <b>左</b></span>
+  </div>
+  <div class="tags"><span class="tag">翼卫</span><span class="tag">套边型</span></div>
+  <div class="weak">弱点：易失位</div>
+  <div class="weaknote">弱点依据：Athletic 2025：防守技术积极但不够干净，容易让球漏出；TFA 2026 指其被 Carrick 主要当左边锋用，四后卫左路站位/1v1 仍是短板。脚已核实为左脚，原“右脚逆足”标签不成立。</div>
+  <div class="note">备注：现有：foot=右、tags=翼卫/逆足、pos=LWB/LB/RW、st 写“右脚左翼卫”，d 写“右脚踢左路…” → 改：foot=左、st=左脚左翼卫、tags=翼卫/套边型、pos=LWB/LB/LW。建议 d：2025冬窗从莱切加盟：左脚左翼卫/左边锋，直线冲击+往返是天赋，57场5球7助；四后卫的左路防守站位和1v1还在补课，Carrick 2026-27 也把他当左边锋用。</div>
+  <div class="src"><a href="https://www.manutd.com/en/players-and-staff/first-team" target="_blank" rel="noopener">来源 1</a> · <a href="https://www.manutd.com/en/teams/mens-team/patrick-dorgu" target="_blank" rel="noopener">来源 2</a> · <a href="https://www.premierleague.com/en/news/4237336" target="_blank" rel="noopener">来源 3</a> · <a href="https://www.nytimes.com/athletic/6073035/2025/02/02/patrick-dorgu-manchester-united-transfers-signing-strengths/" target="_blank" rel="noopener">来源 4</a> · <a href="https://tacticalfootballanalysis.com/manchester-united-recruitment-2026-2027-tactics-data-analysis/" target="_blank" rel="noopener">来源 5</a></div>
+  <label class="check"><input type="checkbox" data-check="9"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="9" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="10">
+  <div class="top"><b>海文</b><span class="badge warn">待确认</span></div>
+  <div class="en">Heaven</div>
+  <div class="meta">
+    <span class="kv">位置 <b>CB / LB</b></span>
+    <span class="kv">惯用脚 <b>左</b></span>
+  </div>
+  <div class="tags"><span class="tag">左脚中卫</span><span class="tag">出球型</span></div>
+  <div class="weak">弱点：待确认</div>
+  <div class="weaknote">弱点依据：无可靠战术弱点（2026-27 英超仅 2 场）：样本不足；替代观察点：被背身支点拉出、定位球后点、左脚出球受压。不硬编。</div>
+  <div class="note">备注：现有行；只补弱点，不改位置/脚/标签。</div>
+  <div class="src"><a href="https://www.manutd.com/en/players-and-staff/first-team" target="_blank" rel="noopener">来源 1</a> · <a href="https://www.espn.co.uk/football/team/squad/_/id/360/eng.man_utd" target="_blank" rel="noopener">来源 2</a></div>
+  <label class="check"><input type="checkbox" data-check="10"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="10" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="11">
+  <div class="top"><b>阿玛斯</b><span class="badge warn">待确认</span></div>
+  <div class="en">Amass</div>
+  <div class="meta">
+    <span class="kv">位置 <b>LB / LWB</b></span>
+    <span class="kv">惯用脚 <b>左</b></span>
+  </div>
+  <div class="tags"><span class="tag">套边型</span></div>
+  <div class="weak">弱点：待确认</div>
+  <div class="weaknote">弱点依据：无可靠战术弱点（2026-27 英超出场 0、一线队样本仅 8 场）：替代观察点：杯赛中的 1v1 防守、传中质量、对抗强度。不硬编。</div>
+  <div class="note">备注：现有行；只补弱点，不改位置/脚/标签。</div>
+  <div class="src"><a href="https://www.manutd.com/en/players-and-staff/first-team" target="_blank" rel="noopener">来源 1</a> · <a href="https://www.espn.co.uk/football/team/squad/_/id/360/eng.man_utd" target="_blank" rel="noopener">来源 2</a></div>
+  <label class="check"><input type="checkbox" data-check="11"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="11" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="12">
+  <div class="top"><b>巴莱巴</b><span class="badge ok">已核实</span></div>
+  <div class="en">Baleba</div>
+  <div class="meta">
+    <span class="kv">位置 <b>DM / CM</b></span>
+    <span class="kv">惯用脚 <b>右</b></span>
+  </div>
+  <div class="tags"><span class="tag">破坏型</span><span class="tag">B2B</span></div>
+  <div class="weak">弱点：易失位</div>
+  <div class="weaknote">弱点依据：TFA 2026 scout：防守可靠性不足（犯规多）、需要搭档保持位置纪律；犯规/吃牌归为可用性风险，战术层面取“易失位”——他被拉出 6 号位后身后需要人补。不是传球受压问题，他在压力下反而强。</div>
+  <div class="note">备注：现有行；只补弱点，不改位置/脚/标签。</div>
+  <div class="src"><a href="https://www.manutd.com/en/players-and-staff/first-team" target="_blank" rel="noopener">来源 1</a> · <a href="https://tacticalfootballanalysis.com/carlos-baleba-scout-report-manchester-united-2026-2027-data-analysis/" target="_blank" rel="noopener">来源 2</a> · <a href="https://www.theguardian.com/football/2026/oct/09/carlos-baleba-manchester-united-debut" target="_blank" rel="noopener">来源 3</a></div>
+  <label class="check"><input type="checkbox" data-check="12"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="12" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="13">
+  <div class="top"><b>A.桑托斯</b><span class="badge ok">已核实</span></div>
+  <div class="en">Andrey Santos</div>
+  <div class="meta">
+    <span class="kv">位置 <b>DM / CM</b></span>
+    <span class="kv">惯用脚 <b>右</b></span>
+  </div>
+  <div class="tags"><span class="tag">拖后组织</span><span class="tag">组织8</span></div>
+  <div class="weak">弱点：回追慢</div>
+  <div class="weaknote">弱点依据：TFA 2026：深位组织者，短距离爆发好但长距离覆盖/回追不足，被隔离时防守吃亏；Medium 球探同指其长距离速度不足（&quot;not particularly fast over longer distances&quot;）。</div>
+  <div class="note">备注：冲突已定：TFA 的曼联专项球探报告称其角色是 deep-lying playmaker，不是 destroyer/B2B；PL 官方的 DM/抢断是次要强项。取“拖后组织/组织8”，去掉“破坏型/B2B”。</div>
+  <div class="src"><a href="https://www.manutd.com/en/players-and-staff/first-team" target="_blank" rel="noopener">来源 1</a> · <a href="https://tacticalfootballanalysis.com/andrey-santos-scout-report-manchester-united-2026-2027-analysis/" target="_blank" rel="noopener">来源 2</a> · <a href="https://medium.com/@SamHoleAFC/andrey-santos-scouting-report-strengths-weaknesses-and-what-he-needs-to-succeed-a3117d635eb3" target="_blank" rel="noopener">来源 3</a></div>
+  <label class="check"><input type="checkbox" data-check="13"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="13" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="14">
+  <div class="top"><b>蒂勒曼斯</b><span class="badge ok">已核实</span></div>
+  <div class="en">Tielemans</div>
+  <div class="meta">
+    <span class="kv">位置 <b>CM / DM / AM</b></span>
+    <span class="kv">惯用脚 <b>右</b></span>
+  </div>
+  <div class="tags"><span class="tag">组织8</span><span class="tag">节拍器</span></div>
+  <div class="weak">弱点：回追慢</div>
+  <div class="weaknote">弱点依据：TFA 2026：前场压迫积极，但被高速反击时速度受限（&quot;limits pace against high-speed counters&quot;），防守横移是相对短板；原 d 已写“防守横移是相对短板”。</div>
+  <div class="note">备注：现有行；只补弱点，不改位置/脚/标签。</div>
+  <div class="src"><a href="https://www.manutd.com/en/players-and-staff/first-team" target="_blank" rel="noopener">来源 1</a> · <a href="https://tacticalfootballanalysis.com/youri-tielemans-scout-report-manchester-united-2026-2027-analysis/" target="_blank" rel="noopener">来源 2</a></div>
+  <label class="check"><input type="checkbox" data-check="14"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="14" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="15">
+  <div class="top"><b>B费</b><span class="badge ok">已核实</span></div>
+  <div class="en">Bruno Fernandes / B.费</div>
+  <div class="meta">
+    <span class="kv">位置 <b>AM / CM / RW</b></span>
+    <span class="kv">惯用脚 <b>右</b></span>
+  </div>
+  <div class="tags"><span class="tag">现代10</span><span class="tag">节拍器</span></div>
+  <div class="weak">弱点：易失位</div>
+  <div class="weaknote">弱点依据：TFA 2026 热图：名义 10 号但明显右倾，会离开中路去右肋要球；回撤双后腰时站位随球漂移。取“易失位”（结构代价），不写“纪律差”。</div>
+  <div class="note">备注：现有行；只补弱点，不改位置/脚/标签。</div>
+  <div class="src"><a href="https://www.manutd.com/en/players-and-staff/first-team" target="_blank" rel="noopener">来源 1</a> · <a href="https://tacticalfootballanalysis.com/bruno-fernandes-scout-report-at-manchester-united-2025-2026-the-premier-leagues-ultimate-hybrid-creator-player-analysis/" target="_blank" rel="noopener">来源 2</a> · <a href="https://www.theguardian.com/football/who-scored-blog/2026/feb/23/bruno-fernandes-best-position-effective-manchester-united-season" target="_blank" rel="noopener">来源 3</a></div>
+  <label class="check"><input type="checkbox" data-check="15"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="15" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="16">
+  <div class="top"><b>梅努</b><span class="badge ok">已核实</span></div>
+  <div class="en">Mainoo</div>
+  <div class="meta">
+    <span class="kv">位置 <b>CM / DM</b></span>
+    <span class="kv">惯用脚 <b>右</b></span>
+  </div>
+  <div class="tags"><span class="tag">组织8</span></div>
+  <div class="weak">弱点：回追慢</div>
+  <div class="weaknote">弱点依据：TFA 2024 scout：不是“大空间覆盖者”，在更大开放区域会挣扎、防守覆盖容易被抓；Busby Babe 2026 也写他“not the fastest”。Athletic 2026 指其防守站位有改善但样本很小。</div>
+  <div class="note">备注：现有行；只补弱点，不改位置/脚/标签。</div>
+  <div class="src"><a href="https://www.manutd.com/en/players-and-staff/first-team" target="_blank" rel="noopener">来源 1</a> · <a href="https://totalfootballanalysis.com/article/kobbie-mainoo-202324-scout-report-tactical-analysis-tactics" target="_blank" rel="noopener">来源 2</a> · <a href="https://thebusbybabe.sbnation.com/general/35673/tactical-analysis-kobbie-mainoo-and-manchester-uniteds-third-goal-show-the-michael-carrick-difference" target="_blank" rel="noopener">来源 3</a> · <a href="https://www.nytimes.com/athletic/7054556/2026/02/19/mainoo-man-united-carrick-midfield/" target="_blank" rel="noopener">来源 4</a></div>
+  <label class="check"><input type="checkbox" data-check="16"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="16" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="17">
+  <div class="top"><b>芒特</b><span class="badge ok">已核实</span></div>
+  <div class="en">Mount</div>
+  <div class="meta">
+    <span class="kv">位置 <b>AM / CM</b></span>
+    <span class="kv">惯用脚 <b>右</b></span>
+  </div>
+  <div class="tags"><span class="tag">伪10</span></div>
+  <div class="weak">弱点：伤病史</div>
+  <div class="weaknote">弱点依据：【可用性风险，非战术弱点】TM 伤病史：2023-24 多次缺阵、2024-25 腿筋伤，出勤不稳定；战术上无可靠万金油弱点，不硬编。</div>
+  <div class="note">备注：现有行；只补弱点。伤病史标签只表示出勤风险，不是战术弱点。</div>
+  <div class="src"><a href="https://www.manutd.com/en/players-and-staff/first-team" target="_blank" rel="noopener">来源 1</a> · <a href="https://www.transfermarkt.com/mason-mount/verletzungen/spieler/346483" target="_blank" rel="noopener">来源 2</a> · <a href="https://www.premierinjuries.com/newsroom/epl/players/mason-mount/" target="_blank" rel="noopener">来源 3</a></div>
+  <label class="check"><input type="checkbox" data-check="17"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="17" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="18">
+  <div class="top"><b>乌加特</b><span class="badge ok">已核实</span></div>
+  <div class="en">Ugarte</div>
+  <div class="meta">
+    <span class="kv">位置 <b>DM</b></span>
+    <span class="kv">惯用脚 <b>右</b></span>
+  </div>
+  <div class="tags"><span class="tag">破坏型</span></div>
+  <div class="weak">弱点：压迫下失误</div>
+  <div class="weaknote">弱点依据：PL 官方 2024 分析：缺少 progressive passing，现代 6 号位需要的受压出球是短板；对手会故意放他拿球。抢断/覆盖仍是强项。status=膝韧带重伤（缺席赛季大部分），是可用性风险。</div>
+  <div class="note">备注：status 现写“重伤报销（赛季）”，官方为膝韧带伤、缺席赛季大部分；措辞可改，本轮不动。</div>
+  <div class="src"><a href="https://www.manutd.com/en/players-and-staff/first-team" target="_blank" rel="noopener">来源 1</a> · <a href="https://www.premierleague.com/en/news/4098938" target="_blank" rel="noopener">来源 2</a> · <a href="https://www.manutd.com/en/news/manuel-ugarte-injury-update" target="_blank" rel="noopener">来源 3</a></div>
+  <label class="check"><input type="checkbox" data-check="18"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="18" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="19">
+  <div class="top"><b>弗莱彻</b><span class="badge warn">待确认</span></div>
+  <div class="en">Tyler Fletcher</div>
+  <div class="meta">
+    <span class="kv">位置 <b>CM / DM</b></span>
+    <span class="kv">惯用脚 <b>右</b></span>
+  </div>
+  <div class="tags"><span class="muted">标签待确认</span></div>
+  <div class="weak">弱点：待确认</div>
+  <div class="weaknote">弱点依据：无可靠战术弱点（2026-27 英超出场 2）：样本不足；替代观察点：无球跑动、对抗下出球、双中场协防。国籍已定苏格兰：PL 官网=Scotland + The Athletic 转籍报道；TM 页面 England/Scotland 混用，不采信。</div>
+  <div class="note">备注：冲突已定：苏格兰。PL 官网=Scotland；The Athletic 2026-06：已从英格兰转投苏格兰并进世界杯名单。TM 页面 England/Scotland 混用，属旧/口径不一，不采信。</div>
+  <div class="src"><a href="https://www.manutd.com/en/players-and-staff/first-team" target="_blank" rel="noopener">来源 1</a> · <a href="https://www.premierleague.com/en/players/519913/tyler-fletcher/overview" target="_blank" rel="noopener">来源 2</a> · <a href="https://www.nytimes.com/athletic/7323499/2026/06/04/tyler-fletcher-scotland-world-cup/" target="_blank" rel="noopener">来源 3</a></div>
+  <label class="check"><input type="checkbox" data-check="19"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="19" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="20">
+  <div class="top"><b>J.弗莱彻</b><span class="badge warn">待确认</span></div>
+  <div class="en">Jack Fletcher</div>
+  <div class="meta">
+    <span class="kv">位置 <b>CM / AM</b></span>
+    <span class="kv">惯用脚 <b>左</b></span>
+  </div>
+  <div class="tags"><span class="muted">标签待确认</span></div>
+  <div class="weak">弱点：待确认</div>
+  <div class="weaknote">弱点依据：无可靠战术弱点（2026-27 英超出场 3）：样本不足；替代观察点：左脚组织、肋部接球、防守落位。国籍英格兰（PL/ESPN）；TM 页面有 Scotland 标注，属双国籍/代表队口径不一，不改。</div>
+  <div class="note">备注：现有行；只补弱点。nat=英格兰、foot=左均与 PL 一致。</div>
+  <div class="src"><a href="https://www.manutd.com/en/players-and-staff/first-team" target="_blank" rel="noopener">来源 1</a> · <a href="https://www.premierleague.com/en/players/547037/jack-fletcher/overview" target="_blank" rel="noopener">来源 2</a> · <a href="https://www.espn.co.uk/football/team/squad/_/id/360/eng.man_utd" target="_blank" rel="noopener">来源 3</a></div>
+  <label class="check"><input type="checkbox" data-check="20"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="20" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="21">
+  <div class="top"><b>库尼亚</b><span class="badge ok">已核实</span></div>
+  <div class="en">Cunha</div>
+  <div class="meta">
+    <span class="kv">位置 <b>AM / LW / ST</b></span>
+    <span class="kv">惯用脚 <b>右</b></span>
+  </div>
+  <div class="tags"><span class="tag">自由10</span><span class="tag">伪9</span></div>
+  <div class="weak">弱点：终结效率低</div>
+  <div class="weaknote">弱点依据：2026-27 射门转化率约 6.7–7.1%，英超 10+ 射门球员里倒数第二（AllFootball/StatMuse）；射门量大但选择/终结效率低，是可针对的进攻短板。防守投入、压迫、持球推进仍是强项（Mastermind/PL）。</div>
+  <div class="note">备注：现有行；补弱点。按用户确认新增受控词“终结效率低”，依据 2026-27 射门转化率约 6.7–7.1%（英超 10+ 射门倒数第二）；不是硬套旧词。</div>
+  <div class="src"><a href="https://www.manutd.com/en/players-and-staff/first-team" target="_blank" rel="noopener">来源 1</a> · <a href="https://themastermindsite.com/2026/10/11/matheus-cunha-is-crazy-but-thats-part-of-his-charm/" target="_blank" rel="noopener">来源 2</a> · <a href="https://www.premierleague.com/en/news/4321863" target="_blank" rel="noopener">来源 3</a> · <a href="https://www.allfootballapp.com/articles/5622978-cunhas-7-1-shot-conversion-rate" target="_blank" rel="noopener">来源 4</a> · <a href="https://www.statmuse.com/fc/ask/cunha-shot-conversion-rate-in-premier-league" target="_blank" rel="noopener">来源 5</a></div>
+  <label class="check"><input type="checkbox" data-check="21"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="21" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="22">
+  <div class="top"><b>姆贝乌莫</b><span class="badge ok">已核实</span></div>
+  <div class="en">Mbeumo / 姆贝莫</div>
+  <div class="meta">
+    <span class="kv">位置 <b>RW / AM / LW</b></span>
+    <span class="kv">惯用脚 <b>左</b></span>
+  </div>
+  <div class="tags"><span class="tag">逆足内切</span></div>
+  <div class="weak">弱点：逆足限制</div>
+  <div class="weaknote">弱点依据：Medium 分析：左脚/右脚射门比约 3:1、进球比约 6:1；Brentford 官方指其 2024-25 首个右脚进球。防守者可逼他走外线，但内切效率仍高——相对短板，不是主要限制。</div>
+  <div class="note">备注：现有行；只补弱点。Carrick 2026-27 也把他当 9 号用（Busby Babe），pos 可考虑加 ST；本轮不改位置，等你定。</div>
+  <div class="src"><a href="https://www.manutd.com/en/players-and-staff/first-team" target="_blank" rel="noopener">来源 1</a> · <a href="https://www.manutd.com/en/teams/mens-team/bryan-mbeumo" target="_blank" rel="noopener">来源 2</a> · <a href="https://medium.com/@UkrFutAnaliz/analytical-profile-bryan-mbeumo-what-would-brentfords-attacking-leader-bring-to-old-trafford-6b3c2cec56e5" target="_blank" rel="noopener">来源 3</a> · <a href="https://www.brentfordfc.com/en/news/analysis-bryan-mbeumo-yoane-wissa-premier-league-stats" target="_blank" rel="noopener">来源 4</a></div>
+  <label class="check"><input type="checkbox" data-check="22"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="22" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="23">
+  <div class="top"><b>谢什科</b><span class="badge ok">已核实</span></div>
+  <div class="en">Sesko / 塞斯科</div>
+  <div class="meta">
+    <span class="kv">位置 <b>ST</b></span>
+    <span class="kv">惯用脚 <b>右</b></span>
+  </div>
+  <div class="tags"><span class="tag">支点</span><span class="tag">全能9潜力</span></div>
+  <div class="weak">弱点：逆足限制</div>
+  <div class="weaknote">弱点依据：TFA 2026：左脚稳定性/终结需提升（&quot;weaker-foot consistency must improve&quot;），身体对抗仍在开发；他在有空间冲身后时最危险，贴身/背身受压时效率下降。</div>
+  <div class="note">备注：现有行；只补弱点，不改位置/脚/标签。</div>
+  <div class="src"><a href="https://www.manutd.com/en/players-and-staff/first-team" target="_blank" rel="noopener">来源 1</a> · <a href="https://totalfootballanalysis.com/player-analysis/benjamin-sesko-scout-report-manchester-united-2025-2026-analysis-tactics" target="_blank" rel="noopener">来源 2</a> · <a href="https://thebusbybabe.sbnation.com/general/35449/manchester-united-season-preview-2026-27-forward-position-analysis" target="_blank" rel="noopener">来源 3</a></div>
+  <label class="check"><input type="checkbox" data-check="23"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="23" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="24">
+  <div class="top"><b>迪亚洛</b><span class="badge ok">已核实</span></div>
+  <div class="en">Amad Diallo / 阿马德</div>
+  <div class="meta">
+    <span class="kv">位置 <b>RW / RWB / LW</b></span>
+    <span class="kv">惯用脚 <b>左</b></span>
+  </div>
+  <div class="tags"><span class="tag">逆足内切</span><span class="tag">翼卫</span></div>
+  <div class="weak">弱点：伤病史</div>
+  <div class="weaknote">弱点依据：【可用性风险，非战术弱点】反复脚踝伤：2025-02 踝韧带伤赛季报销；2026-08 训练中再次脚踝韧带伤，缺阵约 6 周；2026-27 至今仅 2 场/149 分钟。战术弱点样本不足，不硬编。</div>
+  <div class="note">备注：现有行；只补弱点。2026-27 仅 2 场/149 分钟，因 8 月脚踝韧带伤缺阵约 6 周；反复脚踝伤是可用性风险，不改位置/脚/标签。</div>
+  <div class="src"><a href="https://www.manutd.com/en/players-and-staff/first-team" target="_blank" rel="noopener">来源 1</a> · <a href="https://sports.yahoo.com/articles/manchester-united-suffer-major-blow-155856934.html" target="_blank" rel="noopener">来源 2</a> · <a href="https://www.beinsports.com/en-us/soccer/premier-league/articles/amad-diallo-injury-deals-manchester-united-a-major-blow-2026-08-23" target="_blank" rel="noopener">来源 3</a> · <a href="https://www.flashscore.com/news/soccer-premier-league-manchester-united-dealt-another-blow-with-diallo-reportedly-out-for-season/Sr0aJCYA/" target="_blank" rel="noopener">来源 4</a> · <a href="https://www.fotmob.com/players/1070052/amad" target="_blank" rel="noopener">来源 5</a></div>
+  <label class="check"><input type="checkbox" data-check="24"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="24" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="25">
+  <div class="top"><b>拉什福德</b><span class="badge ok">已核实</span></div>
+  <div class="en">Rashford</div>
+  <div class="meta">
+    <span class="kv">位置 <b>LW / ST</b></span>
+    <span class="kv">惯用脚 <b>右</b></span>
+  </div>
+  <div class="tags"><span class="tag">逆足内切</span></div>
+  <div class="weak">弱点：不参与防守</div>
+  <div class="weaknote">弱点依据：TFA 2025-26 巴萨球探：球队防守结构不紧凑时，Rashford 的防守弱点被暴露；他回追/落位的参与度低于同位置边锋。不是态度判断，是战术角色风险。</div>
+  <div class="note">备注：现有行；只补弱点，不改位置/脚/标签。</div>
+  <div class="src"><a href="https://www.manutd.com/en/players-and-staff/first-team" target="_blank" rel="noopener">来源 1</a> · <a href="https://totalfootballanalysis.com/player-analysis/marcus-rashford-scout-report-barcelona-2025-2026-analysis-tactics" target="_blank" rel="noopener">来源 2</a> · <a href="https://fbref.com/en/players/a1d5bd30/scout/11566/Marcus-Rashford-Scouting-Report" target="_blank" rel="noopener">来源 3</a></div>
+  <label class="check"><input type="checkbox" data-check="25"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="25" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="26">
+  <div class="top"><b>齐尔克泽</b><span class="badge ok">已核实</span></div>
+  <div class="en">Zirkzee</div>
+  <div class="meta">
+    <span class="kv">位置 <b>ST / AM</b></span>
+    <span class="kv">惯用脚 <b>右</b></span>
+  </div>
+  <div class="tags"><span class="tag">伪9</span><span class="tag">支点</span></div>
+  <div class="weak">弱点：压迫下失误</div>
+  <div class="weaknote">弱点依据：Yahoo 2026：11 次对抗仅赢 4 次，被后卫贴身时难以护球；Goal 指其背身做球/禁区威胁不足。取“压迫下失误”（受压处理球），不是速度问题。</div>
+  <div class="note">备注：现有行；只补弱点，不改位置/脚/标签。</div>
+  <div class="src"><a href="https://www.manutd.com/en/players-and-staff/first-team" target="_blank" rel="noopener">来源 1</a> · <a href="https://sports.yahoo.com/articles/joshua-zirkzee-man-united-striker-060500422.html" target="_blank" rel="noopener">来源 2</a> · <a href="https://www.goal.com/en/lists/so-weak-joshua-zirkzee-brutally-told-he-s-not-a-man-utd-player-after-dismal-display-at-sunderland/bltb9e75e864a7b9a1f" target="_blank" rel="noopener">来源 3</a></div>
+  <label class="check"><input type="checkbox" data-check="26"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="26" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<section class="card" data-card="27">
+  <div class="top"><b>莱西</b><span class="badge warn">待确认</span></div>
+  <div class="en">Lacey</div>
+  <div class="meta">
+    <span class="kv">位置 <b>RW / AM</b></span>
+    <span class="kv">惯用脚 <b>左</b></span>
+  </div>
+  <div class="tags"><span class="muted">标签待确认</span></div>
+  <div class="weak">弱点：待确认</div>
+  <div class="weaknote">弱点依据：无可靠战术弱点（2026-27 英超出场 1）：样本不足；Athletic 2026 突破球员特写：左脚、盘带、创造力是卖点。替代观察点：成年队对抗、无球防守、决策速度。</div>
+  <div class="note">备注：现有 foot=null → 左。官网/PL/FotMob/Athletic 一致；tags 暂不硬加（英超出场 1）。</div>
+  <div class="src"><a href="https://www.manutd.com/en/players-and-staff/first-team" target="_blank" rel="noopener">来源 1</a> · <a href="https://www.manutd.com/en/teams/mens-team/shea-lacey" target="_blank" rel="noopener">来源 2</a> · <a href="https://www.nytimes.com/athletic/7521287/2026/08/21/manchester-united-2026-27-breakthrough-player-shea-lacey/" target="_blank" rel="noopener">来源 3</a> · <a href="https://www.espn.co.uk/football/team/squad/_/id/360/eng.man_utd" target="_blank" rel="noopener">来源 4</a></div>
+  <label class="check"><input type="checkbox" data-check="27"> <span>确认这行，写入 players.js</span></label>
+  <input class="memo" data-memo="27" placeholder="要改哪格？例如：脚改成左；标签删掉攻击型">
+</section>
+<div id="fallback"><textarea id="copyBox" readonly></textarea></div>
+</main>
+<footer><div class="fbar">
+  <div class="count">已确认 <b id="cnt">0</b>/28</div>
+  <button class="primary" id="download">下载确认 JSON</button>
+  <button id="copy">复制</button>
+</div></footer>
+<div class="toast" id="toast">已复制</div>
+<script>
+const DATA = {"team":"曼联","form":"4-2-3-1","auditDate":"2026-10-21","auditNote":"官方 2026-27 名单 30 人；Bayindir/Onana 外租；项目 28 人 = 官方去掉你此前确认删除的 Heaton/Mee。全队审查候选。两处冲突已定：Tyler Fletcher=苏格兰；A.桑托斯 tags=拖后组织/组织8。","rows":[{"n":"拉门斯","en":["Lammens"],"club":"曼联","pos":["GK"],"foot":"右","tags":["清球型"],"weak":"防空弱","weakNote":"TFA 2025-26 门将球探：禁区制空/空中对抗是相对弱项（\"one of the least commanding in aerial duels\"）；出击成功率高不等于制空强。作者原 d 也写“制空和指挥防线还在涨球”，判断一致。","src":["https://www.manutd.com/en/players-and-staff/first-team","https://totalfootballanalysis.com/player-analysis/senne-lammens-scout-report-manchester-united-2025-2026-analysis-tactics","https://www.premierleague.com/en/players/465247/senne-lammens/overview"],"conf":"已核实","note":"现有行；只补弱点，不改位置/脚/标签。"},{"n":"达洛","en":["Karl Darlow","Darlow","卡尔·达洛"],"club":"曼联","pos":["GK"],"foot":"右","tags":["门线型"],"weak":"待确认","weakNote":"无可靠战术弱点（2026-27 英超 0 出场）：36 岁二号门将，无足够战术样本；替代观察点：杯赛中的反应速度、出击范围、指挥防线。不是“达洛特”重复行。","src":["https://www.manutd.com/en/players-and-staff/first-team","https://www.manutd.com/en/teams/mens-team/karl-darlow","https://www.premierleague.com/en/players/59735/karl-darlow/overview","https://apnews.com/article/darlow-man-united-goalkeeper-e24afa2c671e8d87e9e6c5b3cdf80815","https://www.espn.co.uk/football/team/squad/_/id/360/eng.man_utd"],"conf":"待确认","note":"现有：en=\"Dalu\"、nat=\"—\"、foot=null、season=\"1场\" → 建议：en=Karl Darlow/Darlow/卡尔·达洛、nat=威尔士、foot=右、season=22场/5零封（2025-26 利兹联英超 22 场 5 零封）。n 保留“达洛”，与“达洛特”区分；不是重复行。","nat":"威尔士","season":"22场 / 5零封"},{"n":"达洛特","en":["Dalot"],"club":"曼联","pos":["RB","RWB","LB"],"foot":"右","tags":["套边型","翼卫"],"weak":"怕一对一","weakNote":"TFA 2026 边后卫分析：防守 1v1 表现“extremely low”，压迫时机偏被动、错误的 engagement timing；进攻端传中 36%、xG+xA 0.17/90。不是速度问题，是防守对抗与站位。","src":["https://www.manutd.com/en/players-and-staff/first-team","https://totalfootballanalysis.com/player-analysis/diogo-dalot-scout-report-manchester-united-2025-2026-analysis-tactics","https://tacticalfootballanalysis.com/manchester-united-recruitment-2026-2027-tactics-data-analysis/"],"conf":"已核实","note":"现有行；只补弱点，不改位置/脚/标签。"},{"n":"马兹拉维","en":["Mazraoui"],"club":"曼联","pos":["RB","RWB","CM"],"foot":"右","tags":["内收型","多面手"],"weak":"易失位","weakNote":"Busby Babe 2026：习惯收得很窄、不给边锋套边支援，右路宽度常空；TFA 招募分析指其传中/创造力“extremely low”。内收是战术设计，代价是边路 1v1 暴露。","src":["https://www.manutd.com/en/players-and-staff/first-team","https://thebusbybabe.sbnation.com/general/34806/tactical-analysis-noussair-mazraouis-shortcomings","https://tacticalfootballanalysis.com/manchester-united-recruitment-2026-2027-tactics-data-analysis/"],"conf":"已核实","note":"现有行；只补弱点，不改位置/脚/标签。"},{"n":"德利赫特","en":["de Ligt","德里赫特"],"club":"曼联","pos":["CB"],"foot":"右","tags":["上抢型","对抗型"],"weak":"回追慢","weakNote":"The Athletic 2025：不是慢后卫，但缺少约罗那种回追速度，不适合守大空间；原 d 也写“怕被速度型前锋拉进长距离回追”。另有背伤术后 2026-27 英超 0 出场=可用性风险，另记。","src":["https://www.manutd.com/en/players-and-staff/first-team","https://www.nytimes.com/athletic/6480014/2025/08/21/matthijs-de-ligt-man-utd-analysis/","https://www.manutd.com/en/news/matthijs-de-ligt-has-surgery-to-address-a-back-injury","https://www.espn.co.uk/football/team/squad/_/id/360/eng.man_utd"],"conf":"已核实","note":"2026-27 英超 0 出场（背伤术后），PREFERRED 仍列首发；是否加 status/换首发需你定，本轮不改 build.py。"},{"n":"L.马丁内斯","en":["Lisandro Martinez","利马","利桑德罗"],"club":"曼联","pos":["CB","LB"],"foot":"左","tags":["上抢型","左脚中卫"],"weak":"伤病史","weakNote":"【可用性风险，非战术弱点】2025-26 小腿伤停 45 天、2025 年 2 月 ACL 撕裂、早期跖骨骨折（TM/Sky/官网）。防空“身高短板”是常见叙事，但他在空中对抗并不差，不硬编防空弱。","src":["https://www.manutd.com/en/players-and-staff/first-team","https://www.transfermarkt.com/lisandro-martinez/verletzungen/spieler/480762/plus/1","https://www.skysports.com/football/news/13574295/man-utd-could-start-2026-27-premier-league-season-with-same-back-four-as-2022-23-opening-game","https://www.manutd.com/en/news/lisandro-martinez-long-read-about-return-from-injury"],"conf":"已核实","note":"现有行；只补弱点。伤病史标签只表示出勤风险，不是战术弱点。"},{"n":"马奎尔","en":["Maguire"],"club":"曼联","pos":["CB"],"foot":"右","tags":["拖后型","争顶型"],"weak":"怕一对一","weakNote":"Sky 球探观点：直线速度不常被爆，问题在侧向移动/转身；Mastermind 指其“缺乏瞬间反应速度、上抢后守不住位置”。33 岁面对小快灵前锋的禁区 1v1 是更准的针对点，不写笼统“回追慢”。","src":["https://www.manutd.com/en/players-and-staff/first-team","https://www.skysports.com/football/news/11451337/harry-maguire-to-manchester-united-would-the-leicester-defender-suit-them","https://themastermindsite.com/2022/04/09/the-real-problem-with-harry-maguires-defending/"],"conf":"已核实","note":"现有行；只补弱点，不改位置/脚/标签。"},{"n":"约罗","en":["Yoro"],"club":"曼联","pos":["CB"],"foot":"右","tags":["出球型"],"weak":"防空弱","weakNote":"2026-27 英超样本仅 171 分钟、空中对抗赢 1 次（PL stats）；The Athletic 指曼联仍在培养他读比赛/防守细节。样本小，标待确认，不当作成熟结论。","src":["https://www.manutd.com/en/players-and-staff/first-team","https://www.premierleague.com/en/players/550864/leny-yoro/stats","https://www.nytimes.com/athletic/7110936/2026/03/19/leny-yoro-manchester-united-cat/","https://learning.coachesvoice.com/cv/leny-yoro-position-style-of-play-manchester-united/"],"conf":"待确认","note":"现有行；只补弱点，不改位置/脚/标签。"},{"n":"卢克·肖","en":["Luke Shaw","肖"],"club":"曼联","pos":["LB","CB"],"foot":"左","tags":["左脚中卫","套边型"],"weak":"回追慢","weakNote":"Sky 2026-27 防线分析：曼联后卫线整体缺少回追速度，Shaw 需要轮换；BBC 记录其多次腿筋/小腿伤。取“回追慢”作为战术针对点，伤病史另列为可用性风险，不混写。","src":["https://www.manutd.com/en/players-and-staff/first-team","https://www.skysports.com/football/news/13574295/man-utd-could-start-2026-27-premier-league-season-with-same-back-four-as-2022-23-opening-game","https://www.bbc.com/sport/football/articles/cn4xyd0vww3o"],"conf":"已核实","note":"现有行；只补弱点；伤病史另列为可用性风险。"},{"n":"多古","en":["Dorgu"],"club":"曼联","pos":["LWB","LB","LW"],"foot":"左","tags":["翼卫","套边型"],"weak":"易失位","weakNote":"Athletic 2025：防守技术积极但不够干净，容易让球漏出；TFA 2026 指其被 Carrick 主要当左边锋用，四后卫左路站位/1v1 仍是短板。脚已核实为左脚，原“右脚逆足”标签不成立。","src":["https://www.manutd.com/en/players-and-staff/first-team","https://www.manutd.com/en/teams/mens-team/patrick-dorgu","https://www.premierleague.com/en/news/4237336","https://www.nytimes.com/athletic/6073035/2025/02/02/patrick-dorgu-manchester-united-transfers-signing-strengths/","https://tacticalfootballanalysis.com/manchester-united-recruitment-2026-2027-tactics-data-analysis/"],"conf":"已核实","note":"现有：foot=右、tags=翼卫/逆足、pos=LWB/LB/RW、st 写“右脚左翼卫”，d 写“右脚踢左路…” → 改：foot=左、st=左脚左翼卫、tags=翼卫/套边型、pos=LWB/LB/LW。建议 d：2025冬窗从莱切加盟：左脚左翼卫/左边锋，直线冲击+往返是天赋，57场5球7助；四后卫的左路防守站位和1v1还在补课，Carrick 2026-27 也把他当左边锋用。","d":"2025冬窗从莱切加盟：左脚左翼卫/左边锋，直线冲击+往返是天赋，57场5球7助；四后卫的左路防守站位和1v1还在补课，Carrick 2026-27 也把他当左边锋用。"},{"n":"海文","en":["Heaven"],"club":"曼联","pos":["CB","LB"],"foot":"左","tags":["左脚中卫","出球型"],"weak":"待确认","weakNote":"无可靠战术弱点（2026-27 英超仅 2 场）：样本不足；替代观察点：被背身支点拉出、定位球后点、左脚出球受压。不硬编。","src":["https://www.manutd.com/en/players-and-staff/first-team","https://www.espn.co.uk/football/team/squad/_/id/360/eng.man_utd"],"conf":"待确认","note":"现有行；只补弱点，不改位置/脚/标签。"},{"n":"阿玛斯","en":["Amass"],"club":"曼联","pos":["LB","LWB"],"foot":"左","tags":["套边型"],"weak":"待确认","weakNote":"无可靠战术弱点（2026-27 英超出场 0、一线队样本仅 8 场）：替代观察点：杯赛中的 1v1 防守、传中质量、对抗强度。不硬编。","src":["https://www.manutd.com/en/players-and-staff/first-team","https://www.espn.co.uk/football/team/squad/_/id/360/eng.man_utd"],"conf":"待确认","note":"现有行；只补弱点，不改位置/脚/标签。"},{"n":"巴莱巴","en":["Baleba"],"club":"曼联","pos":["DM","CM"],"foot":"右","tags":["破坏型","B2B"],"weak":"易失位","weakNote":"TFA 2026 scout：防守可靠性不足（犯规多）、需要搭档保持位置纪律；犯规/吃牌归为可用性风险，战术层面取“易失位”——他被拉出 6 号位后身后需要人补。不是传球受压问题，他在压力下反而强。","src":["https://www.manutd.com/en/players-and-staff/first-team","https://tacticalfootballanalysis.com/carlos-baleba-scout-report-manchester-united-2026-2027-data-analysis/","https://www.theguardian.com/football/2026/oct/09/carlos-baleba-manchester-united-debut"],"conf":"已核实","note":"现有行；只补弱点，不改位置/脚/标签。"},{"n":"A.桑托斯","en":["Andrey Santos"],"club":"曼联","pos":["DM","CM"],"foot":"右","tags":["拖后组织","组织8"],"weak":"回追慢","weakNote":"TFA 2026：深位组织者，短距离爆发好但长距离覆盖/回追不足，被隔离时防守吃亏；Medium 球探同指其长距离速度不足（\"not particularly fast over longer distances\"）。","src":["https://www.manutd.com/en/players-and-staff/first-team","https://tacticalfootballanalysis.com/andrey-santos-scout-report-manchester-united-2026-2027-analysis/","https://medium.com/@SamHoleAFC/andrey-santos-scouting-report-strengths-weaknesses-and-what-he-needs-to-succeed-a3117d635eb3"],"conf":"已核实","note":"冲突已定：TFA 的曼联专项球探报告称其角色是 deep-lying playmaker，不是 destroyer/B2B；PL 官方的 DM/抢断是次要强项。取“拖后组织/组织8”，去掉“破坏型/B2B”。"},{"n":"蒂勒曼斯","en":["Tielemans"],"club":"曼联","pos":["CM","DM","AM"],"foot":"右","tags":["组织8","节拍器"],"weak":"回追慢","weakNote":"TFA 2026：前场压迫积极，但被高速反击时速度受限（\"limits pace against high-speed counters\"），防守横移是相对短板；原 d 已写“防守横移是相对短板”。","src":["https://www.manutd.com/en/players-and-staff/first-team","https://tacticalfootballanalysis.com/youri-tielemans-scout-report-manchester-united-2026-2027-analysis/"],"conf":"已核实","note":"现有行；只补弱点，不改位置/脚/标签。"},{"n":"B费","en":["Bruno Fernandes","B.费"],"club":"曼联","pos":["AM","CM","RW"],"foot":"右","tags":["现代10","节拍器"],"weak":"易失位","weakNote":"TFA 2026 热图：名义 10 号但明显右倾，会离开中路去右肋要球；回撤双后腰时站位随球漂移。取“易失位”（结构代价），不写“纪律差”。","src":["https://www.manutd.com/en/players-and-staff/first-team","https://tacticalfootballanalysis.com/bruno-fernandes-scout-report-at-manchester-united-2025-2026-the-premier-leagues-ultimate-hybrid-creator-player-analysis/","https://www.theguardian.com/football/who-scored-blog/2026/feb/23/bruno-fernandes-best-position-effective-manchester-united-season"],"conf":"已核实","note":"现有行；只补弱点，不改位置/脚/标签。"},{"n":"梅努","en":["Mainoo"],"club":"曼联","pos":["CM","DM"],"foot":"右","tags":["组织8"],"weak":"回追慢","weakNote":"TFA 2024 scout：不是“大空间覆盖者”，在更大开放区域会挣扎、防守覆盖容易被抓；Busby Babe 2026 也写他“not the fastest”。Athletic 2026 指其防守站位有改善但样本很小。","src":["https://www.manutd.com/en/players-and-staff/first-team","https://totalfootballanalysis.com/article/kobbie-mainoo-202324-scout-report-tactical-analysis-tactics","https://thebusbybabe.sbnation.com/general/35673/tactical-analysis-kobbie-mainoo-and-manchester-uniteds-third-goal-show-the-michael-carrick-difference","https://www.nytimes.com/athletic/7054556/2026/02/19/mainoo-man-united-carrick-midfield/"],"conf":"已核实","note":"现有行；只补弱点，不改位置/脚/标签。"},{"n":"芒特","en":["Mount"],"club":"曼联","pos":["AM","CM"],"foot":"右","tags":["伪10"],"weak":"伤病史","weakNote":"【可用性风险，非战术弱点】TM 伤病史：2023-24 多次缺阵、2024-25 腿筋伤，出勤不稳定；战术上无可靠万金油弱点，不硬编。","src":["https://www.manutd.com/en/players-and-staff/first-team","https://www.transfermarkt.com/mason-mount/verletzungen/spieler/346483","https://www.premierinjuries.com/newsroom/epl/players/mason-mount/"],"conf":"已核实","note":"现有行；只补弱点。伤病史标签只表示出勤风险，不是战术弱点。"},{"n":"乌加特","en":["Ugarte"],"club":"曼联","pos":["DM"],"foot":"右","tags":["破坏型"],"weak":"压迫下失误","weakNote":"PL 官方 2024 分析：缺少 progressive passing，现代 6 号位需要的受压出球是短板；对手会故意放他拿球。抢断/覆盖仍是强项。status=膝韧带重伤（缺席赛季大部分），是可用性风险。","src":["https://www.manutd.com/en/players-and-staff/first-team","https://www.premierleague.com/en/news/4098938","https://www.manutd.com/en/news/manuel-ugarte-injury-update"],"conf":"已核实","note":"status 现写“重伤报销（赛季）”，官方为膝韧带伤、缺席赛季大部分；措辞可改，本轮不动。"},{"n":"弗莱彻","en":["Tyler Fletcher"],"club":"曼联","pos":["CM","DM"],"foot":"右","tags":[],"weak":"待确认","weakNote":"无可靠战术弱点（2026-27 英超出场 2）：样本不足；替代观察点：无球跑动、对抗下出球、双中场协防。国籍已定苏格兰：PL 官网=Scotland + The Athletic 转籍报道；TM 页面 England/Scotland 混用，不采信。","src":["https://www.manutd.com/en/players-and-staff/first-team","https://www.premierleague.com/en/players/519913/tyler-fletcher/overview","https://www.nytimes.com/athletic/7323499/2026/06/04/tyler-fletcher-scotland-world-cup/"],"conf":"待确认","note":"冲突已定：苏格兰。PL 官网=Scotland；The Athletic 2026-06：已从英格兰转投苏格兰并进世界杯名单。TM 页面 England/Scotland 混用，属旧/口径不一，不采信。","nat":"苏格兰"},{"n":"J.弗莱彻","en":["Jack Fletcher"],"club":"曼联","pos":["CM","AM"],"foot":"左","tags":[],"weak":"待确认","weakNote":"无可靠战术弱点（2026-27 英超出场 3）：样本不足；替代观察点：左脚组织、肋部接球、防守落位。国籍英格兰（PL/ESPN）；TM 页面有 Scotland 标注，属双国籍/代表队口径不一，不改。","src":["https://www.manutd.com/en/players-and-staff/first-team","https://www.premierleague.com/en/players/547037/jack-fletcher/overview","https://www.espn.co.uk/football/team/squad/_/id/360/eng.man_utd"],"conf":"待确认","note":"现有行；只补弱点。nat=英格兰、foot=左均与 PL 一致。"},{"n":"库尼亚","en":["Cunha"],"club":"曼联","pos":["AM","LW","ST"],"foot":"右","tags":["自由10","伪9"],"weak":"终结效率低","weakNote":"2026-27 射门转化率约 6.7–7.1%，英超 10+ 射门球员里倒数第二（AllFootball/StatMuse）；射门量大但选择/终结效率低，是可针对的进攻短板。防守投入、压迫、持球推进仍是强项（Mastermind/PL）。","src":["https://www.manutd.com/en/players-and-staff/first-team","https://themastermindsite.com/2026/10/11/matheus-cunha-is-crazy-but-thats-part-of-his-charm/","https://www.premierleague.com/en/news/4321863","https://www.allfootballapp.com/articles/5622978-cunhas-7-1-shot-conversion-rate","https://www.statmuse.com/fc/ask/cunha-shot-conversion-rate-in-premier-league"],"conf":"已核实","note":"现有行；补弱点。按用户确认新增受控词“终结效率低”，依据 2026-27 射门转化率约 6.7–7.1%（英超 10+ 射门倒数第二）；不是硬套旧词。"},{"n":"姆贝乌莫","en":["Mbeumo","姆贝莫"],"club":"曼联","pos":["RW","AM","LW"],"foot":"左","tags":["逆足内切"],"weak":"逆足限制","weakNote":"Medium 分析：左脚/右脚射门比约 3:1、进球比约 6:1；Brentford 官方指其 2024-25 首个右脚进球。防守者可逼他走外线，但内切效率仍高——相对短板，不是主要限制。","src":["https://www.manutd.com/en/players-and-staff/first-team","https://www.manutd.com/en/teams/mens-team/bryan-mbeumo","https://medium.com/@UkrFutAnaliz/analytical-profile-bryan-mbeumo-what-would-brentfords-attacking-leader-bring-to-old-trafford-6b3c2cec56e5","https://www.brentfordfc.com/en/news/analysis-bryan-mbeumo-yoane-wissa-premier-league-stats"],"conf":"已核实","note":"现有行；只补弱点。Carrick 2026-27 也把他当 9 号用（Busby Babe），pos 可考虑加 ST；本轮不改位置，等你定。"},{"n":"谢什科","en":["Sesko","塞斯科"],"club":"曼联","pos":["ST"],"foot":"右","tags":["支点","全能9潜力"],"weak":"逆足限制","weakNote":"TFA 2026：左脚稳定性/终结需提升（\"weaker-foot consistency must improve\"），身体对抗仍在开发；他在有空间冲身后时最危险，贴身/背身受压时效率下降。","src":["https://www.manutd.com/en/players-and-staff/first-team","https://totalfootballanalysis.com/player-analysis/benjamin-sesko-scout-report-manchester-united-2025-2026-analysis-tactics","https://thebusbybabe.sbnation.com/general/35449/manchester-united-season-preview-2026-27-forward-position-analysis"],"conf":"已核实","note":"现有行；只补弱点，不改位置/脚/标签。"},{"n":"迪亚洛","en":["Amad Diallo","阿马德"],"club":"曼联","pos":["RW","RWB","LW"],"foot":"左","tags":["逆足内切","翼卫"],"weak":"伤病史","weakNote":"【可用性风险，非战术弱点】反复脚踝伤：2025-02 踝韧带伤赛季报销；2026-08 训练中再次脚踝韧带伤，缺阵约 6 周；2026-27 至今仅 2 场/149 分钟。战术弱点样本不足，不硬编。","src":["https://www.manutd.com/en/players-and-staff/first-team","https://sports.yahoo.com/articles/manchester-united-suffer-major-blow-155856934.html","https://www.beinsports.com/en-us/soccer/premier-league/articles/amad-diallo-injury-deals-manchester-united-a-major-blow-2026-08-23","https://www.flashscore.com/news/soccer-premier-league-manchester-united-dealt-another-blow-with-diallo-reportedly-out-for-season/Sr0aJCYA/","https://www.fotmob.com/players/1070052/amad"],"conf":"已核实","note":"现有行；只补弱点。2026-27 仅 2 场/149 分钟，因 8 月脚踝韧带伤缺阵约 6 周；反复脚踝伤是可用性风险，不改位置/脚/标签。"},{"n":"拉什福德","en":["Rashford"],"club":"曼联","pos":["LW","ST"],"foot":"右","tags":["逆足内切"],"weak":"不参与防守","weakNote":"TFA 2025-26 巴萨球探：球队防守结构不紧凑时，Rashford 的防守弱点被暴露；他回追/落位的参与度低于同位置边锋。不是态度判断，是战术角色风险。","src":["https://www.manutd.com/en/players-and-staff/first-team","https://totalfootballanalysis.com/player-analysis/marcus-rashford-scout-report-barcelona-2025-2026-analysis-tactics","https://fbref.com/en/players/a1d5bd30/scout/11566/Marcus-Rashford-Scouting-Report"],"conf":"已核实","note":"现有行；只补弱点，不改位置/脚/标签。"},{"n":"齐尔克泽","en":["Zirkzee"],"club":"曼联","pos":["ST","AM"],"foot":"右","tags":["伪9","支点"],"weak":"压迫下失误","weakNote":"Yahoo 2026：11 次对抗仅赢 4 次，被后卫贴身时难以护球；Goal 指其背身做球/禁区威胁不足。取“压迫下失误”（受压处理球），不是速度问题。","src":["https://www.manutd.com/en/players-and-staff/first-team","https://sports.yahoo.com/articles/joshua-zirkzee-man-united-striker-060500422.html","https://www.goal.com/en/lists/so-weak-joshua-zirkzee-brutally-told-he-s-not-a-man-utd-player-after-dismal-display-at-sunderland/bltb9e75e864a7b9a1f"],"conf":"已核实","note":"现有行；只补弱点，不改位置/脚/标签。"},{"n":"莱西","en":["Lacey"],"club":"曼联","pos":["RW","AM"],"foot":"左","tags":[],"weak":"待确认","weakNote":"无可靠战术弱点（2026-27 英超出场 1）：样本不足；Athletic 2026 突破球员特写：左脚、盘带、创造力是卖点。替代观察点：成年队对抗、无球防守、决策速度。","src":["https://www.manutd.com/en/players-and-staff/first-team","https://www.manutd.com/en/teams/mens-team/shea-lacey","https://www.nytimes.com/athletic/7521287/2026/08/21/manchester-united-2026-27-breakthrough-player-shea-lacey/","https://www.espn.co.uk/football/team/squad/_/id/360/eng.man_utd"],"conf":"待确认","note":"现有 foot=null → 左。官网/PL/FotMob/Athletic 一致；tags 暂不硬加（英超出场 1）。"}]};
+const rows = Array.isArray(DATA.rows) ? DATA.rows : [];
+const boxes = Array.prototype.slice.call(document.querySelectorAll('[data-check]'));
+const memos = Array.prototype.slice.call(document.querySelectorAll('[data-memo]'));
+const cards = Array.prototype.slice.call(document.querySelectorAll('[data-card]'));
+const cnt = document.getElementById('cnt');
+function selected() {
+  return rows.map(function(r, i) {
+    if (!boxes[i] || !boxes[i].checked) return null;
+    const out = Object.assign({}, r);
+    const memo = (memos[i] && memos[i].value || '').trim();
+    if (memo) out.reviewNote = memo;
+    out.confirmed = true;
+    return out;
+  }).filter(Boolean);
+}
+function update() {
+  let n = 0;
+  boxes.forEach(function(b, i) {
+    if (b.checked) n++;
+    cards[i].classList.toggle('done', b.checked);
+  });
+  cnt.textContent = String(n);
+}
+boxes.forEach(function(b) { b.addEventListener('change', update); });
+update();
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('on');
+  setTimeout(function() { t.classList.remove('on'); }, 1400);
+}
+document.getElementById('download').addEventListener('click', function() {
+  const payload = { team: DATA.team || '', form: DATA.form || '', rows: selected() };
+  if (!payload.rows.length) { toast('先勾选至少一行'); return; }
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (DATA.team || 'team') + '-confirmed.json';
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(function() { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+  toast('已下载 ' + payload.rows.length + ' 行');
+});
+document.getElementById('copy').addEventListener('click', function() {
+  const payload = { team: DATA.team || '', form: DATA.form || '', rows: selected() };
+  if (!payload.rows.length) { toast('先勾选至少一行'); return; }
+  const text = JSON.stringify(payload, null, 2);
+  const fallback = document.getElementById('fallback');
+  const box = document.getElementById('copyBox');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function() { toast('已复制'); }).catch(function() {
+      box.value = text; fallback.style.display = 'block'; box.focus(); box.select(); toast('请手动复制');
+    });
+  } else {
+    box.value = text; fallback.style.display = 'block'; box.focus(); box.select(); toast('请手动复制');
+  }
+});
+</script>
+</body></html>

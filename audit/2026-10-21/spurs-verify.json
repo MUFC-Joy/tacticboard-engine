@@ -1,0 +1,606 @@
+{
+  "team": "热刺",
+  "form": "4-2-3-1",
+  "rows": [
+    {
+      "n": "波尔诺",
+      "en": [
+        "Pedro Porro",
+        "Porro"
+      ],
+      "club": "热刺",
+      "pos": [
+        "RB",
+        "RWB"
+      ],
+      "foot": "右",
+      "tags": [
+        "攻击型"
+      ],
+      "weak": "防空弱",
+      "weakNote": "身高 1.73m；datamb 2025-26 空中对抗胜率第 18 百分位（样本仅 211 分钟，偏小），定位球后点可被高个边锋/中卫针对。防守 1v1 评价有分歧（MOTD 指失位，The Athletic/Yahoo 认为被低估），因此不写“怕一对一”。",
+      "src": [
+        "https://www.tottenhamhotspur.com/player/441164/pedro-porro",
+        "https://www.tottenhamhotspur.com/news/1088296/squad-confirmed-for-202627-premier-league-season",
+        "https://www.premierleague.com/en/players/441164/pedro-porro/overview",
+        "https://www.transfermarkt.com/pedro-porro/profil/spieler/553875",
+        "https://datamb.football/Pedro_Porro_Full-back_stats/",
+        "https://www.nytimes.com/athletic/7609941/2026/09/23/pedro-porro-injury-tottenham-news/"
+      ],
+      "conf": "已核实",
+      "note": "现有行保留；队籍/位置/右脚已核实。2026-09 腿筋伤缺阵约一个月，10 月中复出存疑；PREFERRED 为健康时理想位。本轮补 weak/weakNote；空中数据样本小，属候选判断。"
+    },
+    {
+      "n": "托辛·阿达拉比奥尤",
+      "en": [
+        "Tosin Adarabioyo",
+        "Tosin"
+      ],
+      "club": "热刺",
+      "pos": [
+        "CB"
+      ],
+      "foot": "右",
+      "tags": [
+        "出球型"
+      ],
+      "weak": "回追慢",
+      "weakNote": "CFCAnalytic 球探：缺乏速度与横移，“unable to maintain a high line”；德泽尔比高位线需要身边有回追型中卫兜底。1.93m 出球稳，弱点不是制空。",
+      "src": [
+        "https://www.tottenhamhotspur.com/player/109646/tosin-adarabioyo",
+        "https://www.tottenhamhotspur.com/news/1088296/squad-confirmed-for-202627-premier-league-season",
+        "https://www.premierleague.com/en/players/109646/tosin-adarabioyo/overview",
+        "https://www.transfermarkt.com/tosin-adarabioyo/profil/spieler/258878",
+        "https://medium.com/@CFCAnalytic/my-honest-thoughts-tosin-adarabioyo-8913f81dcd6d",
+        "https://www.tottenhamhotspur.com/news/1088054/welcome-tosin-adarabioyo-joins-from-chelsea"
+      ],
+      "conf": "已核实",
+      "note": "现有行保留；2026 夏从切尔西加盟（TM €11.7m）。本轮补 weak/weakNote。"
+    },
+    {
+      "n": "范赫克",
+      "en": [
+        "Jan Paul van Hecke",
+        "van Hecke",
+        "JPvH"
+      ],
+      "club": "热刺",
+      "pos": [
+        "CB",
+        "RB"
+      ],
+      "foot": "右",
+      "tags": [
+        "出球型"
+      ],
+      "weak": "易失位",
+      "weakNote": "Yahoo 2026-08 赛后分析：防守端“aggressively stepping out of position for no apparent reason”，高位线被身后球打穿；TFA 球探同时肯定其出球与拦截。属上抢时机/位置感风险，不是速度问题。",
+      "src": [
+        "https://www.tottenhamhotspur.com/player/469142/jan-paul-van-hecke",
+        "https://www.tottenhamhotspur.com/news/1088296/squad-confirmed-for-202627-premier-league-season",
+        "https://www.premierleague.com/en/players/469142/jan-paul-van-hecke/overview",
+        "https://www.transfermarkt.com/jan-paul-van-hecke/profil/spieler/576314",
+        "https://sports.yahoo.com/articles/jan-paul-van-hecke-looks-203001641.html",
+        "https://totalfootballanalysis.com/player-analysis/jan-paul-van-hecke-scout-report-brighton-2025-2026-analysis"
+      ],
+      "conf": "已核实",
+      "note": "现有行保留；2026 夏从布莱顿加盟（TM €60m）。当前客串右后卫，pos 补 RB 备选；weak 为单场分析+球探交叉，样本有限。"
+    },
+    {
+      "n": "罗伯逊",
+      "en": [
+        "Andy Robertson",
+        "Andrew Robertson",
+        "Robertson"
+      ],
+      "club": "热刺",
+      "pos": [
+        "LB",
+        "LWB"
+      ],
+      "foot": "左",
+      "tags": [
+        "套边型"
+      ],
+      "weak": "体能掉档",
+      "weakNote": "32 岁；Transferhub 数据文章指其“slowing down in the second half”，xA 从巅峰期约 0.20/90 降到近两季约 0.14/90；不是不会防守，是回追/助攻续航下滑，70 分钟后更明显。",
+      "src": [
+        "https://www.tottenhamhotspur.com/player/122798/andy-robertson",
+        "https://www.tottenhamhotspur.com/news/1088296/squad-confirmed-for-202627-premier-league-season",
+        "https://www.premierleague.com/en/players/122798/andy-robertson/overview",
+        "https://www.transfermarkt.com/andrew-robertson/profil/spieler/234803",
+        "https://www.fotmob.com/players/357880/andrew-robertson",
+        "https://transferhub.substack.com/p/data-behind-andrew-robertsons-natural"
+      ],
+      "conf": "已核实",
+      "note": "现有行保留；2026 夏自由转会自利物浦。左脚/位置已核实。"
+    },
+    {
+      "n": "乌多吉",
+      "en": [
+        "Destiny Udogie",
+        "Udogie"
+      ],
+      "club": "热刺",
+      "pos": [
+        "LB",
+        "LWB"
+      ],
+      "foot": "左",
+      "tags": [
+        "套边型",
+        "翼卫"
+      ],
+      "weak": "伤病史",
+      "weakNote": "【可用性风险，非战术弱点】TM/Flashscore：2023-24 腿筋伤 108 天、肌肉伤 13 天；2025-10 膝伤、2025-12 至 2026-01 肌肉伤；近期对曼联踢 70 分钟后膝部不适，官网确认缺席考文垂（10-19）。",
+      "src": [
+        "https://www.tottenhamhotspur.com/player/487053/destiny-udogie",
+        "https://www.tottenhamhotspur.com/news/1088296/squad-confirmed-for-202627-premier-league-season",
+        "https://www.premierleague.com/en/players/487053/destiny-udogie/overview",
+        "https://www.transfermarkt.com/destiny-udogie/profil/spieler/556385",
+        "https://www.fotmob.com/players/1052898/destiny-udogie",
+        "https://www.tottenhamhotspur.com/news/1179150/update-destiny-udogie",
+        "https://ca.sports.yahoo.com/news/destiny-udogie-conundrum-full-display-100003697.html"
+      ],
+      "conf": "已核实",
+      "note": "重点修正：foot 右→左；tags 内收型/翼卫→套边型/翼卫；st/d 去掉“逆足内收”叙事。PL/FotMob/EA 均为左脚。"
+    },
+    {
+      "n": "加拉格尔",
+      "en": [
+        "Conor Gallagher",
+        "Gallagher"
+      ],
+      "club": "热刺",
+      "pos": [
+        "CM",
+        "DM"
+      ],
+      "foot": "右",
+      "tags": [
+        "B2B"
+      ],
+      "weak": "压迫下失误",
+      "weakNote": "PL Opta 2026-01：压迫/无球跑动是强项，但“never been a prolific passer through the lines”，有球阶段缺少穿透性传球；对手可放他在中场持球、逼他横向出球。不是抢断/态度问题。",
+      "src": [
+        "https://www.tottenhamhotspur.com/player/232787/conor-gallagher",
+        "https://www.tottenhamhotspur.com/news/1088296/squad-confirmed-for-202627-premier-league-season",
+        "https://www.premierleague.com/en/players/232787/conor-gallagher/overview",
+        "https://www.transfermarkt.com/conor-gallagher/profil/spieler/488362",
+        "https://www.premierleague.com/en/news/4545196/opta-analyst-assess-conor-gallagher-after-midfielder-signs-for-tottenham-hotspur-in-january-transfer-window",
+        "https://www.tottenhamhotspur.com/news/1000574/gallagher-joins-from-atletico-madrid"
+      ],
+      "conf": "已核实",
+      "note": "现有行保留；2026-01-14 从马竞加盟（不是 2026 夏窗，现有 d 需改）。位置 CM/DM，pos[0]=CM。本轮补 weak/weakNote。"
+    },
+    {
+      "n": "麦迪逊",
+      "en": [
+        "James Maddison",
+        "Maddison"
+      ],
+      "club": "热刺",
+      "pos": [
+        "AM"
+      ],
+      "foot": "右",
+      "tags": [
+        "现代10"
+      ],
+      "weak": "伤病史",
+      "weakNote": "【可用性风险，非战术弱点】TM：2025-26 ACL 撕裂缺阵 254 天；2024-25 膝伤 52 天、小腿 17 天；2023-24 踝伤 75 天。2026-27 已复出并进入近期首发，但复发/负荷管理是持续风险；战术上不硬编“不参与防守”。",
+      "src": [
+        "https://www.tottenhamhotspur.com/player/172780/james-maddison",
+        "https://www.premierleague.com/en/players/172780/james-maddison/overview",
+        "https://www.transfermarkt.com/james-maddison/profil/spieler/294057",
+        "https://www.transfermarkt.com/james-maddison/verletzungen/spieler/294057",
+        "https://www.tntsports.co.uk/football/premier-league/2025-2026/james-maddison-acl-injury-surgery-tottenham-hotspur-spurs-setback_sto23209123/story.shtml"
+      ],
+      "conf": "已核实",
+      "note": "现有行保留；队籍/位置/右脚已核实。weak 为可用性风险。"
+    },
+    {
+      "n": "萨维尼奥",
+      "en": [
+        "Sávio",
+        "Savinho",
+        "Savio"
+      ],
+      "club": "热刺",
+      "pos": [
+        "LW",
+        "RW"
+      ],
+      "foot": "左",
+      "tags": [
+        "顺足下底"
+      ],
+      "weak": "终结效率低",
+      "weakNote": "TM 2026-08 转会分析：加盟前英超 53 场仅 2 球；Yahoo 同期指其“goals that Savinho may not bring”。左脚左边锋，热刺深度图列为 LW 第一顺位；射门转化率/终结是短板，不是推进或过人。",
+      "src": [
+        "https://www.tottenhamhotspur.com/player/510281/savio",
+        "https://www.tottenhamhotspur.com/news/1088296/squad-confirmed-for-202627-premier-league-season",
+        "https://www.premierleague.com/en/players/510281/savio/overview",
+        "https://www.transfermarkt.com/savio/profil/spieler/743591",
+        "https://www.fotmob.com/players/1174337/savinho",
+        "https://www.transfermarkt.com/spurs-complete-big-money-transfer-can-savinho-revive-reputation-after-2-goals-in-53-pl-games-/view/news/480849",
+        "https://sports.yahoo.com/articles/updated-tottenham-attacking-depth-chart-200003620.html",
+        "https://www.bbc.com/sport/football/articles/c0m3n7pgmjgo"
+      ],
+      "conf": "已核实",
+      "note": "重点修正：foot 右→左；tags 逆足内切→顺足下底；pos 保持 LW 主位。右路可内切，但热刺主用左路。"
+    },
+    {
+      "n": "索兰克",
+      "en": [
+        "Dominic Solanke",
+        "Solanke"
+      ],
+      "club": "热刺",
+      "pos": [
+        "ST"
+      ],
+      "foot": "右",
+      "tags": [
+        "支点",
+        "逼抢9"
+      ],
+      "weak": "伤病史",
+      "weakNote": "【可用性风险，非战术弱点】TM/Flashscore：2025-01 膝伤、2025-08 踝部手术、2026-01 踝伤、2026-04 腿筋伤；2025-26 英超仅 15 场。支点/压迫/终结均衡，战术上不硬编弱点。",
+      "src": [
+        "https://www.tottenhamhotspur.com/player/154566/dominic-solanke",
+        "https://www.tottenhamhotspur.com/news/1088296/squad-confirmed-for-202627-premier-league-season",
+        "https://www.premierleague.com/en/players/154566/dominic-solanke/overview",
+        "https://www.transfermarkt.com/dominic-solanke/profil/spieler/258889",
+        "https://www.fotmob.com/players/591734/dominic-solanke",
+        "https://www.transfermarkt.com/dominic-solanke/verletzungen/spieler/258889",
+        "https://www.flashscore.com/player/solanke-dominic/OrADwZse/injury-history/"
+      ],
+      "conf": "已核实",
+      "note": "现有行保留；队籍/位置/右脚已核实。weak 为可用性风险。"
+    },
+    {
+      "n": "西蒙斯",
+      "en": [
+        "Xavi Simons",
+        "Simons",
+        "哈维·西蒙斯"
+      ],
+      "club": "热刺",
+      "pos": [
+        "AM",
+        "LW",
+        "RW"
+      ],
+      "foot": "右",
+      "tags": [
+        "自由10"
+      ],
+      "weak": "逆足限制",
+      "weakNote": "TFA 2025-26 球探：右脚依赖明显，“much more dominant on his right foot compared to Gibbs-White or Eze, who are more two-footed”；防守者可逼他走左路/左脚出球。另：2026-04 ACL 断裂，预计冬窗后复出（可用性风险，另记，不混入 weak）。",
+      "src": [
+        "https://www.tottenhamhotspur.com/player/493362/xavi-simons",
+        "https://www.tottenhamhotspur.com/news/1088296/squad-confirmed-for-202627-premier-league-season",
+        "https://www.premierleague.com/en/players/493362/xavi-simons/overview",
+        "https://www.transfermarkt.com/xavi-simons/profil/spieler/566931",
+        "https://www.fotmob.com/players/1173787/xavi-simons",
+        "https://totalfootballanalysis.com/player-analysis/xavi-simons-scout-report-tottenham-hotspur-2025-2026-analysis-tactics",
+        "https://www.tottenhamhotspur.com/news/1061881/injury-update-xavi-simons",
+        "https://www.skysports.com/football/news/13537026/xavi-simons-injury-tottenham-playmaker-to-miss-rest-of-season-and-world-cup-with-netherlands-after-being-stretchered-off-at-wolves"
+      ],
+      "conf": "已核实",
+      "note": "2026-04 ACL，当前不可用；PREFERRED 不选。write 阶段建议加 status:'伤停（ACL，预计冬窗后）'。"
+    },
+    {
+      "n": "范德文",
+      "en": [
+        "Micky van de Ven",
+        "van de Ven",
+        "VDV"
+      ],
+      "club": "热刺",
+      "pos": [
+        "CB"
+      ],
+      "foot": "左",
+      "tags": [
+        "左脚中卫",
+        "回追型"
+      ],
+      "weak": "伤病史",
+      "weakNote": "【可用性风险，非战术弱点】TM：2024-25 腿筋伤两次（2024-10、2024-12）、大腿伤（2025-02）、膝伤；回追型中卫的腿筋负荷是长期风险。2026-10-19 已首发考文垂，当前可用。",
+      "src": [
+        "https://www.tottenhamhotspur.com/player/491279/micky-van-de-ven",
+        "https://www.premierleague.com/en/players/491279/micky-van-de-ven/overview",
+        "https://www.transfermarkt.com/micky-van-de-ven/profil/spieler/557459",
+        "https://www.transfermarkt.com/micky-van-de-ven/verletzungen/spieler/557459/plus/1",
+        "https://www.fotmob.com/players/1097466/micky-van-de-ven"
+      ],
+      "conf": "已核实",
+      "note": "新增：当前首发左中卫（10-19 对考文垂）；左脚/位置已核实。原库缺。"
+    },
+    {
+      "n": "阿奇·格雷",
+      "en": [
+        "Archie Gray",
+        "Gray",
+        "阿尔奇·格雷"
+      ],
+      "club": "热刺",
+      "pos": [
+        "CM",
+        "DM",
+        "RB"
+      ],
+      "foot": "右",
+      "tags": [
+        "组织8",
+        "多面手"
+      ],
+      "weak": "待确认",
+      "weakNote": "无可靠战术弱点（中场样本为主）：Yahoo 2026-08 指其客串右后卫不自然、不能从右路创造，但这是位置适配问题，不是中场本职弱点；替代观察点：右后卫 1v1、被速度型边锋拉边、后场出球受压。",
+      "src": [
+        "https://www.tottenhamhotspur.com/player/547701/archie-gray",
+        "https://www.premierleague.com/en/players/547701/eschie-gray/overview",
+        "https://www.transfermarkt.com/archie-gray/profil/spieler/922693",
+        "https://www.fotmob.com/players/1323305/archie-gray",
+        "https://sports.yahoo.com/articles/archie-gray-experiment-needs-end-180004858.html"
+      ],
+      "conf": "已核实",
+      "note": "新增：当前首发中场（10-19 对考文垂），双后腰之一；pos 补 DM/RB 备选，TM 标 RB，但 De Zerbi 明确他更想踢中场。"
+    },
+    {
+      "n": "马尔穆什",
+      "en": [
+        "Omar Marmoush",
+        "Marmoush",
+        "奥马尔·马尔穆什"
+      ],
+      "club": "热刺",
+      "pos": [
+        "LW",
+        "ST"
+      ],
+      "foot": "右",
+      "tags": [
+        "逆足内切",
+        "全能9"
+      ],
+      "weak": "终结效率低",
+      "weakNote": "spurshub 2026-27 球探：link play 100th percentile，但 npxG/shot 仅 31st percentile；终结效率低、射门选择一般。热刺当前用在左翼，TM 主位置 CF；另有防守参与度一般（49th percentile），但不写“不参与防守”。",
+      "src": [
+        "https://www.tottenhamhotspur.com/player/438234/omar-marmoush",
+        "https://www.premierleague.com/en/players/438234/omar-marmoush/overview",
+        "https://www.transfermarkt.com/omar-marmoush/profil/spieler/445939",
+        "https://www.fotmob.com/players/839204/omar-marmoush",
+        "https://spurshub.co.uk/players/omar-marmoush"
+      ],
+      "conf": "已核实",
+      "note": "新增：2026-08 从曼城租借（含买断义务）；当前首发左边锋（10-19 对考文垂进球）。TM 主位置 CF，热刺用在 LW。"
+    },
+    {
+      "n": "本坦库尔",
+      "en": [
+        "Rodrigo Bentancur",
+        "Bentancur",
+        "罗德里戈·本坦库尔"
+      ],
+      "club": "热刺",
+      "pos": [
+        "DM",
+        "CM"
+      ],
+      "foot": "右",
+      "tags": [
+        "拖后组织",
+        "B2B"
+      ],
+      "weak": "伤病史",
+      "weakNote": "【可用性风险，非战术弱点】Yahoo 2026-09 指其刚从腿筋伤恢复；Flashscore 伤病史含腿筋/膝伤；2026-27 384 分钟/6 场。战术上不硬编；替代观察点：回追速度、禁区前犯规。",
+      "src": [
+        "https://www.tottenhamhotspur.com/player/202993/rodrigo-bentancur",
+        "https://www.premierleague.com/en/players/202993/rodrigo-bentancur/overview",
+        "https://www.fotmob.com/players/620618/rodrigo-bentancur/1000",
+        "https://www.flashscore.com/player/bentancur-rodrigo/nLRMnJtJ/injury-history/",
+        "https://sports.yahoo.com/articles/rodrigo-bentancur-tottenham-were-waiting-080000798.html"
+      ],
+      "conf": "已核实",
+      "note": "新增：6 中场配额的第 6 人；2026-27 384 分钟/6 场，轮换。"
+    },
+    {
+      "n": "特尔",
+      "en": [
+        "Mathys Tel",
+        "Tel",
+        "马蒂斯·特尔"
+      ],
+      "club": "热刺",
+      "pos": [
+        "LW",
+        "ST"
+      ],
+      "foot": "右",
+      "tags": [
+        "逆足内切",
+        "全能9"
+      ],
+      "weak": "待确认",
+      "weakNote": "无可靠 11 词弱点（2026-27 262 分钟/5 场，0 球）：Yahoo 2026-09 指其作为边锋的推进/持球 progression 是短板；Livescore 指他更像前锋、最佳方式是右脚内切。替代观察点：左路推进、背身对抗、无球跑位。",
+      "src": [
+        "https://www.tottenhamhotspur.com/player/511499/mathys-tel",
+        "https://www.premierleague.com/en/players/511499/mathys-tel/overview",
+        "https://www.transfermarkt.com/mathys-tel/profil/spieler/801734",
+        "https://www.fotmob.com/players/1288111/mathys-tel",
+        "https://sports.yahoo.com/articles/mathys-tel-needs-healthy-destiny-190003977.html",
+        "https://www.livescore.com/en/news/football/premier-league/tottenham-need-to-find-a-way-to-get-mathys-tel-in-the-zone-no-literally-hotspur-hq/"
+      ],
+      "conf": "已核实",
+      "note": "新增：5 前锋配额的第 5 人；2026-27 262 分钟/5 场，轮换前锋。"
+    },
+    {
+      "n": "金斯基",
+      "en": [
+        "Antonín Kinský",
+        "Antonin Kinsky",
+        "Kinsky"
+      ],
+      "club": "热刺",
+      "pos": [
+        "GK"
+      ],
+      "foot": "右",
+      "tags": [
+        "清球型"
+      ],
+      "weak": "压迫下失误",
+      "weakNote": "Yahoo 2026-08：De Zerbi 明言其 build-up“much to improve on”，首秀被 ball-handling errors 定义；58.8% 扑救率被批“dreadful”（扑救差不属 11 词表，另作观察）。取“压迫下失误”指后场出球/处理球，不是门线反应。",
+      "src": [
+        "https://www.tottenhamhotspur.com/player/485055/antonin-kinsky",
+        "https://www.premierleague.com/en/players/485055/antonin-kinsky/overview",
+        "https://www.transfermarkt.com/antonin-kinsky/profil/spieler/725912",
+        "https://sports.yahoo.com/articles/antonin-kinsky-premier-leagues-best-080000605.html",
+        "https://www.espn.co.uk/football/story/_/id/49226100/tottenham-antonin-kinsky-signs-new-contract-roberto-de-zerbi-hails-one-best-europe-potential"
+      ],
+      "conf": "已核实",
+      "note": "新增：2026-27 一门（Vicario 租借尤文后上位）；TM 右脚。替补门将为 Dúbravka。"
+    },
+    {
+      "n": "托纳利",
+      "en": [
+        "Sandro Tonali",
+        "Tonali"
+      ],
+      "club": "热刺",
+      "pos": [
+        "DM",
+        "CM"
+      ],
+      "foot": "右",
+      "tags": [
+        "拖后组织",
+        "B2B"
+      ],
+      "weak": "怕一对一",
+      "weakNote": "WhoScored 2026-27：抢断成功率 27.3%（3/11，10+ 次尝试球员中最低）；Spurs 官网统计 4 次抢断 0% 成功（样本小）。TFA 球探认为其防守转换/回撤接球是强项，因此这是单防成功率短板，不是位置感问题；样本 7 场，标候选判断。",
+      "src": [
+        "https://www.tottenhamhotspur.com/news/1088296/squad-confirmed-for-202627-premier-league-season",
+        "https://www.tottenhamhotspur.com/player/432422/sandro-tonali/statistics",
+        "https://www.premierleague.com/en/players/432422/sandro-tonali/overview",
+        "https://www.transfermarkt.com/sandro-tonali/profil/spieler/397033",
+        "https://tacticalfootballanalysis.com/sandro-tonali-mateus-fernandes-scout-report-tottenham-2026-2027-analysis/",
+        "https://x.com/WhoScored/status/2105915687646773674"
+      ],
+      "conf": "已核实",
+      "note": "不新增重复行：更新现有纽卡“托纳利”行 club→热刺、tags→拖后组织/B2B、st/d 改写。2026-07 从纽卡 €108M 加盟；不是 2026 夏窗新签的“另一个托纳利”。"
+    },
+    {
+      "n": "库杜斯",
+      "en": [
+        "Mohammed Kudus",
+        "Kudus",
+        "穆罕默德·库杜斯"
+      ],
+      "club": "热刺",
+      "pos": [
+        "RW"
+      ],
+      "foot": "左",
+      "tags": [
+        "逆足内切"
+      ],
+      "weak": "终结效率低",
+      "weakNote": "WhoScored 球员特征：Finishing=Weak；2026-27 英超前 4 场 123 分钟 0 球 1 助（twentyclubs/oddsCalendar，10-05），射门转化率低。强项是盘带/推进/对抗；不是不参与防守（防守贡献也是 Weak，但优先取更可针对的终结）。另有 fitness issues 记录，作可用性观察。",
+      "src": [
+        "https://www.tottenhamhotspur.com/player/460842/mohammed-kudus",
+        "https://www.tottenhamhotspur.com/news/1088296/squad-confirmed-for-202627-premier-league-season",
+        "https://www.premierleague.com/en/players/460842/mohammed-kudus/overview",
+        "https://www.transfermarkt.com/mohammed-kudus/profil/spieler/543499",
+        "https://www.fotmob.com/players/891743/mohammed-kudus",
+        "https://www.whoscored.com/players/400166/show/mohammed-kudus",
+        "https://www.livescore.com/en/news/football/premier-league/mohammed-kudus-needs-to-control-his-destiny-before-he-faces-real-pressure-at-tottenham-hotspur-hq/",
+        "https://twentyclubs.com/players/mohammed-kudus"
+      ],
+      "conf": "已核实",
+      "note": "新增：2025 从西汉姆加盟；左脚右翼，补西蒙斯 ACL 缺阵后的右路。近期首发（2026-10-19 对考文垂）。"
+    }
+  ],
+  "removed": [
+    {
+      "n": "维卡里奥",
+      "reason": "2026-08 租借尤文图斯；不在热刺 2026/27 PL 名单。应从 players.js 删除。",
+      "src": [
+        "https://www.theguardian.com/football/2026/aug/17/tottenham-guglielmo-vicario-spurs-juventus-loan-deal-transfer-window",
+        "https://www.tottenhamhotspur.com/news/1088296/squad-confirmed-for-202627-premier-league-season"
+      ]
+    },
+    {
+      "n": "罗梅罗",
+      "reason": "2026-08 转会马德里竞技；不在热刺 2026/27 PL 名单。应从 players.js 删除。",
+      "src": [
+        "https://www.skysports.com/football/news/13572603/cristian-romero-spurs-captain-announces-exit-ahead-of-atletico-madrid-transfer-as-he-makes-statement-on-instagram",
+        "https://www.tottenhamhotspur.com/news/1088296/squad-confirmed-for-202627-premier-league-season"
+      ]
+    },
+    {
+      "n": "塞内西",
+      "reason": "现有第 4 中卫；6 后卫配额下被挤出（3 CB + 3 FB 更均衡）。待用户确认；若保留塞内西，可改为移出乌多吉（伤停），但左路只剩罗伯逊+范德文客串。",
+      "src": [
+        "https://www.tottenhamhotspur.com/player/221466/marcos-senesi",
+        "https://www.premierleague.com/en/players/221466/marcos-senesi/overview"
+      ]
+    }
+  ],
+  "missing": [
+    {
+      "n": "马特乌斯·费尔南德斯",
+      "en": "Mateus Fernandes",
+      "pos": "CM/AM",
+      "foot": "右",
+      "why": "2026-07 从西汉姆 £85m 加盟；当前 251-271 分钟/7 场。18 人配额只有 6 中场；若你更看重当前可用性，可用他替掉西蒙斯/加拉格尔/本坦库尔中的一人。",
+      "src": [
+        "https://www.premierleague.com/en/players/551226/mateus-fernandes/overview",
+        "https://www.fotmob.com/players/1356312/mateus-fernandes",
+        "https://www.nytimes.com/athletic/7412726/2026/07/02/mateus-fernandes-de-zerbi-spurs-analysis/"
+      ]
+    }
+  ],
+  "preferred": {
+    "form": "4-2-3-1",
+    "xi": [
+      "金斯基",
+      "范赫克",
+      "托辛·阿达拉比奥尤",
+      "范德文",
+      "罗伯逊",
+      "托纳利",
+      "阿奇·格雷",
+      "库杜斯",
+      "麦迪逊",
+      "马尔穆什",
+      "索兰克"
+    ],
+    "bench": [
+      "波尔诺",
+      "乌多吉",
+      "加拉格尔",
+      "西蒙斯",
+      "本坦库尔",
+      "萨维尼奥",
+      "特尔"
+    ],
+    "reason": "2026-27 PL 4-2-3-1 使用 6/7 场（WhoScored Formations Summary: 4231×6, 3142×1）；10-19 对考文垂官方首发即此 11 人。范赫克客串右后卫、托辛+范德文中卫、罗伯逊左后卫；托纳利+格雷双后腰；库杜斯右翼、马尔穆什左翼、麦迪逊10号、索兰克9号。"
+  },
+  "notes": {
+    "count": "现有 13 - 待确认移出 3（维卡里奥/罗梅罗/塞内西）= 10；新增/改队籍 8（金斯基/范德文/托纳利/阿奇·格雷/库杜斯/马尔穆什/本坦库尔/特尔）= 18。",
+    "simons": "西蒙斯 2026-04 ACL 断裂，预计冬窗后复出；现有 players.js 无 status，autoLineup 会误判可用，写入阶段必须补 status。",
+    "form_override": "build.py 的 FORM_OVERRIDE['热刺']='3-4-2-1' 必须改成 '4-2-3-1'（本季 6/7 场），否则 PREFERRED 不生效。",
+    "tonali_duplicate": "players.js 已有“托纳利”（club=纽卡斯尔）。不要新增同名行，写入时改现有行的 club/tags/st/d/weak。",
+    "data_js": "data.js 热刺卡 key 仍含罗梅罗、缺金斯基/托纳利/库杜斯/范德文/格雷/马尔穆什；threat 仍写“2026夏窗...加拉格尔”“西蒙斯+麦迪逊双前腰”。加拉格尔实际是 2026-01 加盟，西蒙斯 ACL 缺阵。本轮不改，写入阶段一并修。",
+    "current_xi": "A（当前默认）：2026-10-19 对考文垂官方首发 4-2-3-1：Kinsky; van Hecke, Tosin, Van de Ven, Robertson; Tonali, Gray; Kudus, Maddison, Marmoush; Solanke。WhoScored 本季 4-2-3-1 使用 6/7 场。",
+    "cap_conflict": "原 13-14 上限已作废；BIG6 18 人配额下，现有 7 名有效后卫 + 范德文 = 8，必须移出 1 名 DEF。推荐移出塞内西（第 4 中卫），保留波尔诺/乌多吉的左右路深度。若不确认，18 人配额无法满足；可改为移出乌多吉（伤停），但左路只剩罗伯逊+范德文客串。",
+    "preferred_adjustment": "旧候选（Porro RB / Tosin+Senesi / Tonali+Gallagher / Kudus+Maddison+Savinho / Solanke）与当前官方首发差 4 人：RB Porro→van Hecke、CB Senesi→van de Ven、DM Gallagher→Gray、LW Savinho→Marmoush。旧版是“库内最佳拟合”，新版按 10-19 官方首发 + 本季 4-2-3-1 6/7 场。",
+    "alternative_xi": "A（当前默认，写入 PREFERRED）：10-19 官方首发，Tosin/Maddison 在阵。B（赛季总分钟/首发最常用）：Kinsky; Gray, van Hecke, van de Ven, Robertson; Tonali, Bentancur; Kudus, Fernandes, Marmoush; Solanke。差异：Gray 放 RB、Bentancur 入替、Fernandes 10 号；Tosin/Maddison 是最近复出/轮换。若采用 B，18 人里需用 Fernandes 替掉 Simons/Gallagher/Bentancur 之一（配额仍 6 MID），并在 PREFERRED 里把 Gray 放 RB、Bentancur 放 DM。",
+    "quota": "18 人配额按 pos[0]：1 GK（金斯基）+ 6 DEF（波尔诺/托辛/范赫克/罗伯逊/乌多吉/范德文）+ 6 MID（加拉格尔/麦迪逊/西蒙斯/托纳利/阿奇·格雷/本坦库尔）+ 5 FWD（萨维尼奥/索兰克/库杜斯/马尔穆什/特尔）。",
+    "alternative": "若想把费尔南德斯纳入 18 人，替掉西蒙斯/加拉格尔/本坦库尔之一；若想保留塞内西，改移出乌多吉（伤停），DEF 变 4 CB + 2 FB，左路深度下降。"
+  }
+}
