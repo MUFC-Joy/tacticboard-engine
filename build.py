@@ -170,6 +170,33 @@ function autoLineup(team){
   });
   return out;
 }
+function repairLineup(team){
+  var form=formOf(team), slots=FORMS[form]; if(!slots) return;
+  var raw=S.lineup[team]||[], pool=(POOL[team]||[]).filter(function(p){return !hurt(p);});
+  var used={}, out=slots.map(function(sl,i){
+    var n=raw[i], p=n?byName[n]:null;
+    if(p&&norm(p.club)===team&&!hurt(p)&&!used[p.n]){ used[p.n]=1; return p.n; }
+    return null;
+  });
+  var pref=PREFERRED[team];
+  out=out.map(function(n,i){
+    if(n) return n;
+    var slot=slots[i][0], cand=null;
+    if(pref&&pref.form===form){
+      var pp=byName[pref.xi[i]];
+      if(pp&&norm(pp.club)===team&&!hurt(pp)&&!used[pp.n]) cand=pp;
+    }
+    if(!cand){
+      var best=null,bs=-99;
+      pool.forEach(function(p){ if(used[p.n])return; var sc=scoreFor(p,slot); if(sc>bs){bs=sc;best=p;} });
+      if(best&&bs>0) cand=best;
+    }
+    if(cand){ used[cand.n]=1; return cand.n; }
+    return null;
+  });
+  S.lineup[team]=out;
+}
+function repairLineups(){ Object.keys(POOL).forEach(function(t){ repairLineup(t); }); }
 function changeForm(team,form){
   if(!FORMS[form]) return;
   FORM_SEL[team]=form;
@@ -339,36 +366,41 @@ function analyze(){
   }
 
   /* 2 边路 */
-  function flank(myTeam,myLu,myForm,opTeam,opLu,opForm){
+  function flank(myTeam,myLu,myForm,opTeam,opLu,opForm,prefix){
     var out=[];
-    [['RB','LW','右路'],['LB','RW','左路']].forEach(function(pr){
-      var fbN=(slotMap(myLu,myForm)[pr[0]]||[])[0], wN=(slotMap(opLu,opForm)[pr[1]]||[])[0];
+    [['RB','RWB','LW','LWB','右路'],['LB','LWB','RW','RWB','左路']].forEach(function(pr){
+      var mySlots=slotMap(myLu,myForm), opSlots=slotMap(opLu,opForm);
+      var fbN=(mySlots[pr[0]]||[])[0]||(mySlots[pr[1]]||[])[0];
+      var wSlot=(opSlots[pr[2]]||[]).length?pr[2]:pr[3];
+      var wN=(opSlots[wSlot]||[])[0];
       var fb=fbN?byName[fbN]:null, w=wN?byName[wN]:null;
       if(!w) return;
       var wIn=hasT(w,['逆足内切']), wWd=hasT(w,['顺足下底']);
-      var fbUp=!!(fb&&hasT(fb,['套边型','攻击型'])&&!hasT(w,['翼卫']));
+      var fbUp=!!(fb&&(hasT(fb,['套边型','攻击型','翼卫'])||/翼卫/.test(fb.st||'')));
       var hc=fb&&stOf(fb.n)==='yellow';
+      var area=(prefix||'')+pr[4];
       if(fbUp&&(wIn||wWd)){
-        out.push({lvl:2,area:pr[2],
-          txt:`${pr[2]}是主战场：${myTeam} 的 ${fb.n} 要压上（套边型），${opTeam} 的 ${w.n} 正好${wIn?'内切吃内线':'下底拉外线'}——来回拉扯${hc?'，而且他刚吃牌不敢做动作':''}。`,
+        out.push({lvl:2,area:area,
+          txt:`${area}是主战场：${myTeam} 的 ${fb.n} 要压上（套边/翼卫），${opTeam} 的 ${w.n} 正好${wIn?'内切吃内线':'下底拉外线'}——来回拉扯${hc?'，而且他刚吃牌不敢做动作':''}。`,
           ev:`${fb.n} tags=${TG(fb).join('/')} ｜ ${w.n} tags=${TG(w).join('/')} · ${w.foot}脚`});
       }else if(wIn){
-        out.push({lvl:2,area:pr[2],
-          txt:`${w.n} 内切型（${w.foot||'?'}脚踢${pr[1]}），往肋部钻${fb?'，'+fb.n+'（'+fb.foot+'脚）的内线最吃这套':''}${statusLine(fb?fb.n:'')}。`,
+        out.push({lvl:2,area:area,
+          txt:`${w.n} 内切型（${w.foot||'?'}脚踢${wSlot}），往肋部钻${fb?'，'+fb.n+'（'+fb.foot+'脚）的内线最吃这套':''}${statusLine(fb?fb.n:'')}。`,
           ev:`${w.n} tags=${TG(w).join('/')}`});
       }else if(fbUp){
-        out.push({lvl:2,area:pr[2],
-          txt:`${myTeam} 的 ${fb.n} 是套边型，压上后${pr[2]}身后只剩中卫，${opTeam} 抢下球第一脚就找这里。`,
+        out.push({lvl:2,area:area,
+          txt:`${myTeam} 的 ${fb.n} 是套边/翼卫型，压上后${area}身后只剩中卫，${opTeam} 抢下球第一脚就找这里。`,
           ev:`${fb.n} tags=${TG(fb).join('/')} · st:${fb.st||''}`});
       }else if(wWd){
-        out.push({lvl:1,area:pr[2],
-          txt:`${w.n} 顺足下底，会把${pr[2]}的边后卫拉到外线，禁区里必须有人抢第二点。`,
+        out.push({lvl:1,area:area,
+          txt:`${w.n} 顺足下底，会把${area}的边后卫/翼卫拉到外线，禁区里必须有人抢第二点。`,
           ev:`${w.n} tags=${TG(w).join('/')}`});
       }
     });
     return out.slice(0,2);
   }
-  msgs=msgs.concat(flank(H,hl,hf,A,al,af));
+  msgs=msgs.concat(flank(H,hl,hf,A,al,af,''));
+  msgs=msgs.concat(flank(A,al,af,H,hl,hf,'对方'));
 
   /* 3 中场 */
   var d=hm.mid-am.mid+(th==='atk'?1:th==='def'?-1:0)-(ta==='atk'?1:ta==='def'?-1:0);
@@ -439,6 +471,7 @@ function analyze(){
 var CONF={fact:['确定','#23c55e'],infer:['推断','#f0b429'],guess:['待确认','#e2383f']};
 function confTag(c){ var d=CONF[c]||CONF.infer;
   return '<span class="cf" style="color:'+d[1]+';border-color:'+d[1]+'55;background:'+d[1]+'1a">'+d[0]+'</span>'; }
+function infoTag(t){ return '<span class="cf" style="color:#93a0af;border-color:#93a0af55;background:#93a0af1a">'+t+'</span>'; }
 
 /* ---------------- 术语 ---------------- */
 var MIDSLOTS=['DM','CM','AM','RM','LM'];
@@ -459,7 +492,7 @@ function termsCard(msgs){
   hits=hits.slice(0,6);
   if(!hits.length) return '';
   return `<div class="ac l0"><div class="ah"><span class="tag">本场术语</span>
-    <span class="lv">点开看白话</span></div>
+    <span class="lv">${infoTag('词典')} 点开看白话</span></div>
     <div class="tchips">${hits.map(function(k){return `<button class="tchip" data-term="${esc(k)}">${esc(k)}</button>`;}).join('')}</div>
     <div class="ae">看懂这 ${hits.length} 个词，这一页就都能读了。全部术语在右上角「术语表」。</div></div>`;
 }
@@ -540,7 +573,7 @@ function phaseCard(r){
 
 function timelineCard(){
   if(!S.events.length) return '<div class="ac l0"><div class="ah"><span class="tag">比赛进程</span>'+
-    '<span class="lv">空</span></div><div class="at">还没有换人记录。去「排阵」页点场上球员，换一个人、或标一个状态，'+
+    '<span class="lv">'+infoTag('记录')+' 空</span></div><div class="at">还没有换人记录。去「排阵」页点场上球员，换一个人、或标一个状态，'+
     '这里就会按分钟记下来。</div></div>';
   var items=S.events.slice().reverse().map(function(e){
     if(e.type==='sub') return `<div class="tl"><b>${e.min}'</b> ${esc(e.team)} <span class="mut">${esc(e.out)} → ${esc(e.in)}</span></div>`;
@@ -1009,6 +1042,7 @@ function load(){
     S.events=cleanPreSubs(d.events||[]); S.subMark=cleanSubMark(d.subMark||{});
     if(d.keep){ for(var k in d.keep){ KEEP[k]=d.keep[k]; } }
     S.lineup=d.lineup||{};
+    repairLineups();
     return true;
   }catch(e){ return false; }
 }
@@ -1765,6 +1799,7 @@ function applyBackupState(st){
   FORM_SEL=st.form; S.status=st.status; S.tactic=st.tactic; S.poss=st.poss;
   S.weather=st.weather==='rain'?'rain':'dry';
   S.events=cleanPreSubs(st.events); S.subMark=cleanSubMark(st.subMark); S.lineup=st.lineup;
+  repairLineups();
   Object.keys(KEEP).forEach(function(k){ delete KEEP[k]; });
   if(st.keep) Object.keys(st.keep).forEach(function(k){ KEEP[k]=st.keep[k]; });
   S.lastDiff=null;
@@ -1845,7 +1880,7 @@ function renderLog(){
     '<button class="hbtn2" onclick="copyBackup()">复制备份到剪贴板（手机推荐）</button>'+
     '<button class="tb" style="width:100%;margin-top:8px;padding:10px" onclick="exportData()">下载成 JSON 文件</button>'+
     '<div class="lov" style="margin-top:12px">恢复：把备份内容粘进下面的框，再点导入</div>'+
-    '<textarea id="bktext" style="display:none;min-height:110px;font-size:11px"></textarea>'+
+    '<textarea id="bktext" placeholder="在这里粘贴备份 JSON（整段）" autocomplete="off" autocapitalize="off" spellcheck="false" style="min-height:110px;font-size:11px"></textarea>'+
     '<button class="tb" style="width:100%;margin-top:8px;padding:10px" onclick="importFromText()">从这段内容导入</button>'+
     '<input type="file" id="impfile" accept=".json" style="display:none" onchange="importData(this.files[0])">'+
     '<button class="tb" style="width:100%;margin-top:8px;padding:10px" onclick="document.getElementById(\'impfile\').click()">从 JSON 文件恢复</button>'+
